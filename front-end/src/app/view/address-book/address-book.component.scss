@@ -1,0 +1,13 @@
+.depth-tabel-main td{
+    color: black;
+}
+.dept-div-content{
+    display: block;
+    overflow: auto;
+    max-height: 300px;
+    position: absolute;
+    width: 329px;
+    height: auto;
+    border: solid 1px darkgray;
+    transition:height 1s;
+}

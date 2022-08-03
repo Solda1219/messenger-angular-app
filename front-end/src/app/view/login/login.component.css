@@ -1,0 +1,92 @@
+.loginStyle1 {
+    width: 500px;
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    margin-left: -250px;
+    margin-top: -185px;
+    background-color: white;
+}
+.login-layer{
+    width: 100%;
+    height: 100vh;
+    background-color: #23282cc7;
+}
+.login-bg{
+    background-repeat: no-repeat;
+    background-position: center top;
+    background-size: 100% 100%;
+}
+.logo-login{
+    /* margin-bottom: 20px; */
+}
+.logo-login img{
+    width: 100%;
+    height: auto;
+}
+.loginStyle1 .form-control{
+    height: 50px;
+    border: 0;
+    border-radius: 0;
+    font-size: 20px;
+}
+.loginStyle1 .input-group-text{
+    font-size: 20px;
+    border-radius: 0px;
+}
+.roleDiv{
+    background-color: white;
+    height: 50px;
+}
+.roleDiv .form-check-inline{
+    margin-left: 13px;
+}
+.loginButton{
+    width: 100%;
+    height: 50px;
+    font-size: 20px;
+    border-radius: 0px;
+}
+.messageDIV{
+    color: #eae61f;
+    font-size: 15px;
+    height: 30px;
+}
+.languageDIV{
+
+}
+.input-group-prepend{
+    position: absolute;
+    z-index: 11;
+    top: 16px;
+    left: 10px;
+    background-color: white;
+}
+.input-group input{
+    border: solid 1px grey !important;
+    padding-left: 56px;
+}
+.btn-link{
+    color:black;
+}
+.mat-stepper-horizontal {
+    margin-top: 8px;
+  }
+  
+  .mat-form-field {
+    margin-top: 0px;
+  }
+  .mat-form-field{
+      width: 100%;
+  }
+  .form-group{
+   display: flex;
+   width: 100%;
+  }  
+  .form-control{
+   width: calc(100% - 140px);
+  }
+  .inputDiv{
+    width: calc(100% - 140px);  
+    display: flex;
+  }

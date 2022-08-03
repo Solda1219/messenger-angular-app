@@ -1,0 +1,230 @@
+<audio #audioOption>
+  <source src="assets/audio/alert.mp3" type="audio/mp3" autoplay>
+</audio> 
+<div class="container-fluid ats_crm h-100">
+  <div class="row h-100">
+
+    <!-- Sidebar section Start -->
+    <div left-part="" class="col-2 z-index-10 sidebar innersidebarnew">
+      <div sidebar="" class="row h-100 ">
+        <div class="col-12 bg-primary">
+          <div class="row">
+            <!-- user icon and hamburger button -->
+            <div logo=""
+              class="col-12 text-left d-flex align-items-center justify-content-lg-center justify-content-start h-lg-100px h-md-60px z-index-1 overflow-hidden mb-lg-5 mb-md-3 pt-lg-0 pt-md-4 pt-3 mb-2">
+              <img [src]="userInfo()['avatar']" (error)="onImgError($event)" alt="logo" class="h-50px w-50px" style="cursor:pointer" (click)="gotoURL('myprofile/profile')" title="My profile">
+              <span class="text-white fs-16 float-right d-lg-none d-block order-last position-absolute top-5px left-5px"
+              (click)="_opened=!_opened">
+              <i class="fal fa-times-circle"></i>
+              </span>
+              <!-- <img src="assets/img/logo/favicon.png" alt="logo" class="h-35px"> -->
+            </div>
+            <!-- sidebar -->
+            <div class="col-12 sidebar-list pb-0">
+              <div class="row">
+                <div class="col-12 accordion accordion-flush" id="accordionFlushExample">
+                  <ul class="row list-unstyled my-0">
+                    <li *ngFor="let item of nav; let i = index" [class]="curRoute.indexOf(item.url)!=-1&&!_opened?'px-0 innerSidebar active-imgnav':'px-0 innerSidebar'">
+                      <a *ngIf="i==0" class="text-decoration-none d-flex align-items-center text-white py-2 ps-2 pe-1 position-relative z-index-10 collapsed" 
+                      (click)="_opened = !_opened" [title]="_opened?'Hide menu':'Show menu'"> 
+                        <span class="ms-lg-2">
+                          <img [src]="item.icon" class="h-22px" alt="" >
+                        </span>
+                      </a>
+                      <a *ngIf="i!=0 && !_opened" class="text-decoration-none d-flex align-items-center text-white py-2 ps-2 pe-1 position-relative z-index-10 collapsed" [title]="cf.translate(item.name)" (click)="clickedMenuIcon(item)"> 
+                        <span class="ms-lg-2">
+                          <img [src]="item.icon" alt="" style="width: 25px; height: auto !important;">
+                        </span>
+                      </a>
+                    </li>
+                  </ul>
+                  <!-- sidebar full -->
+                  <div id="flush-headingfive" [class]="_opened?'col-auto sub accordion-collapse collapse innersidebarclose show':'col-auto sub accordion-collapse collapse innersidebarclose'"
+                  inner-sidebar="dashboard" aria-labelledby="flush-headingfive"
+                  data-bs-parent="#accordionFlushExample">
+                  <div class="row mx-0">
+                    <div class="col-12 text-start px-md-4 px-3 d-flex align-items-center justify-content-lg-start justify-content-start h-lg-100px h-md-60px h-70px z-index-1 overflow-hidden mb-lg-5 mb-md-4 mb-2 fw-600 fs-lg-24 fs-md-20 fs-18 pt-4">
+                     {{userInfo()['nativeName']}}</div>
+                    <div class="col-12 px-0">
+                      <div class="accordion" id="accordionExample">
+                        <div *ngFor="let item of nav; let i = index" class="accordion-item position-relative">
+                          <h3 class="accordion-header" id="manage-consultants">
+                            <button *ngIf="!item.children"
+                              [class]="
+                              item.collapse?
+                              'accordion-button border-0 shadow-none text-white px-md-4 px-3 fs-md-14 fs-16 z-index-1 h-lg-63px h-md-54px h-54px position-relative'
+                              :'accordion-button border-0 shadow-none text-white px-md-4 px-3 fs-md-14 fs-16 z-index-1 collapsed h-lg-63px h-md-54px h-54px position-relative'
+                              "
+                              (click)="gotoURL(item.url)">
+                              <span>{{cf.translate(item.name)}}</span>
+                              <span class="" *ngIf="item.children">
+                                <img src="assets/theme/img/arrow.png" class="h-14px" alt="">
+                              </span>
+                            </button>
+                            <button *ngIf="item.children"
+                              [class]="
+                              item.collapse?
+                              'accordion-button border-0 shadow-none text-white px-md-4 px-3 fs-md-14 fs-16 z-index-1 h-lg-63px h-md-54px h-54px position-relative'
+                              :'accordion-button border-0 shadow-none text-white px-md-4 px-3 fs-md-14 fs-16 z-index-1 collapsed h-lg-63px h-md-54px h-54px position-relative'
+                              "
+                              (click)="item.collapse=!item.collapse">
+                              <span>{{cf.translate(item.name)}}</span>
+                              <span class="" *ngIf="item.children">
+                                <img src="assets/theme/img/arrow.png" class="h-14px" alt="">
+                              </span>
+                            </button>
+                            <span class="d-lg-inline d-none"></span>
+                          </h3>
+                          <div *ngIf="item.children" [class]="item.collapse?'accordion-collapse border-0 collapse show':'accordion-collapse border-0 collapse'">
+                            <div class="accordion-body px-2 py-0 position-relative z-index-1">
+                              <ul class="list-unstyled text-white pb-2">
+                                <li *ngFor="let li of item.children" class="h-md-45px h-30 ps-md-3">
+                                  <a (click)="gotoURL(li.url)"
+                                    class="text-decoration-none text-white d-flex align-items-center shadow-none text-white px-4 fs-lg-14 fs-md-14 fs-12 z-index-1 justify-content-start">
+                                    <span class="me-1 position-relative top-n3px">
+                                      <img [src]="li.icon" class="h-22px" alt="">
+                                    </span>
+                                    <span>{{cf.translate(li.name)}}</span>
+                                    <span class="badgeSpan" *ngIf="li.name=='Upcoming'">{{info.upcoming}}</span>
+                                    <span class="badgeSpan" *ngIf="li.name=='History'">{{info.history}}</span>
+                                  </a>
+                                </li>
+                              </ul>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Sidebar section End -->
+
+    <!-- Right Part section Start -->
+    <div right-part="" class="col h-100">
+      <div class="row h-100">
+
+        <!-- Header section Start -->
+        <!-- Header section End -->
+
+        <!-- Body section Start -->
+        <div body="" class="col-12 pe-0 ps-lg-3 ps-md-0 ps-0">
+          <div class="side_bar_tooggle row d-lg-none d-block">
+            <a sidebar-menu="" class="col-auto" (click)="_opened=!_opened">
+              <img src="assets/theme/img/menu.svg" class="h-16px" alt="">
+            </a>
+          </div>
+          <div class="row mx-0 sub_sidebar">
+            <!-- Inner Sidebar section Start -->
+            <!-- Inner Sidebar section End -->
+            <!-- Inner Body section Start -->
+            <div class="col inner_class p-0" inner-body="inner">
+              <div class="inner_main p-4">
+                <!-- topbar -->
+                <div class="top_bar_section">
+                  <div class="top_bar_left">
+                    <div class="bar_left_inner text-center">
+                      <img class="" src="assets/theme/img/cloud_color.png" alt="">
+                      <h2 class="">{{tmOb.h}}:{{tmOb.m}}</h2>
+                      <span>{{tmOb.year}}/{{tmOb.month}}/{{tmOb.day}}</span>
+                    </div>
+                  </div>
+                  <div class="top_bar_right">
+                    <img class="img-fluid rounded-right-10" src="assets/theme/img/banner_img.jpg" alt="">
+                    <ul class="list-unstyled mb-0 pl-0">
+                      <li>
+                        <a (click)="switchuser()" class="commona">
+                          {{cf.translate('Switch User')}}
+                        </a>
+                      </li>
+                      <li>
+                        <a (click)="logOut()" class="commona">
+                          {{cf.translate('Logout')}}
+                        </a>
+                      </li>
+                      <li>
+                        <a class="commona" [matMenuTriggerFor]="settingsMenu">
+                          {{cf.translate('Language')}}
+                        </a>
+                        <mat-menu #settingsMenu class="lngdropdown">
+                          <menu mat-menu-item class="m-0"><a class="dropdown-item" (click)="changeLang('english')" style="cursor: pointer;">{{cf.translate('english')}}</a></menu>
+                          <menu mat-menu-item class="m-0"><a class="dropdown-item" (click)="changeLang('simplified_chinese')" style="cursor: pointer;">{{cf.translate('simplified_chinese')}}</a></menu>
+                          <menu mat-menu-item class="m-0"><a class="dropdown-item" (click)="changeLang('traditional_chinese')" style="cursor: pointer;">{{cf.translate('traditional_chinese')}}</a></menu>
+                          <menu mat-menu-item class="m-0"><a class="dropdown-item" (click)="changeLang('korean')" style="cursor: pointer;">{{cf.translate('korean')}}</a></menu>
+                          <menu mat-menu-item class="m-0"><a class="dropdown-item" (click)="changeLang('japanese')" style="cursor: pointer;">{{cf.translate('japanese')}}</a></menu>
+                        </mat-menu>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+                <!-- route outlet -->
+                <div>
+                  <router-outlet></router-outlet>
+                </div>
+              </div>
+              <!-- footbar -->
+              <footer class="footer_part mt-md-5 mt-4">
+                <div class="row mx-0 align-items-center">
+                  <div class="col-lg-3 col-md-12">
+                    <div class="footer_logo_part text-center">
+                      <a class="d-block" href="javascript:;">
+                        <img src="assets/theme/img/logo.png" alt="">
+                      </a>
+                      <span>Dalian Synergy World Electronic Commerce <br> Technology Co.Ltd</span>
+                      <p>Dalian High-tech Industrial Park <br> 541 Huangpu Road <br> Zip Code: 116023 <br> Email:
+                        imflybird@126</p>
+                    </div>
+                  </div>
+                  <div class="col-lg-9 col-md-12">
+                    <div class="footer_right_part">
+                      <ul class="links">
+                        <li>
+                          <a href="javascript:;">{{cf.translate('Home')}}</a>
+                        </li>
+                        <li>
+                          <a href="javascript:;">{{cf.translate('About')}}</a>
+                        </li>
+                        <li>
+                          <a href="javascript:;">{{cf.translate('Introduce')}}</a>
+                        </li>
+                        <li>
+                          <a href="javascript:;">{{cf.translate('Knowledge Hub')}}</a>
+                        </li>
+                        <li>
+                          <a href="javascript:;">{{cf.translate('Terms and Privacy')}}</a>
+                        </li>
+                      </ul>
+                      <form class="my-lg-5 my-md-4 my-4 position-relative" action="./">
+                        <i class="fal fa-envelope"></i>
+                        <input type="email" class="form-control" placeholder="Your E-mail Address">
+                        <input class="mail_btn" [value]="cf.translate('Send')" type="buttton">
+                      </form>
+                      <div class="footer_text text-center">
+                        <strong>{{cf.translate('Main Body record number')}}: Liao. 20006297-2</strong>
+                        <p>Radio and Telivision Program Production and Opration License(liao) No. 00966 <br> Copyright
+                          2020 Flying Bird Recording and Broadcasting All Rights Reserved</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </footer>
+            </div>
+            <!-- Inner Body section End -->
+
+          </div>
+          <!-- Body section End -->
+
+        </div>
+
+      </div>
+      <!-- Right Part section End -->
+    </div>
+  </div>
+</div>
+<app-alert-view></app-alert-view>

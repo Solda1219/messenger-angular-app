@@ -1,0 +1,26 @@
+.instant-conference-left{
+    height: 800px;
+    overflow: auto;
+}
+.table-responsive{
+    max-height: 450px;
+    overflow: auto; 
+}
+.activeDept{
+    background-color: #d2691e80
+}
+.activeA{
+    color: blueviolet;
+    cursor: pointer;
+}
+.inactiveA{
+    text-decoration: none;
+}
+.logoImage1{
+    width: 94px !important;
+    top: 20px;
+    left: 35px;
+}
+.activeDept{
+    background-color: chocolate !important;
+}

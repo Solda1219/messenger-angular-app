@@ -1,0 +1,22 @@
+import { Component, OnInit, Input,Output, EventEmitter, OnChanges, SimpleChange, ViewChild, ElementRef } from '@angular/core';
+import { CommonFunctionService } from '../../../function/commonFunction.service';
+import { UserService } from '../../../service/user.service';
+import { FormControl, FormGroup, FormBuilder, Validators, NgForm } from '@angular/forms';
+
+@Component({
+  selector: 'app-server-status',
+  templateUrl: './server-status.component.html',
+  styleUrls: ['./server-status.component.scss']
+})
+export class ServerStatusComponent implements OnInit {
+
+  constructor(
+    public cf: CommonFunctionService,
+    private userService: UserService,
+    private _formBuilder: FormBuilder,
+  ) { }
+
+  ngOnInit(): void {
+  }
+
+}

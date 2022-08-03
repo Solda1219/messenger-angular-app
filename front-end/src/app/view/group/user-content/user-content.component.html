@@ -1,0 +1,159 @@
+<div class="content p-3">
+  <div>
+    <button type="button" type="submit" class="btn btn-outline-primary rigid-btn" (click)="showCreateModal()">
+      <i class="fa fa-plus fa-lg"></i>{{cf.translate('Create New')}}
+    </button>
+  </div>
+</div>
+<div class="mat-table-content-one p-3">
+  <mat-form-field>
+    <mat-label>{{cf.translate('Search')}}</mat-label>
+    <input matInput (keyup)="applyFilter($event)" [placeholder]="cf.translate('Search')" #input>
+  </mat-form-field>
+  <div class="mat-elevation-z8 checkTable">
+    <table mat-table [dataSource]="tableList" matSort>
+      <!-- Checkbox Column -->
+      <ng-container matColumnDef="select" sticky>
+        <th mat-header-cell *matHeaderCellDef class="checkTh">
+          <mat-checkbox (change)="$event ? masterToggle() : null;onSelectionChange()"
+            [checked]="selection.hasValue() && isAllSelected()"
+            [indeterminate]="selection.hasValue() && !isAllSelected()" [aria-label]="checkboxLabel()">
+          </mat-checkbox>
+        </th>
+        <td mat-cell *matCellDef="let row" class="checkTh">
+          <mat-checkbox (click)="$event.stopPropagation()"
+            (change)="$event ? selection.toggle(row) : null;onSelectionChange()" [checked]="selection.isSelected(row)"
+            [aria-label]="checkboxLabel(row)">
+          </mat-checkbox>
+        </td>
+      </ng-container>
+      <ng-container [matColumnDef]="'No'">
+        <th class="NoTh" mat-header-cell *matHeaderCellDef mat-sort-header> {{cf.translate('No')}} </th>
+        <td class="NoTd" mat-cell *matCellDef="let row; let i = index">
+          {{ (paginator.pageIndex * paginator.pageSize) + (i + 1)}}
+        </td>
+      </ng-container>
+      <ng-container *ngFor="let rows of tbCol; let i = index">
+        <ng-container *ngIf="specialCol.indexOf(rows)==-1" [matColumnDef]="rows">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> {{cf.translate(tbHeader[i])}} </th>
+          <td mat-cell *matCellDef="let row"> {{row[rows]}} </td>
+        </ng-container>
+        <!-- <ng-container *ngIf="rows=='permission'" [matColumnDef]="'permission'">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> {{cf.translate(tbHeader[i])}} </th>
+            <td mat-cell *matCellDef="let row"> 
+              <mat-form-field appearance="fill">
+                <mat-label>Toppings</mat-label>
+                <mat-select multiple>
+                  <mat-select-trigger>
+                    {{toppings.value ? toppings.value[0] : ''}}
+                    <span *ngIf="toppings.value?.length > 1" class="example-additional-selection">
+                      (+{{toppings.value.length - 1}} {{toppings.value?.length === 2 ? 'other' : 'others'}})
+                    </span>
+                  </mat-select-trigger>
+                  <mat-option *ngFor="let topping of toppingList" [value]="topping">{{topping}}</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </td>
+          </ng-container> -->
+      </ng-container>
+      <!-- action -->
+      <ng-container matColumnDef="Action" stickyEnd>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header class="stickyOperationHeader-sm">
+          {{cf.translate('Action')}} </th>
+        <td mat-cell *matCellDef="let row" class="stickyOperationCell-sm" style="width: 100px;">
+          <div class="btnRow">
+            <!-- <div class="btn-group">
+              <label class="switch switch-label switch-pill switch-outline-primary m-0" title="Active status">
+                <input type="checkbox" [checked]="row['status']==1" class="switch-input" (change)="status(row)" >
+                <span data-checked="On" data-unchecked="Off" class="switch-slider"></span>
+              </label>
+            </div> -->
+            <div class="btn-group">
+              <button type="button" class="btn btn-pill btn-danger btnIconSm" (click)="willdelete=row;warningModal.show()" title="delete"><i
+                  class="fa fa-trash fa-lg"></i></button>
+            </div>
+            <div class="btn-group">
+              <button type="button" class="btn btn-pill btn-warning btnIconSm" (click)="showEditModal(row)" title="edit"><i
+                  class="fa fa-edit fa-lg"></i></button>
+            </div>
+            <!-- <div class="btn-group">
+              <button type="button" class="btn btn-pill btn-success btnIconSm" (click)="resetPassword(row)" title="Reset password"><i
+                  class="fa fa-expeditedssl fa-lg"></i></button>
+            </div> -->
+          </div>
+        </td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+      <!-- Row shown when there is no matching data. -->
+      <tr class="mat-row" *matNoDataRow>
+        <td class="mat-cell" colspan="4">No Item</td>
+      </tr>
+    </table>
+  </div>
+  <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+</div>
+<!-- loading -->
+<ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '3px' }"></ngx-loading>
+
+<!-- modal -->
+<div bsModal [config]="{backdrop: 'static',  keyboard: false}" #createModal="bs-modal" class="modal fade" tabindex="-1"
+  role="dialog" aria-labelledby="streamModal" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <form *ngIf="formGroup" [formGroup]="formGroup" (submit)="checkForm()&&(formGroup.value['id']?edit():create())">
+        <div class="modal-header">
+          <h5 class="modal-title">{{!formGroup.value.id?cf.translate('Create Group User Of'):cf.translate('Edit Group User Of')}}&nbsp;{{group.name}}</h5>
+          <button type="button" class="close" (click)="createModal.hide();" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body modalWidthHeight">
+          <ng-container *ngFor="let item of formSetting">
+            <div *ngIf="item.status!=0" class="form-group row  m-0 mb-4">
+              <label class="fixWidthLabel">{{cf.translate(item.label)}}</label>
+              <div class="fixInputDiv">
+                <input type="text" class="form-control" [placeholder]="cf.translate(item.placeText)"
+                  [formControlName]="item.name" [readonly]="item.status==3">
+                <div
+                  *ngIf="formGroup.get(item.name).invalid && (formGroup.get(item.name).dirty || formGroup.get(item.name).touched)"
+                  class="invalid-feedback" style="display: block;">
+                  {{cf.translate(item.error)}}
+                </div>
+              </div>
+            </div>
+          </ng-container>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary"
+            (click)="createModal.hide()">{{cf.translate("Close")}}</button>
+          <button type="submit"
+            class="btn btn-primary">{{!formGroup.value.id?cf.translate('Create'):cf.translate('Edit')}}</button>
+        </div>
+      </form>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<!-- warning modal -->
+<div bsModal #warningModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-danger" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">{{cf.translate('Are you sure?')}}</h4>
+        <button type="button" class="close" (click)="warningModal.hide()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>{{cf.translate("This item will be deleted permenantly.")}}</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="warningModal.hide()">{{cf.translate("no")}}</button>
+        <button type="button" class="btn btn-danger"
+          (click)="warningModal.hide();del()">{{cf.translate("yes")}}</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

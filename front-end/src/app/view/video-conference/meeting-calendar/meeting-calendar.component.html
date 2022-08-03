@@ -1,0 +1,165 @@
+<div class="recoarding-share recoarding-share-for recoarding-manage rounded-10">
+  <div class="recoarding-share-top bg-white shadow">
+    <div class="colorInfoDiv">
+      <div class="recColor recColor0">
+        <label></label><p>{{cf.translate('Not started')}}</p>
+      </div>
+      <div class="recColor recColor1">
+        <label></label><p>{{cf.translate('Started')}}</p>
+      </div>
+      <div class="recColor recColor2">
+        <label></label><p>{{cf.translate('Ended')}}</p>
+      </div>
+    </div>
+    <h3>{{cf.translate('Calendar meeting')}}</h3>
+    <div class="recoarding-share-form mb-4 row">
+      <div class="col-md-6 d-flex flex-wrap">
+          <h4 class="w-100">{{cf.translate('Date Pick')}}</h4>
+          <div class="form-group date-pickeer position-relative">
+              <span class="">{{cf.translate('Date')}}</span>
+              <input type="text" id="dates1" data-input="" [value]="param.date" class="datepicker form-control fs-14 py-0 ps-3 pe-3 h-md-45px h-40px flatpickr-input" (change)="onDateChange($event)" readonly="readonly">
+              <label for="dates1" class="position-absolute top-0 right-10px bottom-0 my-auto d-grid align-items-center">
+                  <img src="assets/theme/img/calender.png" alt="" class="h-22px">
+              </label>
+          </div>
+          <div class="form-group position-relative btn11Div">
+              <a class="seemore_btn commonA text-white btn11" style="margin-right: 5px !important;" (click)="onCalendarPrev()">{{cf.translate("Prev")}}</a>
+              <a class="seemore_btn commonA text-white btn11" (click)="onCalendarNext()">{{cf.translate("Next")}}</a>
+          </div>
+      </div>
+      <div class="col-md-6 ps-xxl-5 ps-xl-5">
+          <h4 class="w-100">{{cf.translate('Calendar mode')}}</h4>
+          <div class="form-group position-relative">
+              <div class="row">
+                  <div class="col-md-2 col-auto custom_radio_2">
+                      <input type="radio" id="month" value="0" [(ngModel)]="param.mode" (change)="onChangeCalendarView($event)">
+                      <label for="month">{{cf.translate("Month")}}</label>
+                  </div>
+                  <div class="col-md-2 col-auto custom_radio_2">
+                    <input type="radio" id="week" value="1" [(ngModel)]="param.mode" (change)="onChangeCalendarView($event)">
+                    <label for="week">{{cf.translate("week")}}</label>
+                  </div>
+                  <div class="col-md-2 col-auto custom_radio_2">
+                    <input type="radio" id="day" value="2" [(ngModel)]="param.mode" (change)="onChangeCalendarView($event)">
+                    <label for="day">{{cf.translate("day")}}</label>
+                  </div>
+              </div>
+          </div>
+      </div>
+    </div>
+    <div class="recoarding-share-form">
+      <h4 class="w-100">{{getDateHeader()}}</h4>
+    </div>
+    <div class="calendarDiv">
+      <ngx-tui-calendar #calendar
+                        (tuiCalendarCreated)="onTuiCalendarCreated($event)"
+                        [defaultView]="defaultView"
+                        (beforeUpdateSchedule)="beforeUpdateSchedule($event)"
+                        (dayNameClicked)="onDate($event)"
+                        (timeClicked)="onTime($event)"
+                        (scheduleClicked)="onSchedule($event)"
+                        (beforeCreateSchedule)="onBeforeCreateSchedule($event)"
+                        [schedules]="schedules"
+                        >
+      </ngx-tui-calendar>
+    </div>
+  </div>
+</div>    
+<!-- event modal -->
+<a #openEvent data-bs-toggle="modal" data-bs-target="#event" style="display: none;"></a>
+<div class="modal fade recording-form-modal publish_modal" id="event" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+          <div class="modal-body">
+              <div class="share-recording-modal p-md-4 p-3">
+                  <h3 *ngIf="formGroup.value.id">{{cf.translate("Edit event")}}</h3>
+                  <h3 *ngIf="!formGroup.value.id">{{cf.translate("Create event")}}</h3>
+                  <form #ngForm="ngForm" class="recording-modal row" [formGroup]="formGroup" (submit)="formGroup.value.id?edit():create()">
+                      <div class="col-md-12 custom_form_2 mb-2">
+                          <label for="phonenumber" class="text-primary fs-14 pb-1">{{cf.translate('Title')}}*</label>
+                          <input type="text" formControlName="title" [class]="ngForm.submitted&&formGroup.controls['title'].errors?'form-error':''">
+                      </div>
+
+                      <div class="row m-0">
+                          <div class="col-12 custom_form_2 mb-md-3 mb-2 p-0">
+                              <label for="phonenumber" class="text-primary fs-md-15 fs-14 pb-2">{{cf.translate('Duration')}}</label>
+                              <div class="row">
+                                  <div class="col-md-6 col-12 position-relative mb-md-0 mb-md-3 mb-2">
+                                      <div class="form-group position-relative">
+                                        <input type="text" formControlName="start_time" [class]="ngForm.submitted&&formGroup.controls['start_time'].errors?'form-error':''">
+                                      </div>
+                                  </div>
+                                  <div class="col-md-6 col-12 position-relative mb-md-0 mb-0">
+                                    <div class="form-group position-relative">
+                                      <input type="text" formControlName="end_time" [class]="ngForm.submitted&&formGroup.controls['end_time'].errors?'form-error':''">
+                                    </div>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+
+                      <div class="col-12 custom_form_2 mb-md-3 mb-2">
+                         <label for="phonenumber" class="text-primary fs-14 pb-1">{{cf.translate('Description')}}</label>
+                          <textarea formControlName="description"></textarea>
+                      </div>
+                      <div class="col-md-12 custom_form_2 mb-2">
+                        <label class="text-primary fs-14 pb-1">{{cf.translate('Location')}}</label>
+                        <input type="text" formControlName="location" [class]="ngForm.submitted&&formGroup.controls['location'].errors?'form-error':''">
+                      </div>
+                      <div class="col-12 custom_form_2 mb-2">
+                        <label class="text-primary fs-md-15 fs-14 pb-2">{{cf.translate('Alarm')}}</label>
+                        <div class="row">
+                            <div class="col-md-6 col-12 position-relative mb-md-0 mb-md-3 mb-2 row">
+                                <div class="col-auto col-auto custom_radio_2 mb-md-0 mb-2">
+                                    <input type="radio" id="yes1" [value]="1" formControlName="alarm">
+                                    <label class="text-black" for="yes1">{{cf.translate('Yes')}}</label>
+                                </div>
+                                <div class="col-auto col-auto custom_radio_2 mb-md-0 mb-2">
+                                    <input type="radio" id="no1" [value]="0" formControlName="alarm">
+                                    <label class="text-black" for="no1">{{cf.translate('No')}}</label>
+                                </div>
+                            </div>
+                        </div>
+                      </div>
+                      <div class="row m-0">
+                        <div *ngIf="formGroup.value.alarm==1" class="col-md-6 custom_form_2 mb-2">
+                          <label class="text-primary fs-14 pb-1">{{cf.translate('Alarm time(mins before start)')}}</label>
+                          <input type="number" formControlName="alarm_time" [class]="ngForm.submitted&&formGroup.controls['alarm_time'].errors?'form-error':''">
+                        </div>
+                        <div *ngIf="formGroup.value.alarm==1" class="col-md-6 custom_form_2 mb-2">
+                          <label class="text-primary fs-14 pb-1">{{cf.translate('Alarm duration(s)')}}</label>
+                          <input type="number" formControlName="alarm_duration" [class]="ngForm.submitted&&formGroup.controls['alarm_duration'].errors?'form-error':''">
+                        </div>
+                      </div>  
+                      <div class="col-md-6 d-md-block d-none"></div>
+                      <div class="col-md-6 modal_btns d-flex justidy-content-end mt-md-5 mt-3">
+                          <button type="submit" class="bg-primary btn2 no-border">{{cf.translate('Confirm')}}</button>
+                          <a *ngIf="formGroup.value.id" class="bg-secondary ms-2 text-white commonA" data-bs-toggle="modal" data-bs-target="#deleteModal" >{{cf.translate('Delete')}}</a>
+                          <a #closeEvent class="bg-secondary ms-2 text-white commonA" data-bs-dismiss="modal">{{cf.translate('Cancel')}}</a>
+                      </div>
+                  </form>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>       <!-- Vendor JS Files -->
+<!-- delete modal -->
+<div class="modal fade recording-form-modal publish_modal" id="deleteModal" tabindex="-1" style="background-color: #0a0d10;">
+  <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+          <div class="modal-body">
+              <div class="share-recording-modal p-md-4 p-3">
+                  <div class="recording-modal row mt-3">
+                      <h3 class="pt-3 pb-3">{{cf.translate('Are you sure to delete this?')}}</h3>
+                      <div class="col-md-6 d-md-block d-none"></div>
+                      <div class="col-md-6 modal_btns d-flex justidy-content-end mt-md-5 mt-3">
+                          <a class="bg-primary me-2 commonA text-white" (click)="del()" data-bs-dismiss="modal">{{cf.translate('Confirm')}}</a>
+                          <a class="bg-secondary ms-2" href="javascript:;" data-bs-dismiss="modal">{{cf.translate('Cancel')}}</a>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
+

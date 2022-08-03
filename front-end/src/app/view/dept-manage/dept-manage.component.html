@@ -1,0 +1,166 @@
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb mb-0 py-lg-4 py-md-3 py-2">
+        <span class="text-primary">{{cf.translate('Dept Manage')}}</span>
+    </ol>
+</nav>
+<div class="row dept-manage">
+    <div class="col-md-4 d-flex align-items-stretch mb-md-0 mb-4" style="height: 550px;">
+        <div class="dept-comman bg-white shadow w-100">
+            <div class="dept-comman-top row mx-0 align-items-center">
+                <div class="col-auto"><h4>Dept List</h4></div>
+                <div class="col text-end dept-icons pe-xxl-5 pe-xl-5 d-md-block d-none invisible">
+                    <a href="javascript:;"><img src="assets/theme/img/download-ico.png" alt="">
+                        <span>{{cf.translate('Save')}}</span>
+                    </a>
+                </div>
+            </div>
+            <div class="dept-comman-bottom" style="display: block;overflow: auto;">
+                <div class="list-box" *ngFor="let item of root_item">
+                    <div class="list-box-main">
+                        <a class="commonA" (click)="root_level=0;item.is_collapse = !item.is_collapse;formset(item)">
+                            <span><img src="assets/theme/img/home.png" alt=""></span>
+                            {{item.dept_name}}
+                        </a>
+                    </div>
+                    <div [class]="item.is_collapse?'list-box-sub border-0 accordion-collapse collapse show':'list-box-sub border-0 accordion-collapse collapse'">
+                        <a class="commonA" *ngIf="item.children.length==0" (click)="root_level=1;superdept_set(item.id)">
+                            <span><img src="assets/theme/img/plus-profile.png" alt=""></span>
+                            +
+                        </a>
+                        <div *ngFor="let li of item.children">
+                            <div class="list-box-main">
+                                <a class="commonA" (click)="root_level=1;li.is_collapse = !li.is_collapse;formset(li)">
+                                    <span><img src="assets/theme/img/plus-profile.png" alt=""></span>
+                                    {{li.dept_name}}
+                                </a>
+                            </div>
+                            <div [class]="li.is_collapse?'list-box-sub border-0 accordion-collapse collapse show':'list-box-sub border-0 accordion-collapse collapse'">
+                                <a class="commonA" *ngIf="li.children.length==0" (click)="root_level=2;superdept_set(li.id)">
+                                    <span><img src="assets/theme/img/plus-profile.png" alt=""></span>
+                                    +
+                                </a>
+                                <div *ngFor="let ch of li.children">
+                                    <a class="commonA" (click)="root_level=2;formset(ch)" >
+                                        <span><img src="assets/theme/img/plus-profile.png" alt=""></span>
+                                        {{ch.dept_name}}({{ch.users}})
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-8 d-flex align-items-stretch"  style="height: 550px;">
+        <div class="dept-comman bg-white shadow w-100">
+            <div class="dept-comman-top row mx-0 align-items-center">
+                <div *ngIf="root_level==0" class="col-md-auto col-12"><h4>{{cf.translate('Superior Dept Info')}}</h4></div>
+                <div *ngIf="root_level==1" class="col-md-auto col-12"><h4>{{cf.translate('Dept Info')}}</h4></div>
+                <div *ngIf="root_level==2" class="col-md-auto col-12"><h4>{{cf.translate('Sub Dept Info')}}</h4></div>
+
+                <div class="col text-md-end text-start dept-icons pe-lg-5">
+                    <a class="commonA" (click)="create()"><img src="assets/theme/img/download-ico.png" alt="">
+                        <span>{{cf.translate('Save')}}</span>
+                    </a>
+                    <a class="commonA" (click)="formset()"><img src="assets/theme/img/add.png" alt="">
+                        <span>{{cf.translate('Create')}}</span>
+                    </a>
+                    <a class="commonA" (click)="showDeleteModal()"><img src="assets/theme/img/exit.png" alt="">
+                        <span>{{cf.translate('Remove')}}</span>
+                    </a>
+                </div>
+            </div>
+            <div class="dept-comman-bottom form-dept">
+                <div class="row justify-content-center">
+                    <div class="col-lg-10">
+                        <form class="row" data-select2-id="select2-data-6-skdf" [formGroup]="formGroup">
+                            <div class="col-12 mb-lg-4 mb-md-3 mb-2">
+                                <div class="row align-items-center form-dept-input">
+                                    <div class="col-md-3 col-12 mb-md-0 mb-1">
+                                        <label for="phonenumber" class="fs-lg-16 fs-md-14 fs-14">{{cf.translate('Dept ID')}}</label>
+                                    </div>
+                                    <div class="col">
+                                        <input type="text" placeholder="" formControlName="dept_id" readonly>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 mb-lg-4 mb-md-3 mb-2">
+                                <div class="row align-items-center form-dept-input">
+                                    <div class="col-md-3 col-12 mb-md-0 mb-1">
+                                        <label for="phonenumber" class="fs-lg-16 fs-md-14 fs-14">{{cf.translate('Dept Name')}}*</label>
+                                    </div>
+                                    <div class="col">
+                                        <input type="text" placeholder="" formControlName="dept_name">
+                                    </div>
+                                </div>
+                            </div>
+                            <div *ngIf="root_level!=0" class="col-12 mb-lg-4 mb-md-3 mb-2">
+                                <div class="row align-items-center form-dept-input">
+                                    <div class="col-md-3 col-12 mb-md-0 mb-1">
+                                        <label class="fs-lg-16 fs-md-14 fs-14">{{cf.translate('Superior Dept')}}*</label>
+                                    </div>
+                                    <div class="col">
+                                        <select class="select_style_1" tabindex="-1" aria-hidden="true" formControlName="super_dept">
+                                            <option *ngFor="let item of getSuperiorRoot()" [value]="item.id">{{item.dept_name}}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 mb-lg-4 mb-md-3 mb-2">
+                                <div class="row align-items-center form-dept-input">
+                                    <div class="col-md-3 col-12 mb-md-0 mb-1">
+                                        <label class="fs-lg-16 fs-md-14 fs-14">{{cf.translate('Dept Phone')}}*</label>
+                                    </div>
+                                    <div class="col">
+                                        <input type="text"  placeholder="" formControlName="dept_phone">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 mb-lg-4 mb-md-3 mb-2">
+                                <div class="row align-items-center form-dept-input">
+                                    <div class="col-md-3 col-12 mb-md-0 mb-1">
+                                        <label for="phonenumber" class="fs-lg-16 fs-md-14 fs-14">{{cf.translate('Dept Fax')}}</label>
+                                    </div>
+                                    <div class="col">
+                                        <input type="text"  placeholder="" formControlName="dept_fax">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 mb-lg-4 mb-md-3 mb-2">
+                                <div class="row align-items-start form-dept-input">
+                                    <div class="col-md-3 col-12 mb-md-0 mb-1">
+                                        <label for="phonenumber" class="fs-lg-16 fs-md-14 fs-14">{{cf.translate('Dept Detail')}}</label>
+                                    </div>
+                                    <div class="col">
+                                        <textarea name="" formControlName="dept_detail"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- delete modal -->
+<div class="modal fade recording-form-modal publish_modal" id="deleteModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="share-recording-modal p-md-4 p-3">
+                    <div class="recording-modal row mt-3">
+                        <h3 class="pt-3 pb-3">{{cf.translate('Are you sure to delete this?')}}</h3>
+
+                        <div class="col-md-6 d-md-block d-none"></div>
+                        <div class="col-md-6 modal_btns d-flex justidy-content-end mt-md-5 mt-3">
+                            <a class="bg-primary me-2 commonA text-white" (click)="del()" data-bs-dismiss="modal">{{cf.translate('Confirm')}}</a>
+                            <a class="bg-secondary ms-2" href="javascript:;" data-bs-dismiss="modal">{{cf.translate('Cancel')}}</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

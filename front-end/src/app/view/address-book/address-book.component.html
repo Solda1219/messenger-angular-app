@@ -1,0 +1,282 @@
+<div class="recoarding-share dept-create rounded-10 mt-4">
+    <div class="recoarding-share-top bg-white shadow">
+        <h3>{{cf.translate('Address Book')}}</h3>
+        <div class="recoarding-share-form dept-create-inner mb-0">
+            <div class="form-group position-relative custom_form_2">
+                <select class="select_style_1" [(ngModel)]="param.dept">
+                    <option value="all">{{cf.translate('All Groups')}}</option>
+                    <option *ngFor="let item of dept" [value]="item.id">{{item.dept_name}}</option>
+                </select>
+            </div>
+            <div class="form-group position-relative search_bar">
+                <i class="fal fa-search"></i>
+                <input type="search" [placeholder]="cf.translate('Please input search key words.')" [(ngModel)]="param.key">
+                <input class="button" [value]="cf.translate('Search')" type="buttton" (click)="search()" style="cursor: pointer;">
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row mx-0 justify-content-center mt-4">
+    <div class="col-md-12">
+        <div class="row depth-tabel bg-white shadow">
+            <div class="col-12 depth-tabel-top row mx-0 mb-4 align-items-center">
+                <div class="col-md-auto col-12"><h4>{{cf.translate('Total')}}: {{item.length}}</h4></div>
+                <div class="col text-md-end text-start dept-icons">
+                    <a class="commonA" (click)="formSet()" data-bs-toggle="modal" data-bs-target="#createModal"><img src="assets/theme/img/add.png" alt="">
+                        <span>{{cf.translate('Create OutSide')}}</span>
+                    </a>
+                    <a class="commonA" data-bs-toggle="modal" data-bs-target="#InsideUserModal"><img src="assets/theme/img/add.png" alt="">
+                      <span>{{cf.translate('Create Inside')}}</span>
+                    </a>
+                    <a class="commonA" (click)="showDeleteModal(selection.selected)">
+                        <img src="assets/theme/img/exit.png" alt="">
+                        <span>{{cf.translate('Remove')}}</span>
+                    </a>
+                    <a class="commonA" (click)="showRegroupModal(selection.selected)"><img src="assets/theme/img/download-ico.png" alt="">
+                        <span>{{cf.translate('Regrouping')}}</span>
+                    </a>
+                    <a class="commonA" (click)="search()"><img src="assets/theme/img/refresh.png" alt="">
+                      <span>{{cf.translate('Refresh')}}</span>
+                    </a>
+                </div>
+            </div>
+            <div class="col-12 depth-tabel-main mt-md-4">
+                <div class="table-responsive header-center">
+                    <table mat-table [dataSource]="tableList" class="table" matSort>
+                        <!-- Checkbox Column -->
+                        <ng-container matColumnDef="select" sticky>
+                        <th mat-header-cell *matHeaderCellDef class="checkTh">
+                            <mat-checkbox (change)="$event ? masterToggle() : null;onSelectionChange()"
+                            [checked]="selection.hasValue() && isAllSelected()"
+                            [indeterminate]="selection.hasValue() && !isAllSelected()" [aria-label]="checkboxLabel()">
+                            </mat-checkbox>
+                        </th>
+                        <td mat-cell *matCellDef="let row" class="checkTh">
+                            <mat-checkbox (click)="$event.stopPropagation()"
+                            (change)="$event ? selection.toggle(row) : null;onSelectionChange()" [checked]="selection.isSelected(row)"
+                            [aria-label]="checkboxLabel(row)">
+                            </mat-checkbox>
+                        </td>
+                        </ng-container>
+                        <ng-container [matColumnDef]="'No'">
+                        <th class="NoTh" mat-header-cell *matHeaderCellDef mat-sort-header> {{cf.translate('No')}} </th>
+                        <td class="NoTd" mat-cell *matCellDef="let row; let i = index">
+                            {{ (paginator.pageIndex * paginator.pageSize) + (i + 1)}}
+                        </td>
+                        </ng-container>
+                        <ng-container *ngFor="let rows of tbCol; let i = index">
+                          <ng-container *ngIf="rows=='usertype'" matColumnDef="usertype">
+                              <th mat-header-cell *matHeaderCellDef mat-sort-header> {{cf.translate(tbHeader[i])}} </th>
+                              <td mat-cell *matCellDef="let row"> {{row[rows]==0?cf.translate('Inside'):cf.translate('Outside')}} </td>
+                          </ng-container>
+                          <ng-container *ngIf="specialCol.indexOf(rows)==-1" [matColumnDef]="rows">
+                              <th mat-header-cell *matHeaderCellDef mat-sort-header> {{cf.translate(tbHeader[i])}} </th>
+                              <td mat-cell *matCellDef="let row" [style.background]="row['is_del']==1?'rgb(255 47 0 / 55%)':''">
+                                 {{row[rows]}}
+                              </td>
+                          </ng-container>
+                          <ng-container *ngIf="rows=='is_del'" matColumnDef="is_del">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> {{cf.translate(tbHeader[i])}} </th>
+                            <td mat-cell *matCellDef="let row" style="padding: 0px; vertical-align: middle;">
+                              <img class="w-50px" *ngIf="row[rows]==0" src="assets/theme/img/good.png">
+                              <img class="w-50px" *ngIf="row[rows]==1" src="assets/theme/img/dead.png">
+                            </td>
+                          </ng-container>
+                        </ng-container>
+                        <!-- action -->
+                        <ng-container matColumnDef="Action" stickyEnd>
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header class="stickyOperationHeader-sm">
+                            {{cf.translate('Action')}} </th>
+                        <td mat-cell *matCellDef="let row" class="stickyOperationCell-sm" style="width: 200px;">
+                            <div class="btnRow" style="text-align: right;">
+                                <div *ngIf="row['usertype']==1" class="btn-group">
+                                    <button type="button" class="btn btn-warning btn-pill-icon-sm" (click)="formSet(row)"  data-bs-toggle="modal" data-bs-target="#createModal" title="edit" ><i
+                                        class="fa fa-edit"></i></button>
+                                </div>
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-danger btn-pill-icon-sm" (click)="showDeleteModal([row])" title="delete"><i
+                                        class="fa fa-trash"></i></button>
+                                </div>
+
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-primary btn-pill-icon-sm" (click)="showRegroupModal([row])" title="Reset group"><i
+                                        class="fa fa-address-book"></i></button>
+                                </div>
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-pill-icon-sm-img" (click)="showSendModal(row)" title="send mail" >
+                                     <img class="w-30px" src="assets/theme/img/email_1.png"/></button>
+                                </div>
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-pill-icon-sm-img" title="leave message">
+                                      <img class="w-30px" src="assets/theme/img/message2.png"/>
+                                    </button>
+                                </div>
+                            </div>
+                        </td>
+                        </ng-container>
+                        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                        <!-- Row shown when there is no matching data. -->
+                        <tr class="mat-row" *matNoDataRow>
+                        <td class="mat-cell" colspan="4">No Item</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+        </div>
+    </div>
+</div>
+<ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '3px' }"></ngx-loading>
+<!-- send message modal -->
+<div class="modal fade recording-form-modal publish_modal" id="sendModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="share-recording-modal p-md-4 p-3">
+                    <h3>{{cf.translate('Send message To')}}&nbsp;{{send_msg.to}}</h3>
+                    <div class="recording-modal row">
+                        <div class="form-group position-relative custom_form_2">
+                            <label for="move_to" class="fs-14 pb-1">{{cf.translate('Content:')}}</label>
+                            <textarea [(ngModel)]="send_msg.content" [placeholder]="cf.translate('Type here...')"></textarea>
+                        </div>
+                        <div class="col-md-6 d-md-block d-none"></div>
+                        <div class="col-md-6 modal_btns d-flex justidy-content-end mt-md-5 mt-3">
+                            <a class="bg-primary me-2 text-white cursor" (click)="sendmessage()">{{cf.translate('Send')}}</a>
+                            <a class="bg-secondary ms-2 text-white cursor" data-bs-dismiss="modal">{{cf.translate('Cancel')}}</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- regrouping modal -->
+<div class="modal fade recording-form-modal publish_modal" id="regroupingModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="share-recording-modal p-md-4 p-3">
+                    <h3>{{cf.translate('Reset Group')}}</h3>
+                    <div class="recording-modal row">
+                        <div class="form-group position-relative custom_form_2">
+                            <label for="move_to" class="fs-14 pb-1">{{cf.translate('Move To:')}}</label>
+                            <input list='group1' [placeholder]="cf.translate('Please input group name')" [(ngModel)]="moveTo">
+                            <datalist id="group1">
+                              <option *ngFor="let item of groups" [value]="item">
+                            </datalist>
+                        </div>
+                        <div class="col-md-6 d-md-block d-none"></div>
+                        <div class="col-md-6 modal_btns d-flex justidy-content-end mt-md-5 mt-3">
+                            <a class="bg-primary me-2 text-white cursor" (click)="regroup()">{{cf.translate('Confirm')}}</a>
+                            <a class="bg-secondary ms-2 text-white cursor" data-bs-dismiss="modal">{{cf.translate('Cancel')}}</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- delete modal -->
+<div class="modal fade recording-form-modal publish_modal" id="deleteModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="share-recording-modal p-md-4 p-3">
+                    <div class="recording-modal row mt-3">
+                        <h3 class="pt-3 pb-3">{{cf.translate('Are you sure to delete this?')}}</h3>
+
+                        <div class="col-md-6 d-md-block d-none"></div>
+                        <div class="col-md-6 modal_btns d-flex justidy-content-end mt-md-5 mt-3">
+                            <a class="bg-primary me-2 commonA text-white" (click)="del()" data-bs-dismiss="modal">{{cf.translate('Confirm')}}</a>
+                            <a class="bg-secondary ms-2" href="javascript:;" data-bs-dismiss="modal">{{cf.translate('Cancel')}}</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- create outsideuser modal -->
+<div class="modal fade recording-form-modal publish_modal" id="createModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="share-recording-modal p-md-4 p-3">
+                    <h3 *ngIf="formGroup.value['id']">{{cf.translate('Edit User')}}</h3>
+                    <h3 *ngIf="!formGroup.value['id']">{{cf.translate('Create OutSide User')}}</h3>
+                    <div class="row mx-0">
+                        <div class="col-12">
+                            <div class="row">
+                                <div class="col-auto">
+                                  <form #ngForm="ngForm" [formGroup]="formGroup" (submit)="formGroup.value['id']?edit():create()">
+                                    <div class="row bg-white shadow ms-md-3 me-md-0 rounded-10">
+                                        <div class="col-12">
+                                            <div class="row justify-content-center mb-2 pb-1">
+                                                <div class="col-6 custom_form_2">
+                                                    <label for="username" class="text-primary fs-14 pb-1">{{cf.translate('User Name')}}*</label>
+                                                    <input type="text" formControlName="nativeName" [class]="ngForm.submitted&&formGroup.controls['nativeName'].errors?'form-error':''" [readonly]="is_lock">
+                                                </div>
+                                                <div class="col-6 custom_form_2">
+                                                  <label for="username" class="text-primary fs-14 pb-1">{{cf.translate('Group Name')}}</label>
+                                                  <input list="group2" type="text" formControlName="group_name" [class]="ngForm.submitted&&formGroup.controls['group_name'].errors?'form-error':''" [readonly]="is_lock">
+                                                  <datalist id="group2">
+                                                    <option *ngFor="let item of groups" [value]="item">
+                                                  </datalist>
+                                                </div>
+                                            </div>
+                                            <div class="row justify-content-center mb-2 pb-1">
+                                                <div class="col-6 custom_form_2">
+                                                    <label for="phonenumber" class="text-primary fs-14 pb-1">{{cf.translate('Phone Number')}}*</label>
+                                                    <input type="text" formControlName="phone" [class]="ngForm.submitted&&formGroup.controls['phone'].errors?'form-error':''" [readonly]="is_lock">
+                                                </div>
+                                                <div class="col-6 custom_form_2">
+                                                    <label for="email" class="text-primary fs-14 pb-1">{{cf.translate('E-mail')}}</label>
+                                                    <input type="email" formControlName="email" [class]="ngForm.submitted&&formGroup.controls['email'].errors?'form-error':''" [readonly]="is_lock">
+                                                </div>
+                                            </div>
+                                            <div class="row mb-2 pb-1">
+                                              <div class="custom_form_2">
+                                                <label for="Confirm" class="text-primary fs-14 pb-2">{{cf.translate('Company')}}</label>
+                                                <input type="text" formControlName="company" [class]="ngForm.submitted&&formGroup.controls['company'].errors?'form-error':''" [readonly]="is_lock">
+                                              </div>
+                                            </div>
+                                            <div class="row mb-2 pb-1">
+                                                <div class="col-xxl-6 col-xl-6 col-lg-8 col-md-10 col-10 custom_form_2">
+                                                  <label for="Confirm" class="text-primary fs-14 pb-2">{{cf.translate('Department')}}</label>
+                                                  <input type="text" formControlName="dept_name" [class]="ngForm.submitted&&formGroup.controls['dept_name'].errors?'form-error':''" [readonly]="is_lock">
+                                                </div>
+                                                <div class="col-xxl-6 col-xl-6 col-lg-8 col-md-10 col-10 custom_form_2">
+                                                    <label for="Confirm" class="text-primary fs-14 pb-2">{{cf.translate('Role of Dept')}}</label>
+                                                    <input type="text" formControlName="role_name" [class]="ngForm.submitted&&formGroup.controls['role_name'].errors?'form-error':''" [readonly]="is_lock">
+                                                </div>
+                                            </div>
+                                            <div class="row justify-content-center mb-2 pb-1 mt-lg-5 mt-md-4 mt-3 py-lg-5 py-md-4 py-3">
+                                              <div class="col-12 text-end px-5 mb-lg-5 mb-md-4 mb-3">
+                                                  <button class="customBtn2 no-border" type="submit">{{cf.translate('Save')}}</button>
+                                                  <a class="customBtn2 ml-3" (click)="formSet()">{{cf.translate('Create New')}}</a>
+                                              </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                  </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- create insideuser modal -->
+<div class="modal fade recording-form-modal publish_modal" id="InsideUserModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered" style="max-width: 800px;">
+      <div class="modal-content">
+          <div class="modal-body">
+            <app-address-book-user-content (userCreated)="search()" [groups]="groups"></app-address-book-user-content>
+          </div>
+      </div>
+  </div>
+</div>

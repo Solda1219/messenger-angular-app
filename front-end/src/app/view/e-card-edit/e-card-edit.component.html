@@ -1,0 +1,117 @@
+<div class="row mx-0">
+    <div class="col-12">
+        <div class="row">
+            <!-- <div class="col-auto avtar-side">
+            </div> -->
+            <div>
+                <div class="row bg-white shadow ms-md-0 me-md-0 rounded-10">
+                    <div class="col-12">
+                        <div class="row">
+                            <div class="col-12 text-primary fs-lg-20 fs-md-18 fs-18 text-center py-lg-4 py-md-3 py-2 my-2">{{cf.translate('E-card Setting')}}</div>
+                        </div>
+                            <div class="row">
+                                <div class="col-md-6 col-sm-12">
+                                    <div class="mb-4 mx-md-3 mx-0 bg-newGray py-4 rounded-10 parentdiv">
+                                        <form #ngForm="ngForm" [formGroup]="formGroup" style="display: contents;" (submit)="edit()">
+                                            <div class="row m-0">
+                                                <div class="col-md-5 col-sm-12" style="display: inline-flex;align-items: center;">
+                                                    <input type="file" #fileinput  (change)="setFile($event)" style="display: none;">
+                                                    <div class="row mb-3">
+                                                        <img #preview_avatar [src]="formGroup.value['avatar']" class="cursor" (error)="onImgError($event)" (click)="openFileInput()">
+                                                    </div>
+                                                    <!-- <div class="row m-0">
+                                                        <a class="btn btn-blue-round m-auto" (click)="openFileInput()">{{cf.translate("Replace Photo")}}</a>
+                                                    </div> -->
+                                                </div>
+                                                <div class="col-md-7 col-sm-12 pr-4 pl-4">
+                                                    <label class="text-primary fs-14 pb-1">{{cf.translate('Name')}}*</label>
+                                                    <div class="row m-0 mt-1 custom_form_2 ">
+                                                        <input type="text" formControlName="name" [class]="ngForm.submitted&&formGroup.controls['name'].errors?'form-error':''">
+                                                    </div>
+                                                    <label class="text-primary fs-14 pb-1">{{cf.translate('Email')}}</label>
+                                                    <div class="row m-0 mt-1 custom_form_2 ">
+                                                        <input type="text" formControlName="email" [class]="ngForm.submitted&&formGroup.controls['email'].errors?'form-error':''">
+                                                    </div>
+                                                    <label class="text-primary fs-14 pb-1">{{cf.translate('Phone')}}</label>
+                                                    <div class="row m-0 mt-1 custom_form_2 ">
+                                                        <input type="text" formControlName="phone" [class]="ngForm.submitted&&formGroup.controls['phone'].errors?'form-error':''">
+                                                    </div>
+                                                    <label class="text-primary fs-14 pb-1">{{cf.translate('Company')}}*</label>
+                                                    <div class="row m-0 mt-1 custom_form_2 ">
+                                                        <input type="text" formControlName="company" [class]="ngForm.submitted&&formGroup.controls['company'].errors?'form-error':''">
+                                                    </div>
+                                                    <label class="text-primary fs-14 pb-1">{{cf.translate('Duty')}}</label>
+                                                    <div class="row m-0 mt-1 custom_form_2 ">
+                                                        <input type="text" formControlName="duty" [class]="ngForm.submitted&&formGroup.controls['duty'].errors?'form-error':''">
+                                                    </div>
+                                        
+                                                    <div class="row m-0 mt-3 custom_form_2">
+                                                        <button class="customBtn2 width-100 text-center no-border" type="submit">{{cf.translate("Save")}}</button>
+                                                    </div>
+                                                </div>                                           
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-sm-12">
+                                    <div class="mx-md-3 mx-0 mb-4 bg-newGray py-4 rounded-10 parentdiv">
+                                        <div class="containerPreview" style="background-image: url('../../../assets/theme/img/sidebg.png');">
+                                            <div class="conterFrame" style="background-image: url('../../../assets/theme/img/bluelight.png');">
+                                                <div class="row m-0 p-3">
+                                                    <img src="./assets/theme/img/sidelogo.png" class="weboffice-left-logo">
+                                                    <span class="weboffice-left-logo-text">Web Office</span>
+                                                </div>                      
+                                                <div class="row m-0 display-block">
+                                                    <div class="row mb-3">
+                                                        <img #preview_avatar class="weboffice-avatar m-auto" style="width: 170px;" [src]="formGroup.value['avatar']" (error)="onImgError($event)">
+                                                    </div>
+                                                </div>
+                                                <div class="row m-0 textDiv">
+                                                    <h3>{{formGroup.value['name']?formGroup.value['name']:'--------'}}</h3>
+                                                    <h4>{{formGroup.value['duty']?formGroup.value['duty']:'---------'}}</h4>
+                                                    <h6>{{formGroup.value['company']?formGroup.value['company']:'---------'}}</h6>
+                                                    <h6>{{formGroup.value['email']?formGroup.value['email']:'---------'}}</h6>
+                                                    <h6>{{formGroup.value['phone']?formGroup.value['phone']:'---------'}}</h6>
+                                                </div>
+                                                <div class="row m-0 qrcodeDiv">
+                                                    <qrcode [qrdata]="qrcode" [width]="100" [errorCorrectionLevel]="'M'" [elementType]="'svg'"></qrcode>
+                                                </div>
+                                            </div>
+                                        </div>
+                                      
+                                        <!-- <div class="e-card-div text-white">
+                                            <div class="row m-0 p-2 e-cardsubdiv">
+                                               <div class="col-6 p-0">
+                                                <div class="row m-0">
+                                                    <img #preview_avatar class="avatarImage" [src]="formGroup.value['avatar']" (error)="onImgError($event)">
+                                                </div>
+                                               </div>
+                                               <div class="col-6 qrcodeDiv">
+                                                <qrcode [qrdata]="qrcode" [width]="50" [errorCorrectionLevel]="'M'" [elementType]="'svg'"></qrcode>
+                                               </div>
+                                            </div>
+                                            <div class="row m-0 p-2 mt-2">
+                                               <p class="nameText">{{formGroup.value['name']?formGroup.value['name']:'--------'}}</p>
+                                            </div>
+                                            <div class="row m-0 p-2">
+                                               <p class="smallText">{{formGroup.value['duty']?formGroup.value['duty']:'---------'}}</p>
+                                            </div>
+                                            <div class="row m-0 p-2">
+                                               <p class="smallText">{{formGroup.value['company']?formGroup.value['company']:'---------'}}</p>
+                                            </div>
+                                            <div class="row m-0 p-2">
+                                                <p class="smallText">{{formGroup.value['email']?formGroup.value['email']:'---------'}}</p>
+                                             </div>
+                                            <div class="row m-0 p-2">
+                                                <p class="smallText">{{formGroup.value['phone']?formGroup.value['phone']:'---------'}}</p>
+                                            </div> 
+                                        </div> -->
+                                    </div>
+                                </div>
+                            </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

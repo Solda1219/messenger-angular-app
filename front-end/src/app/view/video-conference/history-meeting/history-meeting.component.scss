@@ -1,0 +1,80 @@
+.dAH{
+    color: #6c1987 !important;
+    text-align: right;
+    width: auto;
+    text-decoration: none;
+
+}
+.dAI{
+    color: #116af0 !important;
+    text-align: right;
+    width: auto;
+    text-decoration: none;
+
+}
+.hideP{
+    height: 27px;
+    overflow: hidden;
+}
+.dadiv{
+    display: flex;
+    justify-content: flex-end;
+}
+.decoA{
+    color: white !important;
+    cursor: pointer;
+    text-decoration: underline !important;
+}
+.textDiv{
+
+}
+.qrDiv{
+    display: flex;
+    justify-content: center;
+}
+.textarea11{
+   height: 150px;
+   resize: none;
+   width: 100%;
+   padding: 10px 10px;
+   border: 2.8px solid #116af0;
+   border-radius: 7px;
+   box-shadow: 0px 1px 6px #116af082;
+}
+.contentItems-right{
+    justify-content: flex-end;
+  }
+  .contentItems-left{
+      justify-content: flex-start;
+    }
+  .recurDiv{
+      background-color: white;
+      padding: 23px;
+  }  
+  .smform1{
+      width: 60px;
+      height: 27px !important;
+      margin: 0px 10px;
+  }
+  .flexDiv{
+      display: flex;
+  }
+  .chDiv1{
+      justify-content: flex-start;
+      align-items: center;
+      background-color: aliceblue;
+      border: solid 1px #ddd;
+      margin-left: 10px;
+  }
+  .chDiv2{
+      justify-content: flex-start;
+      align-items: center;
+      background-color: aliceblue;
+      border: solid 1px #ddd;
+      margin-left: 10px;
+  }
+  .infoDiv{
+      border: solid 1px #ddd;
+      padding: 5px 45px;
+      background-color: bisque;
+  }

@@ -1,0 +1,262 @@
+<div class="container-fluid ats_crm h-100">
+    <div class="row h-100">
+
+
+
+        <!-- Right Part section Start -->
+        <div right-part="" class="col h-100">
+            <div class="row h-100">
+
+                <!-- Header section Start -->
+                <!-- Header section End -->
+
+                <!-- Body section Start -->
+                <div body="" class="col-12 pe-0 ps-md-0 ps-0">
+                    <!-- <div class="side_bar_tooggle row d-lg-none d-block">
+                        <a href="./instant-conference.html#" sidebar-menu="" class="col-auto" onclick="setclasstoHeader();">
+                            <img src="assets/theme/img/menu.svg" class="h-16px" alt="">
+                        </a>
+                    </div> -->
+                    <div class="row mx-0 sub_sidebar">
+
+                        <!-- Inner Sidebar section Start -->
+
+                        <!-- Inner Sidebar section End -->
+
+                        <!-- Inner Body section Start -->
+                        <div class="col inner_class p-0" inner-body="inner">
+                            <div class="inner_main">
+                                <div class="top_bar_right banner">
+                                    <img class="img-fluid rounded-right-10" src="assets/theme/img/banner_02.jpg" alt="">
+                                    <img class="logo-img logoImage1" src="assets/theme/img/sidelogo.png" alt="">
+                                    <ul class="list-unstyled mb-0 pl-0">
+                                        <li>
+                                            <a href="javascript:;">
+                                                <i class="fa fa-link"></i>
+                                                {{cf.translate("Links")}}
+                                                <i class="fas fa-angle-down"></i>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="javascript:;">
+                                                <i class="fa fa-download"></i>
+                                                {{cf.translate("Downloads")}}
+                                                <i class="fas fa-angle-down"></i>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="javascript:;" [matMenuTriggerFor]="lngMenu">
+                                                <i class="fas fa-globe"></i>
+                                                {{cf.translate(currentLanguage)}}
+                                                <i class="fas fa-angle-down"></i>
+                                            </a>
+                                            <mat-menu #lngMenu class="lngdropdown">
+                                                <menu mat-menu-item class="m-0"><a class="dropdown-item" (click)="changeLang('english')" style="cursor: pointer;">{{cf.translate('english')}}</a></menu>
+                                                <menu mat-menu-item class="m-0"><a class="dropdown-item" (click)="changeLang('simplified_chinese')" style="cursor: pointer;">{{cf.translate('simplified_chinese')}}</a></menu>
+                                                <menu mat-menu-item class="m-0"><a class="dropdown-item" (click)="changeLang('traditional_chinese')" style="cursor: pointer;">{{cf.translate('traditional_chinese')}}</a></menu>
+                                                <menu mat-menu-item class="m-0"><a class="dropdown-item" (click)="changeLang('korean')" style="cursor: pointer;">{{cf.translate('korean')}}</a></menu>
+                                                <menu mat-menu-item class="m-0"><a class="dropdown-item" (click)="changeLang('japanese')" style="cursor: pointer;">{{cf.translate('japanese')}}</a></menu>
+                                              </mat-menu>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                                <div class="row mx-0" >
+                                    <div class="col-md-3 p-3 back-blue">
+                                        <div class="instant-conference-left">
+                                            <div class="instant-conference-box" *ngFor="let item of dept_item">
+                                                <div class="conference-box-main">
+                                                    <a class="commonA" (click)="item.is_collapse = !item.is_collapse">
+                                                        <span><img src="assets/theme/img/company-ico.png" alt=""></span>
+                                                        {{item.dept_name}}({{getCountOfmember(item.id)}})
+                                                    </a>
+                                                </div>
+                                                <div [class]="item.is_collapse?'conference-box-sub border-0 accordion-collapse collapse show':'conference-box-sub border-0 accordion-collapse collapse'">
+                                                    <div *ngFor="let li of item.children">
+                                                        <div class="conference-box-main">
+                                                            <a [class]="selected_dept==li.id?'commonA activeDept':'commonA'" (click)="li.is_collapse = !li.is_collapse;selectDepartment(li)">
+                                                                <span><img src="assets/theme/img/sub-ico.png" alt=""></span>
+                                                                {{li.dept_name}}({{getCountOfmember(li.id)}})
+                                                            </a>
+                                                        </div>
+                                                        <div [class]="li.is_collapse?'conference-box-sub border-0 accordion-collapse collapse show':'conference-box-sub border-0 accordion-collapse collapse'">
+                                                            <a *ngFor="let ch of li.children" [class]="selected_dept==ch.id?'commonA activeDept':'commonA'"  style="padding-left: 120px;" (click)="selectDepartment(ch)">
+                                                                <span><img src="assets/theme/img/sub-ico.png" alt=""></span>
+                                                                {{ch.dept_name}}({{getCountOfmember(ch.id)}})
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-9 pt-md-5 pt-4 mt-lg-5 mt-md-4 mt-0">
+                                        <div class="meadting_box bg-white rounded-10 shadow" style="padding: 10px 35px;">
+                                            <form class="recoarding-share-form  m-4 display-block">
+                                                <div class="form-group position-relative search_bar ml-auto">
+                                                    <i class="fal fa-search"></i>
+                                                    <input type="search" [placeholder]="cf.translate('Please input key value.')" [ngModelOptions]="{standalone: true}" [(ngModel)]="key">
+                                                    <input class="button custom-search-btn" value="Search" type="buttton" (click)="startInterval()" readonly>
+                                                </div>
+                                            </form>
+
+                                            <div class="small_radio_btns row icon-list" style="color: black !important;">
+                                                <div class="col-auto d-flex align-items-center">
+                                                    <img src="assets/theme/img/icon_online.png">
+                                                    <label>線上</label>
+                                                </div>
+                                                <div class="col-auto d-flex align-items-center">
+                                                    <img src="assets/theme/img/icon_mobile.png">
+                                                    <label>線上</label>
+                                                </div>
+                                                <div class="col-auto d-flex align-items-center">
+                                                    <img src="assets/theme/img/icon_web.png">
+                                                    <label>線上</label>
+                                                </div>
+                                                <div class="col-auto d-flex align-items-center">
+                                                    <img src="assets/theme/img/icon_busy.png">
+                                                    <label>忙碌</label>
+                                                </div>
+                                                <div class="col-auto d-flex align-items-center">
+                                                    <img src="assets/theme/img/icon_away.png">
+                                                    <label>离开</label>
+                                                </div>
+                                                <div class="col-auto d-flex align-items-center">
+                                                    <img src="assets/theme/img/icon_offline.png">
+                                                    <label>离开</label>
+                                                </div>
+                                                <div class="col-auto d-flex align-items-center">
+                                                    <img src="assets/theme/img/icon_open.png">
+                                                    <label>可以随时开会</label>
+                                                </div>
+                                                <div class="col-auto d-flex align-items-center">
+                                                    <img src="assets/theme/img/icon_meeting.png">
+                                                    <label>會議中</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="instant-conference-right">
+                                            <div class="recoarding-manage-bottom row back-none p-0 mt-3" style="display: flex; justify-content: center;">
+                                                <div class="col-md-6">
+                                                    <div class="table-responsive">
+                                                        <table class="table">
+                                                            <thead>
+                                                            <tr>
+                                                                <th>{{cf.translate("Online Status")}}</th>
+                                                                <th>{{cf.translate("Name")}}</th>
+                                                            </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                            <!-- <div *ngIf="user_item1.length==0" style="text-align: center;">{{cf.translate('No items')}}</div> -->
+                                                            <tr *ngFor="let item of user_item1; let i = index">
+                                                                <td>
+                                                                    <img *ngIf="item.status=='Online'" src="assets/theme/img/icon_online.png">
+                                                                    <img *ngIf="item.status=='Mobile'" src="assets/theme/img/icon_mobile.png">
+                                                                    <img *ngIf="item.status=='Be Right Back'" src="assets/theme/img/icon_web.png">
+                                                                    <img *ngIf="item.status=='Busy'" src="assets/theme/img/icon_busy.png">
+                                                                    <img *ngIf="item.status=='Away'" src="assets/theme/img/icon_away.png">
+                                                                    <img *ngIf="item.status=='Offline'" src="assets/theme/img/icon_offline.png">
+                                                                    <img *ngIf="item.status=='Office Open'" src="assets/theme/img/icon_open.png">
+                                                                    <img *ngIf="item.status=='In Meeting'" src="assets/theme/img/icon_meeting.png">
+                                                                </td>
+                                                                <td>
+                                                                   <a *ngIf="item.qr_code" class="activeA" [href]="'/#/e-card/'+item.memberId" target="_blank">{{item.nativeName}}</a>
+                                                                   <a *ngIf="!item.qr_code" class="inactiveA">{{item.nativeName}}</a>
+                                                                </td>
+                                                            </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="table-responsive">
+                                                        <table class="table">
+                                                            <thead>
+                                                            <tr>
+                                                                <th>{{cf.translate("Online Status")}}</th>
+                                                                <th>{{cf.translate("Name")}}</th>
+                                                            </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                            <!-- <div *ngIf="user_item2.length==0" style="text-align: center;">{{cf.translate('No items')}}</div> -->
+                                                            <tr *ngFor="let item of user_item2; let i = index">
+                                                                <td>
+                                                                    <img *ngIf="item.status=='Online'" src="assets/theme/img/icon_online.png">
+                                                                    <img *ngIf="item.status=='Mobile'" src="assets/theme/img/icon_mobile.png">
+                                                                    <img *ngIf="item.status=='Be Right Back'" src="assets/theme/img/icon_web.png">
+                                                                    <img *ngIf="item.status=='Busy'" src="assets/theme/img/icon_busy.png">
+                                                                    <img *ngIf="item.status=='Away'" src="assets/theme/img/icon_away.png">
+                                                                    <img *ngIf="item.status=='Offline'" src="assets/theme/img/icon_offline.png">
+                                                                    <img *ngIf="item.status=='Office Open'" src="assets/theme/img/icon_open.png">
+                                                                    <img *ngIf="item.status=='In Meeting'" src="assets/theme/img/icon_meeting.png">
+                                                                </td>
+                                                                <td>
+                                                                   <a *ngIf="item.qr_code" class="activeA" [href]="'/#/e-card/'+item.memberId" target="_blank">{{item.nativeName}}</a>
+                                                                   <a *ngIf="!item.qr_code" class="inactiveA">{{item.nativeName}}</a>
+                                                                </td>
+                                                            </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <footer class="footer_part mt-md-5 mt-4">
+                                <div class="row mx-0 align-items-center">
+                                    <div class="col-lg-3 col-md-12">
+                                        <div class="footer_logo_part text-center">
+                                            <a class="d-block" href="javascript:;">
+                                                <img src="assets/theme/img/logo.png" alt="">
+                                            </a>
+                                            <span>Dalian Synergy World Electronic Commerce <br> Technology Co.Ltd</span>
+                                            <p>Dalian High-tech Industrial Park <br> 541 Huangpu Road <br> Zip Code: 116023 <br> Email: imflybird@126</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-9 col-md-12">
+                                        <div class="footer_right_part">
+                                            <ul class="links">
+                                                <li>
+                                                    <a href="javascript:;">Home</a>
+                                                </li>
+                                                <li>
+                                                    <a href="javascript:;">About</a>
+                                                </li>
+                                                <li>
+                                                    <a href="javascript:;">Introduce</a>
+                                                </li>
+                                                <li>
+                                                    <a href="javascript:;">Knowledge Hub</a>
+                                                </li>
+                                                <li>
+                                                    <a href="javascript:;">Terms and Privacy</a>
+                                                </li>
+                                            </ul>
+                                            <form class="my-lg-5 my-md-4 my-4 position-relative" action="./instant-conference.html">
+                                                <i class="fal fa-envelope"></i>
+                                                <input type="email" class="form-control" placeholder="Your E-mail Address">
+                                                <input class="mail_btn" value="Send" type="buttton">
+                                            </form>
+                                            <div class="footer_text text-center">
+                                                <strong>Main Body record number: Liao. 20006297-2</strong>
+                                                <p>Radio and Telivision Program Production and Opration License(liao) No. 00966 <br> Copyright 2020 Flying Bird Recording and Broadcasting All Rights Reserved</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </footer>                     </div>
+                        <!-- Inner Body section End -->
+
+                    </div>
+                    <!-- Body section End -->
+
+                </div>
+
+            </div>
+            <!-- Right Part section End -->
+        </div>
+    </div>
+</div>

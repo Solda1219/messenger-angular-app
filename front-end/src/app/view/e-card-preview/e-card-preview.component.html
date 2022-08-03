@@ -1,0 +1,115 @@
+<div class="container-fluid loginBg d-flex align-items-center justify-content-center m-weboffice-bg">
+
+    <div class="centerPart row m-0 m-display-block">
+        <div class="leftPart col-auto p-0 position-relative">
+            <div class="weboffice-lite-back">
+                <div class="row m-0 p-3">
+                    <img src="assets/theme/img/sidelogo.png" class="weboffice-left-logo">
+                    <span class="weboffice-left-logo-text">{{cf.translate("Web Office")}}</span>
+                </div>
+
+                <div class="row m-0 display-block">
+                    <div class="row mb-3">
+                        <img [src]="data?data.avatar:''" (error)="onImgError($event)" class="weboffice-avatar m-auto">
+                    </div>
+                </div>
+
+                <div class="row m-0 weboffice-text-row">
+                    <h3>{{data?data.name:''}}</h3>
+                    <h4>{{data?data.duty:''}}</h4>
+                    <h6>{{data?data.company:''}}</h6>
+                    <h6>{{cf.translate("Email")}}: {{data?data.email:''}}</h6>
+                    <h6>{{cf.translate("Phone")}}: {{data?data.phone:''}}</h6>
+                </div>
+                <qrcode [qrdata]="data?data.qr_code:'test'" class="weboffice-qr-img" [width]="100" [errorCorrectionLevel]="'M'" [elementType]="'svg'"></qrcode>
+            </div>
+        </div>
+        <div class="col d-flex align-items-center justify-content-center position-relative">
+
+            <div class=" col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-12">
+                <div class="col-12 text-primary fs-lg-26 fs-md-22 fs-22 text-center m-mt-5 m-pt-3">WebOffice</div>
+
+                <div class="loginForm mt-4">
+                    <div class="form-group position-relative custom_form_2 sel-height-xxl py-2">
+                        <span class="font-small">{{cf.translate("Select Language")}}</span>
+                        <select name="" id="selectLang" class="w-100"  tabindex="-1" aria-hidden="true" [ngModelOptions]="{standalone: true}" [(ngModel)]="currentLanguage" (change)="changeLang()">
+                            <option value="english"><i class="far fa-check-square"></i>{{cf.translate('english')}}</option>
+                            <option value="simplified_chinese"><i class="far fa-check-square"></i>{{cf.translate('simplified_chinese')}}</option>
+                            <option value="traditional_chinese"><i class="far fa-check-square"></i>{{cf.translate('traditional_chinese')}}</option>
+                            <option value="korean"><i class="far fa-check-square"></i>{{cf.translate('korean')}}</option>
+                            <option value="japanese"><i class="far fa-check-square"></i>{{cf.translate('japanese')}}</option>
+                        </select>
+                    </div>
+                    <div class="w-100 py-2 custom_form_2 position-relative">
+                        <a class="customBtn2 width-100 text-center" (click)="enteroffice()">{{cf.translate("Enter Web Office")}}</a>
+                    </div>
+                    <div class="w-100 py-2 custom_form_2 position-relative">
+                        <a class="customBtn2 width-100 text-center cursor"  (click)="formSet()" data-bs-toggle="modal" data-bs-target="#leaveMsg">{{cf.translate('Leave message')}}</a>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<!-- leave message modal -->
+<div class="modal fade recording-form-modal publish_modal" id="leaveMsg" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body">
+                <p class="text-right">
+                    <a data-bs-dismiss="modal" class="cursor" style="background-color: #ffffff00 !important;
+                    color: #353b41 !important;"><i class="fa fa-remove"></i></a>
+                </p>
+                <div class="share-recording-modal p-md-4 p-3">
+                    <h3 class="text-center">{{cf.translate("Leave message to him")}}</h3>
+                    <div class="recording-modal row">
+                        <form #ngForm="ngForm" [formGroup]="formGroup" (submit)="leaveMessage()">
+                            <div class="infoDiv">
+                                <div class="row m-0">
+                                    <div class="col-12 custom_form_2 m-0 justMiddle">
+                                        <label class="text-primary fs-md-15 fs-14 pb-2 Lav1">{{cf.translate('Subject')}}</label>
+                                        <input formControlName="title" [class]="ngForm.submitted&&formGroup.controls['title'].errors?'form-error':''">
+                                    </div>
+                                </div>
+                                <div class="row m-0">
+                                    <div class="col-12 custom_form_2 m-0 justMiddle">
+                                        <label class="text-primary fs-md-15 fs-14 pb-2 Lav1">{{cf.translate('Content')}}</label>
+                                        <textarea formControlName="content"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12 modal_btns d-flex justidy-content-end mt-md-5 mt-3">
+                                <button type="submit" class="bg-primary btn2 no-border">{{cf.translate("Leave message")}}</button>
+                                <a class="bg-secondary ms-2" href="javascript:;" data-bs-dismiss="modal">{{cf.translate("Cancel")}}</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- call modal -->
+<a #callTriger data-bs-toggle="modal" data-bs-target="#call" style="display: none;">ttt</a>
+<div class="modal fade recording-form-modal publish_modal disBackDrop" id="call" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" style="pointer-events: none !important;">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body" *ngIf="data">
+                <!-- <p class="text-right">
+                    <a data-bs-dismiss="modal" class="cursor" style="background-color: #ffffff00 !important;
+                    color: #353b41 !important;"><i class="fa fa-remove"></i></a>
+                </p> -->
+                <div class="share-recording-modal p-md-4 p-3">
+                    <h3 class="text-center">Waiting for {{data.nativeName}} to accept the application...</h3>
+                    <div class="recording-modal row">
+                        <div class="col-md-12 modal_btns d-flex justidy-content-end mt-md-5 mt-3">
+                            <a #cancelCall class="bg-secondary ms-2 commonA cursor text-white" (click)="canceloffice()" data-bs-dismiss="modal">{{cf.translate("Cancel")}}</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

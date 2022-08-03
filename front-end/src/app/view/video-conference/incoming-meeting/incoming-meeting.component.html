@@ -1,0 +1,385 @@
+<div class="recoarding-share dept-create rounded-10 mt-4">
+    <div class="recoarding-share-top bg-white shadow">
+        <h3>{{cf.translate('Upcoming meeting')}}</h3> 
+        <div class="recoarding-share-form mb-0">
+
+            <div class="form-group position-relative search_bar">
+                <i class="fal fa-search"></i> 
+                <input type="search" id="gsearch" name="gsearch" placeholder="Title" [(ngModel)]="keyvalue">
+                <input class="button" value="Search" type="buttton" (click)="key=keyvalue;startInterval()">
+            </div>
+            <div class="form-group position-relative form-btns">
+                <a class="seemore_btn search-bar-btn cursor text-white" [matMenuTriggerFor]="settingsMenu">{{cf.translate("Meeting Now")}}</a>
+                <mat-menu #settingsMenu class="lngdropdown">
+                    <menu mat-menu-item class="m-0"><a class="dropdown-item cursor" href="/#/video-conference/instantMeeting">{{cf.translate('Instant meeting')}}</a></menu>
+                    <menu mat-menu-item class="m-0"><a class="dropdown-item cursor" href="/#/video-conference/sheduleMeeting">{{cf.translate('Schedule meeting')}}</a></menu>
+                </mat-menu>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row mx-0 instant-conference">
+    <div class="col-md-12 pt-md-5 pt-0 mt-lg-5 mt-md-4 mt-0">
+        <div class="instant-conference-right">
+            <div class="recoarding-manage-bottom p-0">
+                <p *ngIf="meeting.length==0" class="text-center color-white no-meeting-info text-white">{{cf.translate("No upcoming meeting")}} , {{cf.translate("please click")}} <span><a class="decoA" href="/#/video-conference/instantMeeting">{{cf.translate("meeting now")}}</a></span> {{cf.translate("or")}} <span><a class="decoA" href="/#/video-conference/sheduleMeeting">{{cf.translate("schedule meeting")}}</a></span></p>
+                <div *ngIf="itemList.length>0">
+                    <div *ngFor="let item of itemList" class="row m-0 bg-newBlue rounded-3 p-5 meeting-info-div mb-2">
+                        <div class="dadiv">
+                            <a *ngIf="item.is_host" class="dAH">{{cf.translate("To be hosted")}}</a>
+                            <a *ngIf="!item.is_host" class="dAH">{{cf.translate("To be invited")}}</a>
+                        </div>  
+                        <!-- <div *ngIf="item.status==1" class="dadiv"> -->
+                        <div *ngIf="item.status==1" class="dadiv">
+                            <a class="dAH" style="color: #198754 !important;">{{cf.translate('In progress')}}({{item.participant}}/{{item.invitedusers+1}})</a>
+                        </div>   
+                        <div *ngIf="item.started_at&&item.status==1" class="dadiv">
+                            <p style="color: #086afd !important;">{{item.started_at}}</p>
+                        </div> 
+                        <div *ngIf="item.ended==1" class="dadiv">
+                            <a class="dAH cursor" style="color: red !important;" (click)="modal_src=item" data-bs-toggle="modal" data-bs-target="#reasonModal">{{cf.translate('Cancelled')}}</a>
+                        </div>  
+                        <div *ngIf="item.ended_at&&item.ended==1" class="dadiv">
+                            <p style="color: red !important;">{{item.ended_at}}</p>
+                        </div>   
+                        <div class="row m-0">
+                            <div class="col-md-3">
+                                <h4>{{displaydate(item.start_time)}}</h4>
+                                <p>{{displayTimeOnly(item.start_time)}}</p>
+                                <p><i class="fa fa-arrows-v"></i></p>
+                                <p>{{displayTimeOnly(item.end_time)}}</p>
+                            </div>
+                            <div class="col-md-9">
+                                <h5>{{item.email}}'s Meeting</h5>
+                                <p>
+                                    <span class="text-primary">{{cf.translate("Subject")}} : </span>
+                                    <span>{{item.title}}</span>
+                                </p>
+                                <p>
+                                    <span>{{cf.translate("Start Time")}} : </span>
+                                    <span>{{displayTime(item.start_time)}}</span>
+                                </p>
+                                <p>
+                                    <span>{{cf.translate("Duration")}} : </span>
+                                    <span>{{item.duration}}{{cf.translate('min')}}</span>
+                                </p>
+                                <p>
+                                    <span>{{cf.translate("Organizer")}} : </span>
+                                    <span>{{item.email}}</span>
+                                </p>
+                                <p>
+                                    <span>{{cf.translate("Meeting ID")}} : </span>
+                                    <span>{{item.meetingId}}</span>
+                                </p>
+                                <p class="hideP">
+                                    <span>{{cf.translate("Meeting URL")}} : </span>
+                                    <span *ngIf="item.started_at" style="word-break: break-all;"><a [href]="item.meetingURL" target="_blank">{{item.meetingURL}}</a></span>
+                                    <span *ngIf="!item.started_at" style="word-break: break-all;"><a>{{item.meetingURL}}</a></span>
+                                </p>
+                            </div>
+                        </div>
+                        <div *ngIf="item.is_host" class="row ml-0 mr-0 mt-3 display-block text-right">
+                            <div class="form-group position-relative form-btns width-auto">
+                                <a class="seemore_btn search-bar-btn text-white commonA" (click)="modal_src=item" data-bs-toggle="modal" data-bs-target="#share_meeting">{{cf.translate("Share")}}</a>
+                                <a *ngIf="!item.started_at" class="seemore_btn search-bar-btn text-white commonA" (click)="start(item)">{{cf.translate('Start')}}</a>
+                                <a class="seemore_btn search-bar-btn text-white commonA" (click)="formSet(item)" data-bs-toggle="modal" data-bs-target="#meeting_now">{{cf.translate('Edit')}}</a>
+                                <a class="seemore_btn search-bar-btn text-white commonA" (click)="modal_src=item" data-bs-toggle="modal" data-bs-target="#cancelModal">{{cf.translate('Cancel')}}</a>
+                            </div>
+                        </div>
+                        <div *ngIf="!item.is_host" class="row ml-0 mr-0 mt-3 display-block text-right">
+                            <div class="form-group position-relative form-btns width-auto">
+                                <!-- <a class="seemore_btn search-bar-btn text-white commonA" (click)="modal_src=item" data-bs-toggle="modal" data-bs-target="#share_meeting">{{cf.translate("Share")}}</a> -->
+                                <a *ngIf="item.started_at&&item.ended==0" class="seemore_btn search-bar-btn text-white commonA" [href]="item.meetingURL" target="_blank">{{cf.translate('Join')}}</a>
+                                <!-- <a class="seemore_btn search-bar-btn text-white commonA" (click)="modal_src=item" data-bs-toggle="modal" data-bs-target="#deleteModal">{{cf.translate('Cancel')}}</a> -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> 
+<!-- edit modal -->
+<div class="modal fade recording-form-modal publish_modal" id="meeting_now" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body" *ngIf="modal_src">
+                <div class="share-recording-modal p-md-4 p-3">
+                    <h3>{{cf.translate("Edit Instant Meeting")}}</h3>
+                    <form #ngForm="ngForm" class="recording-modal row" [formGroup]="formGroup" (submit)="edit()">
+                        <div class="col-md-12 custom_form_2 mb-2">
+                            <label for="phonenumber" class="text-primary fs-14 pb-1">{{cf.translate('Subject')}}*</label>
+                            <input type="text" formControlName="title" [class]="ngForm.submitted&&formGroup.controls['title'].errors?'form-error':''" [readonly]="modal_src.started_at">
+                        </div>
+
+                        <div class="row m-0">
+                            <div *ngIf="!modal_src.started_at"  class="col-md-6 pl-0">
+                                <div class="col-12 custom_form_2 mb-md-3 mb-2">
+                                    <label for="phonenumber" class="text-primary fs-md-15 fs-14 pb-2">{{cf.translate('Duration')}}</label>
+                                    <div class="row">
+                                        <div class="col-md-6 col-12 position-relative mb-md-0 mb-md-3 mb-2">
+                                            <div class="form-group position-relative">
+                                                <select class="select_style1" formControlName="hour">
+                                                    <option [value]="0" style="display: none;">{{cf.translate('Hour')}}</option>
+                                                    <option *ngFor="let item of hours" [value]="item">{{item}}</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 col-12 position-relative mb-md-0 mb-0">
+                                            <div class="form-group position-relative">
+                                                <select class="select_style1" formControlName="min">
+                                                    <option [value]="0" style="display: none;">{{cf.translate('Mins')}}</option>
+                                                    <option *ngFor="let item of mins" [value]="item">{{item}}</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div [class]="modal_src.started_at?'p-0':'col-md-6 pr-0'">
+                                <div class="col-12 custom_form_2 mb-md-3 mb-2">
+                                    <label for="phonenumber" class="text-primary fs-md-15 fs-14 pb-2">{{cf.translate('Invitees')}}</label>
+                                    <div class="row">
+                                        <div class="col-md-12 col-12 position-relative">
+                                            <div class="form-group position-relative">
+                                                <ng-multiselect-dropdown class="st"
+                                                    [ngModelOptions]="{standalone: true}"
+                                                    [placeholder]="cf.translate('select invitees')"
+                                                    [settings]="dropdownSettingsOfUser"
+                                                    [data]="addressBook"
+                                                    [(ngModel)]="selectedUsers"
+                                                    (onSelect)="onItemSelect($event)"
+                                                    (onSelectAll)="onSelectAll($event)"
+                                                    (onDeSelect)="onItemDeselect($event)"
+                                                    >
+                                                </ng-multiselect-dropdown>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12 custom_form_2 mb-md-3 mb-2">
+                            <textarea name="" readonly>{{selected_text}}</textarea>
+                        </div>
+                        <div *ngIf="formGroup.value['meetingType']==1" class="col-12 custom_form_2 mb-md-3 mb-2">
+                            <label class="text-primary fs-md-15 fs-14 pb-2">{{cf.translate('Agenda')}}</label>
+                            <textarea spellcheck="false" formControlName="agenda"></textarea>
+                        </div>
+                        <div *ngIf="formGroup.value['meetingType']==1" class="col-12 custom_form_2 mb-md-3 mb-2">
+                            <label class="text-primary fs-md-15 fs-14 pb-2">{{cf.translate('Joint Browsing URL')}}</label>
+                            <input type="text" placeholder="" formControlName="default_joint_browsing_page" [class]="ngForm.submitted&&formGroup.controls['default_joint_browsing_page'].errors?'form-error':''">
+                        </div>
+                        <div *ngIf="!modal_src.started_at" class="col-12 row custom_form_2 mb-md-3 mb-2 mt-2">
+                            <div class="col-md-6 col-12 custom_radio_2 mb-md-0 mb-2">
+                                <input type="checkbox" id="yes2" formControlName="auto_recording">
+                                <label class="text-black" for="yes2">{{cf.translate("Auto Recording")}}</label>
+                            </div>
+                            <div class="col-md-6 col-12 custom_radio_2 mb-md-0 mb-2">
+                                <input type="checkbox" id="yes3" formControlName="auto_extension">
+                                <label class="text-black" for="yes3">{{cf.translate("Auto extention")}}</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6 d-md-block d-none"></div>
+                        <div class="col-md-6 modal_btns d-flex justidy-content-end mt-md-5 mt-3">
+                            <button type="submit" class="bg-primary btn2 no-border">{{cf.translate('Confirm')}}</button>
+                            <a class="bg-secondary ms-2 text-white commonA" data-bs-dismiss="modal">{{cf.translate('Cancel')}}</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>       <!-- Vendor JS Files -->
+<!-- share modal -->
+<div class="modal fade recording-form-modal publish_modal" id="share_meeting" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content" *ngIf="modal_src">
+            <div class="modal-body">
+                <p class="text-right">
+                    <a data-bs-dismiss="modal" class="cursor" style="background-color: #ffffff00 !important;
+                    color: #353b41 !important;"><i class="fa fa-remove"></i></a>
+                </p>
+                <div class="share-recording-modal p-md-4 p-3">
+                    <h3 class="text-center">{{cf.translate("Share Meeting")}}</h3>
+                    <div class="recording-modal row">
+                        <div class="infoDiv">
+                            <div class="row m-0">
+                                <div class="col-8 custom_form_2 m-0 justMiddle">
+                                    <label class="text-primary fs-md-15 fs-14 pb-2 Lav1">{{cf.translate('Name')}}</label>
+                                    <input [(ngModel)]="shareInfo.name">
+                                </div>
+                                <div class="col-4 modal_btns m-0 justMiddle">
+                                    <a class="bg-primary me-2 Bt1 cursor" (click)="getShare(modal_src)">{{cf.translate("getURL")}}</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <p>
+                                <span class="text-primary">{{cf.translate("Subject")}} : </span>
+                                <span>{{modal_src.title}}</span>
+                            </p>
+                            <p>
+                                <span class="text-primary">{{cf.translate("Start Time")}} : </span>
+                                <span>{{displayTime(modal_src.start_time)}}</span>
+                            </p>
+                            <p>
+                                <span class="text-primary">{{cf.translate("Duration")}} : </span>
+                                <span>{{modal_src.duration}}{{cf.translate('min')}}</span>
+                            </p>
+                            <p>
+                                <span class="text-primary">{{cf.translate("Organizer")}} : </span>
+                                <span>{{modal_src.email}}</span>
+                            </p>
+                            <p>
+                                <span class="text-primary">{{cf.translate("Meeting ID")}} : </span>
+                                <span>{{modal_src.meetingId}}</span>
+                            </p>
+                            <p class="hideP">
+                                <span class="text-primary">{{cf.translate("Meeting URL")}} : </span>
+                                <span style="word-break: break-all;">{{shareURL}}</span>
+                                <!-- <i class="fa fa-copy cursor" (click)="copyToClipboard(modal_src.meetingURL)"></i> -->
+                            </p>
+                        </div>
+
+
+                        <div class="col-md-12 modal_btns d-flex justidy-content-end mt-md-5 mt-3">
+                            <a class="bg-primary me-2" href="javascript:;" (click)="copyToClipboard(shareURL)"><i class="fa fa-copy mr-3"></i> {{cf.translate("Copy Meeting Info")}}</a>
+                            <a class="bg-secondary ms-2" href="javascript:;" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#download_share_img"><i class="fa fa-download mr-3"></i> Download Sharing Picture</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade recording-form-modal publish_modal" id="download_share_img" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-md" style="width: 1000px; max-width: 1000px;">
+        <div class="modal-content qr-down-modal-back" #shareDiv id="shareDiv">
+            <div class="modal-body" *ngIf="modal_src">
+                <div class="share-recording-modal p-md-4 p-3">
+                    <p class="text-right">
+                        <i class="fa fa-download cursor" (click)="downloadPicture()"></i>&nbsp;
+                        <a data-bs-dismiss="modal" class="cursor" style="background-color: #ffffff00 !important;
+                        color: #353b41 !important;"><i class="fa fa-remove"></i></a>
+                    </p>
+
+                    <div class="recording-modal row" style="padding: 3rem 3rem 5rem 3rem">
+                        <div class="col-md-6">
+                            <div class="row ml-0 mr-0 mt-5">
+                                <img id="qr-down-logo" src="assets/theme/img/ico.png">
+                                <p>
+                                    <span class="text-primary">{{cf.translate("Subject")}} : </span>
+                                    <span>{{modal_src.title}}</span>
+                                </p>
+                                <p>
+                                    <span class="text-primary">{{cf.translate("Start Time")}} : </span>
+                                    <span>{{displayTime(modal_src.start_time)}}</span>
+                                </p>
+                                <p>
+                                    <span class="text-primary">{{cf.translate("Duration")}} : </span>
+                                    <span>{{modal_src.duration}}{{cf.translate('min')}}</span>
+                                </p>
+                                <p>
+                                    <span class="text-primary">{{cf.translate("Organizer")}} : </span>
+                                    <span>{{modal_src.email}}</span>
+                                </p>
+                                <p>
+                                    <span class="text-primary">{{cf.translate("Meeting ID")}} : </span>
+                                    <span>{{modal_src.meetingId}}</span>
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 text-center">
+                            <qrcode [qrdata]="shareURL?shareURL:''" [width]="350" [errorCorrectionLevel]="'M'" [elementType]="'svg'"></qrcode>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- cancel modal -->
+<div class="modal fade recording-form-modal publish_modal" id="cancelModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="share-recording-modal p-md-4 p-3">
+                    <div class="recording-modal row mt-3">
+                        <h3 class="pt-3 pb-3">{{cf.translate('Are you sure to cancel this meeting?')}}</h3>
+                        <div class="col-md-6 d-md-block d-none"></div>
+                        <div>
+                            <textarea class="textarea11" [(ngModel)]="reason" placeholder="Please input here why you cancel."></textarea>
+                        </div>
+                        <div class="col-md-6 modal_btns d-flex justidy-content-end mt-md-5 mt-3">
+                            <a class="bg-primary me-2 commonA text-white" (click)="cancel()" data-bs-dismiss="modal">{{cf.translate('Confirm')}}</a>
+                            <a class="bg-secondary ms-2" href="javascript:;" data-bs-dismiss="modal">{{cf.translate('Cancel')}}</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<a #warningModalA style="display: none;" data-bs-toggle="modal" data-bs-target="#warningModal"></a>
+<!-- warning modal -->
+<div class="modal fade recording-form-modal publish_modal" id="warningModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body" *ngIf="modal_src">
+                <div class="share-recording-modal p-md-4 p-3">
+                    <div class="recording-modal row mt-3">
+                        <h3 class="pt-3 pb-3">{{cf.translate('Now time is not equal to your ordered starttime. Will you start?')}}</h3>
+                        <div class="col-md-12 modal_btns d-flex justidy-content-end mt-md-5 mt-3">
+                            <a class="bg-primary me-2 commonA text-white" (click)="gotoBlank(modal_src)" data-bs-dismiss="modal">{{cf.translate('Start')}}</a>
+                            <a class="bg-secondary ms-2" href="javascript:;" data-bs-dismiss="modal">{{cf.translate('Cancel')}}</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- delete modal -->
+<div class="modal fade recording-form-modal publish_modal" id="deleteModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="share-recording-modal p-md-4 p-3">
+                    <div class="recording-modal row mt-3">
+                        <h3 class="pt-3 pb-3">{{cf.translate('Are you sure to delete this?')}}</h3>
+
+                        <div class="col-md-6 d-md-block d-none"></div>
+                        <div class="col-md-6 modal_btns d-flex justidy-content-end mt-md-5 mt-3">
+                            <a class="bg-primary me-2 commonA text-white" (click)="del()" data-bs-dismiss="modal">{{cf.translate('Confirm')}}</a>
+                            <a class="bg-secondary ms-2" href="javascript:;" data-bs-dismiss="modal">{{cf.translate('Cancel')}}</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- reason modal -->
+<div class="modal fade recording-form-modal publish_modal" id="reasonModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body" *ngIf="modal_src">
+                <div class="share-recording-modal p-md-4 p-3">
+                    <div class="recording-modal row mt-3">
+                        <h3 class="pt-3 pb-3">{{cf.translate('Reason of cancelling this meeting')}}</h3>
+                        <div class="col-md-6 d-md-block d-none"></div>
+                        <div>
+                            <textarea class="textarea11" [value]="modal_src.end_reason?modal_src.end_reason:''" placeholder="The organizer didn't remain any reason." readonly></textarea>
+                        </div>
+                        <div class="col-md-6 modal_btns d-flex justidy-content-end mt-md-5 mt-3">
+                            <a class="bg-secondary ms-2" href="javascript:;" data-bs-dismiss="modal">{{cf.translate('Cancel')}}</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

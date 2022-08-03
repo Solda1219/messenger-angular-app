@@ -1,0 +1,107 @@
+<div class="recoarding-share dept-create rounded-10 mt-4">
+  <div class="recoarding-share-top bg-white shadow">
+      <h3>{{cf.translate('Add inside users to my address book')}}</h3>
+      <div class="recoarding-share-form dept-create-inner mb-0">
+          <div class="form-group position-relative custom_form_2">
+              <select class="select_style_1" [(ngModel)]="param.dept">
+                  <option value="all">{{cf.translate('All Depts')}}</option>
+                  <option *ngFor="let item of dept" [value]="item.id">{{item.dept_name}}</option>
+              </select>
+          </div>
+          <div class="form-group position-relative search_bar" style="width: 69%;">
+              <i class="fal fa-search"></i>
+              <input type="search" [placeholder]="cf.translate('Please input search key words.')" [(ngModel)]="param.key">
+              <input class="button" [value]="cf.translate('Search')" type="buttton" (click)="search()" style="cursor: pointer;">
+          </div>
+      </div>
+  </div>
+</div>
+<div class="row mx-0 justify-content-center mt-4">
+  <div class="col-md-12">
+      <div class="row depth-tabel bg-white shadow">
+          <div class="recoarding-share-form dept-create-inner mb-0">
+            <div class="form-group position-relative custom_form_2" style="padding-left: 14px;">
+              <h4>{{cf.translate('Total')}}: {{item.length}}</h4>
+            </div>
+            <div class="form-group position-relative search_bar" style="width: 69%;">
+                <input list="group3" type="text" [placeholder]="cf.translate('Please input groupname...')" [(ngModel)]="param.group">
+                <input class="button p-0" [value]="cf.translate('Add to address')" type="button" (click)="createUser()" style="cursor: pointer;">
+                <datalist id="group3">
+                  <option *ngFor="let item of groups" [value]="item">
+                </datalist>
+            </div>
+          </div>
+          <div class="col-12 depth-tabel-main mt-md-4">
+              <div class="table-responsive header-center">
+                  <table mat-table [dataSource]="tableList" class="table" matSort>
+                      <!-- Checkbox Column -->
+                      <ng-container matColumnDef="select" sticky>
+                      <th mat-header-cell *matHeaderCellDef class="checkTh">
+                          <mat-checkbox (change)="$event ? masterToggle() : null;onSelectionChange()"
+                          [checked]="selection.hasValue() && isAllSelected()"
+                          [indeterminate]="selection.hasValue() && !isAllSelected()" [aria-label]="checkboxLabel()">
+                          </mat-checkbox>
+                      </th>
+                      <td mat-cell *matCellDef="let row" class="checkTh">
+                          <mat-checkbox (click)="$event.stopPropagation()"
+                          (change)="$event ? selection.toggle(row) : null;onSelectionChange()" [checked]="selection.isSelected(row)"
+                          [aria-label]="checkboxLabel(row)">
+                          </mat-checkbox>
+                      </td>
+                      </ng-container>
+                      <ng-container [matColumnDef]="'No'">
+                      <th class="NoTh" mat-header-cell *matHeaderCellDef mat-sort-header> {{cf.translate('No')}} </th>
+                      <td class="NoTd" mat-cell *matCellDef="let row; let i = index">
+                          {{ (paginator.pageIndex * paginator.pageSize) + (i + 1)}}
+                      </td>
+                      </ng-container>
+                      <ng-container *ngFor="let rows of tbCol; let i = index">
+                      <ng-container *ngIf="specialCol.indexOf(rows)==-1" [matColumnDef]="rows">
+                          <th mat-header-cell *matHeaderCellDef mat-sort-header> {{cf.translate(tbHeader[i])}} </th>
+                          <td mat-cell *matCellDef="let row"> {{row[rows]}} </td>
+                      </ng-container>
+                      </ng-container>
+                      <!-- action -->
+                      <ng-container matColumnDef="Action" stickyEnd>
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header class="stickyOperationHeader-sm">
+                          {{cf.translate('Action')}} </th>
+                      <td mat-cell *matCellDef="let row" class="stickyOperationCell-sm" style="width: 200px;">
+                          <!-- <div class="btnRow">
+                              <div class="btn-group">
+                                  <button type="button" class="btn btn-danger btn-pill-icon-sm" (click)="showDeleteModal([row])" title="delete"><i
+                                      class="fa fa-trash"></i></button>
+                              </div>
+                              <div class="btn-group">
+                                  <button type="button" class="btn btn-warning btn-pill-icon-sm" (click)="formSet(row)"  data-bs-toggle="modal" data-bs-target="#createModal" title="edit" ><i
+                                      class="fa fa-edit"></i></button>
+                              </div>
+                              <div class="btn-group">
+                                  <button type="button" class="btn btn-primary btn-pill-icon-sm" (click)="showRegroupModal([row])" title="Reset dept"><i
+                                      class="fa fa-address-book"></i></button>
+                              </div>
+                              <div class="btn-group">
+                                  <button type="button" class="btn btn-pill-icon-sm-img" (click)="showSendModal(row)" title="send message" >
+                                   <img class="w-30px" src="assets/theme/img/email_1.png"/></button>
+                              </div>
+                              <div class="btn-group">
+                                  <button type="button" class="btn btn-pill-icon-sm-img" title="leave message">
+                                    <img class="w-30px" src="assets/theme/img/message2.png"/>
+                                  </button>
+                              </div>
+                          </div> -->
+                      </td>
+                      </ng-container>
+                      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                      <!-- Row shown when there is no matching data. -->
+                      <tr class="mat-row" *matNoDataRow>
+                      <td class="mat-cell" colspan="4">No Item</td>
+                      </tr>
+                  </table>
+              </div>
+          </div>
+          <mat-paginator></mat-paginator>
+      </div>
+  </div>
+</div>
+<ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '3px' }"></ngx-loading>

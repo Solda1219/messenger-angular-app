@@ -1,0 +1,50 @@
+.list-content {
+}
+.rootcheck{
+    border-bottom: solid 0.5px #ddd;
+}
+.childcheck{
+    max-height: 70vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+ul {
+    list-style-type: none;
+    padding: 0px;
+    background-color: #63c2de;
+    border-radius: 8px;
+}
+.smallbutton{
+    margin-left: -4px;
+    min-width: 63px !important;
+    padding: 0px;
+}
+.buttonDiv{
+    padding:3px
+}
+.flexDivRoot{
+    display: flex;
+    height: 40px;
+    border-radius: 10px;
+    align-items: center;
+    background-color: white;
+    padding: 0px 5px;
+}
+.icon-div-active{
+    width: 25px;
+    height: 25px;
+    border-radius: 94px;
+    background-color: red;
+    color: white;
+    font-size: 15px;
+    padding: 1px 4px;
+}
+.icon-div-inactive{
+    width: 25px;
+    height: 25px;
+    border-radius: 94px;
+    background-color: grey;
+    color: white;
+    font-size: 15px;
+    padding: 1px 4px;
+}

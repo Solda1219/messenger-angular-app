@@ -1,0 +1,20 @@
+.depth-tabel-main td{
+    color: black;
+}
+.dept-div-content{
+    display: block;
+    position: absolute;
+    width: 329px;
+    height: auto;
+    border: solid 1px darkgray;
+}
+.rigidheight{
+  max-height: 300px;
+  overflow: auto;
+  transform: scale() 1s;
+}
+.closeButtonDiv{
+  text-align: center;
+  background-color: #183ab8;
+  color: white;
+}

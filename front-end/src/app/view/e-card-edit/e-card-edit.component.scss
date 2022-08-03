@@ -1,0 +1,77 @@
+.replaceinput{
+   padding:40px 40px 0 40px;
+   margin-bottom: 0.5rem;
+   width: 474px;
+   height: 106px;
+}
+.replaceinput textarea{
+    width: 100%;
+    height: 66px;
+    font-size: 28px;
+    color: white;
+    text-align: center;
+    line-height: 30px;
+    background-color: #fff0f012;
+    border-color: cyan;
+    border-radius: 7px;
+    font-weight: 600;
+ }
+ .titleH{
+    width: 474px;
+    height: 106px;
+    word-break: break-word;
+    overflow: hidden;
+ }
+ .parentdiv{
+   display: inline-flex;
+   align-items: center;
+   width: 100%;
+   justify-content: center;
+   height: 504px;
+ }
+.containerPreview{
+  background-size: cover;
+  width: 430px;
+  height: 500px;
+}
+.conterFrame{
+  background-size: cover;
+  width: 430px;
+  height: 500px;
+}
+.textDiv{
+  color: white;
+  padding-left: 32px;
+}
+ .e-card-div{
+   width: 270px;
+   height: 400px;
+   background-color: #212529;
+   padding: 10px 32px;
+ }
+ .e-cardsubdiv{
+   border-bottom: solid 1px tan;
+   padding-top: 35px !important;
+ }
+ .qrcodeDiv{
+  text-align: right;
+  position: relative;
+  bottom: 56px;
+  right: 13px;
+ }
+ .avatarImage{
+   border: 1px solid #ddd; /* Gray border */
+   border-radius: 4px;  /* Rounded border */
+   padding: 5px; /* Some padding */
+ }
+ .nameText{
+   font-size: 25px;
+   font-weight: 400;
+   font-family: initial;
+   padding: 0px;
+ }
+ .smallText{
+   font-size: 18px;
+   font-weight: 100;
+   padding: 0px;
+ }

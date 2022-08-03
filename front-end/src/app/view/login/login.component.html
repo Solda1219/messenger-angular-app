@@ -1,0 +1,65 @@
+<div class="container-fluid loginBg d-flex align-items-center justify-content-center">
+
+  <div class="centerPart row m-0">
+      <div class="leftPart col-auto p-0">
+          <div class="leftPartInner w-100 h-100  d-flex align-items-center justify-content-center">
+              <img src="assets/theme/img/sidelogo.png" class="leftLogo">
+          </div>
+      </div>
+      <div class="col d-flex align-items-center justify-content-center position-relative">
+          <div class="language-selectior-wrapper">
+              <ul class="language-selection">
+                  <li><a class="commonA" ><span class="lan-icon"><img src="assets/theme/img/translate.svg" alt=""></span> <span class="selected-content">{{cf.translate(currentLanguage)}} <img [src]="'assets/img/country/'+currentLanguage+'.png'" alt="" style="width: 20px;height: 20px;"></span></a>
+                      <ul class="languages">
+                          <li class="selected">
+                              <a class="commonA" (click)="changeLang('english')">{{cf.translate('english')}} <img src="assets/img/country/english.png" style="width: 20px;height: 20px;" alt=""></a>
+                          </li>
+                          <li>
+                            <a class="commonA" (click)="changeLang('simplified_chinese')">{{cf.translate('simplified_chinese')}} <img src="assets/img/country/simplified_chinese.png" style="width: 20px;height: 20px;" alt=""></a>
+                          </li>
+                          <li>
+                            <a class="commonA" (click)="changeLang('traditional_chinese')">{{cf.translate('traditional_chinese')}} <img src="assets/img/country/traditional_chinese.png" style="width: 20px;height: 20px;" alt=""></a>
+                          </li>
+                          <li>
+                            <a class="commonA" (click)="changeLang('korean')">{{cf.translate('korean')}} <img src="assets/img/country/korean.png" style="width: 20px;height: 20px;" alt=""></a>
+                          </li>
+                          <li>
+                            <a class="commonA" (click)="changeLang('japanese')">{{cf.translate('japanese')}} <img src="assets/img/country/japanese.png" style="width: 20px;height: 20px;" alt=""></a>
+                          </li>
+                       
+                      </ul>
+                  </li>
+              </ul>
+          </div>
+          <div class=" col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-12">
+              <div class="col-12 text-primary fs-lg-26 fs-md-22 fs-22 text-center m-mt-5 m-pt-3">{{cf.translate('WebOffice Setting')}}</div>
+              <div class="loginForm mt-4">
+                <form [formGroup]="formGroup" #myform="ngForm" (ngSubmit)="login()">
+                  <div class="w-100 py-2 custom_form_2 position-relative">
+                    <input type="text" class="h-45px ps-5" placeholder="{{ cf.translate('email') }}" formControlName="username">
+                    <img src="assets/theme/img/username.png" class="inputLoginForm">
+                  </div>
+                  <div class="w-100 py-2 custom_form_2 position-relative">
+                    <input type="password" class="h-45px ps-5" placeholder="{{ cf.translate('password') }}" formControlName="password">
+                    <img src="assets/theme/img/lockk.png" class="inputLoginForm">
+                  </div>
+                  <div class="w-100 py-3 d-flex justify-content-between">
+                      <a class="text-gray fs-13 commonA" href="/#/anonymous-access" target="_blank">
+                          {{cf.translate("Anonymous access")}}
+                      </a>
+                      <a class="text-gray fs-13 commonA" [routerLink]="['/reset-password']">
+                          {{cf.translate("Forgot Password")}}
+                      </a>
+                  </div>
+                  <div class="row justify-content-center mt-lg-2 mt-md-2 mt-2">
+                      <div class="col ml-auto text-md-end  text-center">
+                          <button type="submit" class="customBtn2 no-border">{{cf.translate('Log in')}}</button>
+                      </div>
+                  </div>
+                </form>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
+<ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '3px' }"></ngx-loading>

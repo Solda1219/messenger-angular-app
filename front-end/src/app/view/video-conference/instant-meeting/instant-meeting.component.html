@@ -1,0 +1,92 @@
+<div class="recoarding-share dept-create rounded-10 mt-4">
+    <div class="recoarding-share-top bg-white shadow">
+        <h3>{{cf.translate('Instant meeting')}}</h3>
+    </div>
+</div>
+<div class="row mx-0 instant-conference">
+    <div class="col-md-12 pt-md-5 pt-0 mt-lg-5 mt-md-4 mt-0">
+        <div class="instant-conference-right">
+            <div class="recoarding-manage-bottom p-0 rootDiv">
+                <div class="contentDiv">
+                    <form #ngForm="ngForm" class="recording-modal row" [formGroup]="formGroup" (submit)="create()">
+                        <div class="col-md-12 custom_form_2 mb-2">
+                            <label for="phonenumber" class="text-primary fs-14 pb-1">{{cf.translate('Subject')}}*</label>
+                            <input type="text" formControlName="title" [class]="ngForm.submitted&&formGroup.controls['title'].errors?'form-error':''">
+                        </div>
+
+                        <div class="row m-0">
+                            <div class="col-md-6 pl-0">
+                                <div class="col-12 custom_form_2 mb-md-3 mb-2">
+                                    <label for="phonenumber" class="text-primary fs-md-15 fs-14 pb-2">{{cf.translate('Duration')}}</label>
+                                    <div class="row">
+                                        <div class="col-md-6 col-12 position-relative mb-md-0 mb-md-3 mb-2">
+                                            <div class="form-group position-relative">
+                                                <select class="select_style1" formControlName="hour">
+                                                    <option [value]="0" style="display: none;">{{cf.translate('Hour')}}</option>
+                                                    <option *ngFor="let item of hours" [value]="item">{{item}}</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 col-12 position-relative mb-md-0 mb-0">
+                                            <div class="form-group position-relative">
+                                                <select class="select_style1" formControlName="min">
+                                                    <option [value]="0" style="display: none;">{{cf.translate('Mins')}}</option>
+                                                    <option *ngFor="let item of mins" [value]="item">{{item}}</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 pr-0">
+                                <div class="col-12 custom_form_2 mb-md-3 mb-2">
+                                    <label for="phonenumber" class="text-primary fs-md-15 fs-14 pb-2">{{cf.translate('Invitees')}}</label>
+                                    <div class="row">
+                                        <div class="col-md-12 col-12 position-relative">
+                                            <div class="form-group position-relative">
+                                                <ng-multiselect-dropdown class="st"
+                                                    [ngModelOptions]="{standalone: true}"
+                                                    [placeholder]="cf.translate('select invitees')"
+                                                    [settings]="dropdownSettingsOfUser"
+                                                    [data]="addressBook"
+                                                    [(ngModel)]="selectedUsers"
+                                                    (onSelect)="onItemSelect($event)"
+                                                    (onSelectAll)="onSelectAll($event)"
+                                                    (onDeSelect)="onItemDeselect($event)"
+                                                    >
+                                                </ng-multiselect-dropdown>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12 custom_form_2 mb-md-3 mb-2">
+                            <textarea name="" readonly>{{selected_text}}</textarea>
+                        </div>
+
+                        <div class="col-12 row custom_form_2 mb-md-3 mb-2 mt-2">
+                            <div class="col-md-6 col-12 custom_radio_2 mb-md-0 mb-2">
+                                <input type="checkbox" id="yes2" formControlName="auto_recording">
+                                <label class="text-black" for="yes2">{{cf.translate("Auto Recording")}}</label>
+                            </div>
+                            <div class="col-md-6 col-12 custom_radio_2 mb-md-0 mb-2">
+                                <input type="checkbox" id="yes3" formControlName="auto_extension">
+                                <label class="text-black" for="yes3">{{cf.translate("Auto extention")}}</label>
+                            </div>
+                        </div>
+
+
+                        <div class="col-md-6 d-md-block d-none"></div>
+                        <div class="col-md-6 modal_btns d-flex justidy-content-end mt-md-5 mt-3">
+                            <button class="bg-primary btn2 no-border">{{cf.translate('Confirm')}}</button>
+                            <a class="bg-secondary ms-2 text-white commonA" href="/#/video-conference/incoming">{{cf.translate('Cancel')}}</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

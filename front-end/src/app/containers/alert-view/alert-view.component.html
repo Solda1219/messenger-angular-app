@@ -1,0 +1,19 @@
+<audio #audioOption>
+    <source src="assets/audio/alert.mp3" type="audio/mp3" autoplay>
+</audio>
+<div class="alertContent">
+    <div *ngIf="officeShow"  class="alertDiv">
+        <div class="alertOffice-title">{{officeUser?officeUser.email:""}} want to visit your weboffice.</div>
+        <div class="alertOffice-button">
+            <button class="accept" (click)="acceptoffice()">{{cf.translate('Accept')}}</button>
+            <button class="reject" (click)="canceloffice()">{{cf.translate("Reject")}}</button>
+        </div>
+    </div>
+    <div *ngFor="let item of eventalarms; let i = index"  class="alertDiv">
+        <div class="alertOffice-title">{{item.title}} event will started.</div>
+        <div class="alertOffice-button">
+            <!-- <button class="accept" (click)="acceptoffice()">{{cf.translate('Accept')}}</button> -->
+            <button class="reject" (click)="cancelEventAlarm(i)">{{cf.translate("Ok")}}</button>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,98 @@
+<div class="content text-center pb-2">
+  <div>
+    <button type="button" type="submit" class="btn btn-outline-primary btn-pill btn-sm" (click)="showCreateModal()">
+      <i class="fa fa-plus fa-lg"></i>
+    </button>
+  </div>
+</div>
+<div class="childcheck">
+    <div *ngIf="group.length == 0" class="noItem text-center">
+      {{cf.translate('No groups exist.')}}
+    </div>
+    <ul *ngIf="group.length > 0" class="p-1">
+        <li *ngFor="let item of group" class="p-1">
+          <div class="flexDivRoot">
+            <div (click)="selectGroup(item)" [class]="selected_id == item.id?'icon-div-active':'icon-div-inactive'" style="cursor: pointer;">
+              <i class="fa fa-users"></i>
+            </div>
+            <div (click)="selectGroup(item)" class="p-1" style="width: 80%;cursor: pointer;">
+              {{item.name}}({{item.users}})
+            </div>
+            <a class="p-1" [matMenuTriggerFor]="menu" style="width: 10%" style="cursor: pointer;">
+              <i class="fa fa-ellipsis-v fa-lg"></i>
+            </a>
+            <mat-menu #menu="matMenu">
+              <a class="acc" mat-menu-item (click)="showEditModal(item)">
+                <span>{{cf.translate('edit')}}</span>
+              </a>
+              <a class="acc" mat-menu-item (click)="showDeleteModal(item)">
+                <span>{{cf.translate('delete')}}</span>
+              </a>
+            </mat-menu>
+          </div>
+        </li>
+    </ul>
+</div>
+<!-- loading -->
+<ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '3px' }"></ngx-loading>
+
+<!-- modal -->
+<div bsModal [config]="{backdrop: 'static',  keyboard: false}" #createModal="bs-modal" class="modal fade" tabindex="-1"
+  role="dialog" aria-labelledby="streamModal" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <form *ngIf="formGroup" [formGroup]="formGroup" (submit)="checkForm()&&(formGroup.value['id']?edit():create())">
+        <div class="modal-header">
+          <h4 class="modal-title">{{!formGroup.value.id?cf.translate('Create Group'):cf.translate('Edit Group')}}</h4>
+          <button type="button" class="close" (click)="createModal.hide();" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body modalWidthHeight">
+          <ng-container *ngFor="let item of formSetting">
+            <div *ngIf="item.status!=0" class="form-group row  m-0 mb-4">
+              <label class="fixWidthLabel">{{cf.translate(item.label)}}</label>
+              <div class="fixInputDiv">
+                <input type="text" class="form-control" [placeholder]="cf.translate(item.placeText)"
+                  [formControlName]="item.name" [readonly]="item.status==3">
+                <div
+                  *ngIf="formGroup.get(item.name).invalid && (formGroup.get(item.name).dirty || formGroup.get(item.name).touched)"
+                  class="invalid-feedback" style="display: block;">
+                  {{cf.translate(item.error)}}
+                </div>
+              </div>
+            </div>
+          </ng-container>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary"
+            (click)="createModal.hide()">{{cf.translate("Close")}}</button>
+          <button type="submit"
+            class="btn btn-primary">{{!formGroup.value.id?cf.translate('Create Group'):cf.translate('Edit Group')}}</button>
+        </div>
+      </form>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<!-- warning modal -->
+<div bsModal #warningModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-danger" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">{{cf.translate('Are you sure?')}}</h4>
+        <button type="button" class="close" (click)="warningModal.hide()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>{{cf.translate("This item will be deleted permenantly.")}}</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="warningModal.hide()">{{cf.translate("no")}}</button>
+        <button type="button" class="btn btn-danger"
+          (click)="warningModal.hide();del()">{{cf.translate("yes")}}</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

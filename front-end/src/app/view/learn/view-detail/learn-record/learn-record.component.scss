@@ -1,0 +1,107 @@
+.infoDiv{
+    border: solid 1px #ddd;
+    padding: 10px 20px;
+    background-color: aliceblue;
+}
+.justMiddle{
+    display: flex;
+    align-items: baseline;
+}
+.Lav1{
+    width: 100px;
+    text-align: right;
+    padding-right: 10px;
+}
+.Bt1{
+    width: 100px;
+    height: 36px;
+    color: white;
+    margin-top: 5px;
+}
+.justidy-content-end{
+    justify-content: flex-end;
+}
+.Btn7{
+    width: 32px;
+    height: 32px;
+    padding: 4px;
+    font-size: 22px;
+    border-radius: 5px;
+}
+.bgCoral{
+    background-color: coral;
+    color: white;
+}
+.dAH{
+    color: #6c1987 !important;
+    text-align: right;
+    width: auto;
+    text-decoration: none;
+
+}
+.dAI{
+    color: #116af0 !important;
+    text-align: right;
+    width: auto;
+    text-decoration: none;
+
+}
+.hideP{
+    height: 27px;
+    overflow: hidden;
+}
+.dadiv{
+    display: flex;
+    justify-content: flex-end;
+}
+.decoA{
+    color: white !important;
+    cursor: pointer;
+    text-decoration: underline !important;
+}
+.textDiv{
+
+}
+.qrDiv{
+    display: flex;
+    justify-content: center;
+}
+.textarea11{
+   height: 150px;
+   resize: none;
+   width: 100%;
+   padding: 10px 10px;
+   border: 2.8px solid #116af0;
+   border-radius: 7px;
+   box-shadow: 0px 1px 6px #116af082;
+}
+.infoDiv{
+    border: solid 1px #ddd;
+    padding: 10px 20px;
+    background-color: aliceblue;
+}
+.justMiddle{
+    display: flex;
+    align-items: baseline;
+}
+.Lav1{
+    width: 100px;
+    text-align: right;
+    padding-right: 10px;
+}
+.Bt1{
+    width: 100px;
+    height: 36px;
+    color: white;
+    margin-top: 5px;
+}
+.headerDiv{
+    display: flex;
+    justify-content: space-between;
+}
+
+.newHit{
+    color: #086afd;
+    margin-top: 20px;
+    // font-weight: 400;
+}

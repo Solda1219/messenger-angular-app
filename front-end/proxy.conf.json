@@ -1,0 +1,14 @@
+{
+  "/_api/*": {
+    "target": "http://localhost:3001",
+    "secure": false
+  },
+  "/socket/*": {
+    "target": "http://localhost:3001",
+    "secure": false
+  },
+  "/_public/*": {
+    "target": "http://localhost:3001",
+    "secure": false
+  }
+}

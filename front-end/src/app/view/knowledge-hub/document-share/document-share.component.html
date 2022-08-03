@@ -1,0 +1,104 @@
+<!-- <nav aria-label="breadcrumb">
+    <ol class="breadcrumb mb-0 py-lg-4 py-md-3 py-2">
+        <li class="breadcrumb-item"><a>{{cf.translate('Knowledge Hub')}}</a></li>
+        <li class="breadcrumb-item active" aria-current="page">{{cf.translate('Document Share')}}</li>
+    </ol>
+</nav> -->
+<div class="recoarding-share rounded-10">
+    <div class="recoarding-share-top bg-white shadow">
+        <h3>{{cf.translate('Document Share')}}</h3>
+        <form [formGroup]="formGroup" class="recoarding-share-form mb-0" (submit)="search()">
+            <h4 class="col-12">{{cf.translate('Data Range')}}</h4>
+            <div class="form-group date-pickeer position-relative">
+                <span class="">{{cf.translate('From')}}</span>
+                <input type="text" data-input="" class="datepicker form-control fs-14 py-0 ps-3 pe-3 h-md-45px h-40px flatpickr-input" placeholder="mm/dd/yyyy" formControlName="from" readonly="readonly">
+                <label for="dates" class="position-absolute top-0 right-10px bottom-0 my-auto d-grid align-items-center">
+                    <img src="assets/theme/img/calender.png" alt="" class="h-22px">
+                </label>
+            </div>
+            <div class="form-group date-pickeer position-relative">
+                <span class="">{{cf.translate('To')}}</span>
+                <input type="text" data-input="" class="datepicker form-control fs-14 py-0 ps-3 pe-3 h-md-45px h-40px flatpickr-input" placeholder="mm/dd/yyyy" formControlName="to" readonly="readonly">
+                <label for="dates" class="position-absolute top-0 right-10px bottom-0 my-auto d-grid align-items-center">
+                    <img src="assets/theme/img/calender.png" alt="" class="h-22px">
+                </label>
+            </div>
+            <div class="form-group position-relative custom_form_2">
+                <select name="" class="select_style1 h-46px" formControlName="filter">
+                    <option value="1">{{cf.translate('Read')}}</option>
+                    <option value="2">{{cf.translate('UnRead')}}</option>
+                </select>
+            </div>
+            <div class="form-group position-relative search_bar">
+                <i class="fal fa-search"></i>
+                <input type="search" [placeholder]="cf.translate('Please input key to search.')">
+                <input class="button" value="Search" type="submit">
+            </div>
+        </form>
+    </div>
+    <div class="recoarding-manage-bottom document_share">
+        <div class="table-responsive header-center">
+            <table mat-table [dataSource]="tableList" class="table" matSort>
+                <!-- Checkbox Column -->
+                <ng-container matColumnDef="select" sticky>
+                <th mat-header-cell *matHeaderCellDef class="checkTh">
+                    <mat-checkbox (change)="$event ? masterToggle() : null;"
+                    [checked]="selection.hasValue() && isAllSelected()"
+                    [indeterminate]="selection.hasValue() && !isAllSelected()" [aria-label]="checkboxLabel()">
+                    </mat-checkbox>
+                </th>
+                <td mat-cell *matCellDef="let row" class="checkTh">
+                    <mat-checkbox (click)="$event.stopPropagation()"
+                    (change)="$event ? selection.toggle(row) : null;" [checked]="selection.isSelected(row)"
+                    [aria-label]="checkboxLabel(row)">
+                    </mat-checkbox>
+                </td>
+                </ng-container>
+                <ng-container [matColumnDef]="'No'">
+                <th class="NoTh" mat-header-cell *matHeaderCellDef mat-sort-header> {{cf.translate('No')}} </th>
+                <td class="NoTd" mat-cell *matCellDef="let row; let i = index">
+                    {{ (paginator.pageIndex * paginator.pageSize) + (i + 1)}}
+                </td>
+                </ng-container>
+                <ng-container *ngFor="let rows of tbCol; let i = index">
+                <ng-container *ngIf="specialCol.indexOf(rows)==-1" [matColumnDef]="rows">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> {{cf.translate(tbHeader[i])}} </th>
+                    <td mat-cell *matCellDef="let row"> {{row[rows]}} </td>
+                </ng-container>
+                </ng-container>
+                <!-- action -->
+                <ng-container matColumnDef="Action" stickyEnd>
+                <th mat-header-cell *matHeaderCellDef mat-sort-header class="stickyOperationHeader-sm">
+                    {{cf.translate('Action')}} </th>
+                <td mat-cell *matCellDef="let row" class="stickyOperationCell-sm" style="width: 230px;">
+                    <div class="oprations-icons d-flex justify-content-center">
+                        <a href="javascript:;">
+                            <img src="assets/theme/img/search.png" alt="">
+                            <span>Preview</span>
+                        </a>
+                        <a href="javascript:;">
+                            <img src="assets/theme/img/ico-4.png" alt="">
+                            <span>Download</span>
+                        </a>
+                        <a href="javascript:;" data-bs-toggle="modal" data-bs-target="#deleteModal">
+                            <img src="assets/theme/img/delete.png" alt="">
+                            <span>Delete</span>
+                        </a>
+                        <a href="javascript:;">
+                            <img src="assets/theme/img/like.png" alt="">
+                            <span>Favourite</span>
+                        </a>
+                    </div>
+                </td>
+                </ng-container>
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                <!-- Row shown when there is no matching data. -->
+                <tr class="mat-row" *matNoDataRow>
+                <td class="mat-cell" colspan="4">No Item</td>
+                </tr>
+            </table>
+        </div>  
+        <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>  
+    </div>
+</div>

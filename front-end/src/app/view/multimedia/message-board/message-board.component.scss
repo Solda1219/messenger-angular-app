@@ -1,0 +1,49 @@
+.instant-conference-left{
+    height: 800px;
+    overflow: auto;
+}
+.table-responsive{
+    max-height: 450px;
+    overflow: auto; 
+}
+.activeDept{
+    background-color: #d2691e80
+}
+.activeA{
+    color: blueviolet;
+    cursor: pointer;
+}
+.inactiveA{
+    text-decoration: none;
+}
+.logoImage1{
+    width: 94px !important;
+    top: 20px;
+    left: 35px;
+}
+.activeDept{
+    background-color: chocolate !important;
+}
+.infoDiv{
+    border: solid 1px #ddd;
+    padding: 10px 20px;
+    background-color: aliceblue;
+}
+.justMiddle{
+    display: flex;
+    align-items: baseline;
+}
+.Lav1{
+    width: 100px;
+    text-align: right;
+    padding-right: 10px;
+}
+.Bt1{
+    width: 100px;
+    height: 36px;
+    color: white;
+    margin-top: 5px;
+}
+.justidy-content-end{
+    justify-content: flex-end;
+}

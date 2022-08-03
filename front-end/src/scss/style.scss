@@ -1,0 +1,25 @@
+// If you want to override variables do it here
+@import "variables";
+@import "custom";
+
+// // Import styles
+// @import "~@coreui/coreui/scss/coreui";
+
+// If you want to add something do it here
+@import '~@angular/material/prebuilt-themes/indigo-pink.css';
+@import '~ngx-toastr/toastr';
+@import '../../node_modules/tui-calendar/dist/tui-calendar.min.css';
+// bootstrap style toast
+// or import a bootstrap 4 alert styled design (SASS ONLY)
+// should be after your bootstrap imports, it uses bs4 variables, mixins, functions
+// @import '~ngx-toastr/toastr-bs4-alert';
+
+// if you'd like to use it without importing all of bootstrap it requires
+// @import '~bootstrap/scss/functions';
+// @import '~bootstrap/scss/variables';
+// @import '~bootstrap/scss/mixins';
+// @import '~ngx-toastr/toastr-bs4-alert';
+// // selection
+// @import "~@ng-select/ng-select/themes/default.theme.css";
+// // ... or 
+// @import "~@ng-select/ng-select/themes/material.theme.css";

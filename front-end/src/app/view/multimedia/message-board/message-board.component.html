@@ -1,0 +1,209 @@
+<div class="row mx-0" >
+    <div class="col-md-3 p-3 back-blue">
+        <div class="instant-conference-left">
+            <div class="instant-conference-box" *ngFor="let item of dept_item">
+                <div class="conference-box-main">
+                    <a class="commonA" (click)="item.is_collapse = !item.is_collapse">
+                        <span><img src="assets/theme/img/company-ico.png" alt=""></span>
+                        {{item.dept_name}}({{getCountOfmember(item.id)}})
+                    </a>
+                </div>
+                <div [class]="item.is_collapse?'conference-box-sub border-0 accordion-collapse collapse show':'conference-box-sub border-0 accordion-collapse collapse'">
+                    <div *ngFor="let li of item.children">
+                        <div class="conference-box-main">
+                            <a [class]="selected_dept==li.id?'commonA activeDept':'commonA'" (click)="li.is_collapse = !li.is_collapse;selectDepartment(li)">
+                                <span><img src="assets/theme/img/sub-ico.png" alt=""></span>
+                                {{li.dept_name}}({{getCountOfmember(li.id)}})
+                            </a>
+                        </div>
+                        <div [class]="li.is_collapse?'conference-box-sub border-0 accordion-collapse collapse show':'conference-box-sub border-0 accordion-collapse collapse'">
+                            <a *ngFor="let ch of li.children" [class]="selected_dept==ch.id?'commonA activeDept':'commonA'"  style="padding-left: 120px;" (click)="selectDepartment(ch)">
+                                <span><img src="assets/theme/img/sub-ico.png" alt=""></span>
+                                {{ch.dept_name}}({{getCountOfmember(ch.id)}})
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+    <div class="col-md-9 pt-md-5 pt-4 mt-lg-5 mt-md-4 mt-0">
+        <div class="meadting_box bg-white rounded-10 shadow" style="padding: 10px 35px;">
+            <form class="recoarding-share-form  m-4 display-block">
+                <div class="form-group position-relative search_bar ml-auto">
+                    <i class="fal fa-search"></i>
+                    <input type="search" [placeholder]="cf.translate('Please input key value.')" [ngModelOptions]="{standalone: true}" [(ngModel)]="key">
+                    <input class="button custom-search-btn" value="Search" type="buttton" (click)="startInterval()" readonly>
+                </div>
+            </form>
+
+            <div class="small_radio_btns row icon-list" style="color: black !important;">
+                <div class="col-auto d-flex align-items-center">
+                    <img src="assets/theme/img/icon_online.png">
+                    <label>線上</label>
+                </div>
+                <div class="col-auto d-flex align-items-center">
+                    <img src="assets/theme/img/icon_mobile.png">
+                    <label>線上</label>
+                </div>
+                <div class="col-auto d-flex align-items-center">
+                    <img src="assets/theme/img/icon_web.png">
+                    <label>線上</label>
+                </div>
+                <div class="col-auto d-flex align-items-center">
+                    <img src="assets/theme/img/icon_busy.png">
+                    <label>忙碌</label>
+                </div>
+                <div class="col-auto d-flex align-items-center">
+                    <img src="assets/theme/img/icon_away.png">
+                    <label>离开</label>
+                </div>
+                <div class="col-auto d-flex align-items-center">
+                    <img src="assets/theme/img/icon_offline.png">
+                    <label>离开</label>
+                </div>
+                <div class="col-auto d-flex align-items-center">
+                    <img src="assets/theme/img/icon_open.png">
+                    <label>可以随时开会</label>
+                </div>
+                <div class="col-auto d-flex align-items-center">
+                    <img src="assets/theme/img/icon_meeting.png">
+                    <label>會議中</label>
+                </div>
+            </div>
+        </div>
+        <div class="instant-conference-right">
+            <div class="recoarding-manage-bottom row back-none p-0 mt-3" style="display: flex; justify-content: center;">
+                <div class="col-md-6">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th>{{cf.translate("Online Status")}}</th>
+                                <th>{{cf.translate("Name")}}</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <!-- <div *ngIf="user_item1.length==0" style="text-align: center;">{{cf.translate('No items')}}</div> -->
+                            <tr *ngFor="let item of user_item1; let i = index">
+                                <td>
+                                    <img *ngIf="item.status=='Online'" src="assets/theme/img/icon_online.png">
+                                    <img *ngIf="item.status=='Mobile'" src="assets/theme/img/icon_mobile.png">
+                                    <img *ngIf="item.status=='Be Right Back'" src="assets/theme/img/icon_web.png">
+                                    <img *ngIf="item.status=='Busy'" src="assets/theme/img/icon_busy.png">
+                                    <img *ngIf="item.status=='Away'" src="assets/theme/img/icon_away.png">
+                                    <img *ngIf="item.status=='Offline'" src="assets/theme/img/icon_offline.png">
+                                    <img *ngIf="item.status=='Office Open'" src="assets/theme/img/icon_open.png">
+                                    <img *ngIf="item.status=='In Meeting'" src="assets/theme/img/icon_meeting.png">
+                                </td>
+                                <td>
+                                   <a class="activeA" [matMenuTriggerFor]="settingsMenu">{{item.nativeName}}</a>
+                                   <mat-menu #settingsMenu class="lngdropdown">
+                                    <menu mat-menu-item class="m-0"><a class="dropdown-item cursor" (click)="formSet(item)" data-bs-toggle="modal" data-bs-target="#leaveMsg">{{cf.translate('Leave message')}}</a></menu>
+                                    <menu mat-menu-item class="m-0"><a class="dropdown-item cursor" (click)="enteroffice(item)">{{cf.translate('Enter weboffice')}}</a></menu>
+                                   </mat-menu>
+                                </td> 
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th>{{cf.translate("Online Status")}}</th>
+                                <th>{{cf.translate("Name")}}</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <!-- <div *ngIf="user_item2.length==0" style="text-align: center;">{{cf.translate('No items')}}</div> -->
+                            <tr *ngFor="let item of user_item2; let i = index">
+                                <td>
+                                    <img *ngIf="item.status=='Online'" src="assets/theme/img/icon_online.png">
+                                    <img *ngIf="item.status=='Mobile'" src="assets/theme/img/icon_mobile.png">
+                                    <img *ngIf="item.status=='Be Right Back'" src="assets/theme/img/icon_web.png">
+                                    <img *ngIf="item.status=='Busy'" src="assets/theme/img/icon_busy.png">
+                                    <img *ngIf="item.status=='Away'" src="assets/theme/img/icon_away.png">
+                                    <img *ngIf="item.status=='Offline'" src="assets/theme/img/icon_offline.png">
+                                    <img *ngIf="item.status=='Office Open'" src="assets/theme/img/icon_open.png">
+                                    <img *ngIf="item.status=='In Meeting'" src="assets/theme/img/icon_meeting.png">
+                                </td>
+                                <td>
+                                    <a class="activeA" [matMenuTriggerFor]="settingsMenu">{{item.nativeName}}</a>
+                                    <mat-menu #settingsMenu class="lngdropdown">
+                                         <menu mat-menu-item class="m-0"><a class="dropdown-item cursor" (click)="formSet(item)" data-bs-toggle="modal" data-bs-target="#leaveMsg">{{cf.translate('Leave message')}}</a></menu>
+                                         <menu mat-menu-item class="m-0"><a class="dropdown-item cursor" (click)="enteroffice(item)">{{cf.translate('Enter weboffice')}}</a></menu>
+                                    </mat-menu>
+                                </td>
+                            </tr> 
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- leave message modal -->
+<div class="modal fade recording-form-modal publish_modal" id="leaveMsg" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body">
+                <p class="text-right">
+                    <a data-bs-dismiss="modal" class="cursor" style="background-color: #ffffff00 !important;
+                    color: #353b41 !important;"><i class="fa fa-remove"></i></a>
+                </p>
+                <div class="share-recording-modal p-md-4 p-3">
+                    <h3 class="text-center">{{cf.translate("Leave message to him")}}</h3>
+                    <div class="recording-modal row">
+                        <form #ngForm="ngForm" [formGroup]="formGroup" (submit)="leaveMessage()">
+                            <div class="infoDiv">
+                                <div class="row m-0">
+                                    <div class="col-12 custom_form_2 m-0 justMiddle">
+                                        <label class="text-primary fs-md-15 fs-14 pb-2 Lav1">{{cf.translate('Subject')}}</label>
+                                        <input formControlName="title" [class]="ngForm.submitted&&formGroup.controls['title'].errors?'form-error':''">
+                                    </div>
+                                </div>
+                                <div class="row m-0">
+                                    <div class="col-12 custom_form_2 m-0 justMiddle">
+                                        <label class="text-primary fs-md-15 fs-14 pb-2 Lav1">{{cf.translate('Content')}}</label>
+                                        <textarea formControlName="content"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12 modal_btns d-flex justidy-content-end mt-md-5 mt-3">
+                                <button type="submit" class="bg-primary btn2 no-border">{{cf.translate("Leave message")}}</button>
+                                <a class="bg-secondary ms-2" href="javascript:;" data-bs-dismiss="modal">{{cf.translate("Cancel")}}</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- call modal -->
+<a #callTriger data-bs-toggle="modal" data-bs-target="#call" style="display: none;">ttt</a>
+<div class="modal fade recording-form-modal publish_modal disBackDrop" id="call" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" style="pointer-events: none !important;">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body" *ngIf="modal_src">
+                <!-- <p class="text-right">
+                    <a data-bs-dismiss="modal" class="cursor" style="background-color: #ffffff00 !important;
+                    color: #353b41 !important;"><i class="fa fa-remove"></i></a>
+                </p> -->
+                <div class="share-recording-modal p-md-4 p-3">
+                    <h3 class="text-center">Waiting for {{modal_src.nativeName}} to accept the application...</h3>
+                    <div class="recording-modal row">
+                        <div class="col-md-12 modal_btns d-flex justidy-content-end mt-md-5 mt-3">
+                            <a #cancelCall class="bg-secondary ms-2 commonA cursor text-white" (click)="canceloffice()" data-bs-dismiss="modal">{{cf.translate("Cancel")}}</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

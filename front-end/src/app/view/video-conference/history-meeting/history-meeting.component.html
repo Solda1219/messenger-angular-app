@@ -1,0 +1,698 @@
+<div class="recoarding-share dept-create  recoarding-manage  rounded-10 mt-4">
+    <div class="recoarding-share-top bg-white shadow">
+        <h3>{{cf.translate('History')}}</h3>
+        <div class="recoarding-share-form row mb-0">
+            <div class="col-md-6 col-sm-12 d-flex flex-wrap mb-2">
+                <div class="form-group date-pickeer position-relative pr-2">
+                    <span class="">{{cf.translate('From')}}</span>
+                    <input type="text" id="dates" data-input="" class="datepicker form-control fs-14 py-0 ps-3 pe-3 h-md-45px h-40px flatpickr-input" placeholder="03/10/2014" [(ngModel)]="param.from" readonly="readonly">
+                    <label for="dates" class="position-absolute top-0 right-10px bottom-0 my-auto d-grid align-items-center">
+                        <img src="assets/theme/img/calender.png" alt="" class="h-22px">
+                    </label>
+                </div>
+                <div class="form-group date-pickeer position-relative pr-2">
+                    <span class="">{{cf.translate('To')}}</span>
+                    <input type="text" id="dates1" data-input="" class="datepicker form-control fs-14 py-0 ps-3 pe-3 h-md-45px h-40px flatpickr-input" placeholder="03/10/2014" [(ngModel)]="param.to" readonly="readonly">
+                    <label for="dates1" class="position-absolute top-0 right-10px bottom-0 my-auto d-grid align-items-center">
+                        <img src="assets/theme/img/calender.png" alt="" class="h-22px">
+                    </label>
+                </div>
+            </div>
+            <div class="col-md-6 col-sm-12 d-flex flex-wrap mb-2">
+                <div class="form-group position-relative" style="width: 30%;">
+                    <select class="select_style_2" placeholder="03/10/2014" [(ngModel)]="param.type">
+                       <option [value]="0">{{cf.translate('All')}}</option>
+                       <option [value]="1">{{cf.translate("Hosted")}}</option>
+                       <option [value]="2">{{cf.translate("Invited")}}</option>
+                    </select>
+                </div>
+                <div class="form-group position-relative search_bar" style="width: 68%;">
+                    <i class="fal fa-search"></i>
+                    <input type="search" id="gsearch" name="gsearch" placeholder="Title" [(ngModel)]="keyvalue">
+                    <input class="button" value="Search" type="buttton" (click)="key=keyvalue;startInterval()">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="table-responsive row mx-0 instant-conference" style="padding:40px;padding:40px">
+    <table class="table table-striped" [svData]="itemList" #sv="svDataTable" [svRowsOnPage]="5" svSortBy="name"
+      svSortOrder="asc" style="width: 100%;">
+      <div class="col-md-12 pt-md-5 pt-0 mt-lg-5 mt-md-4 mt-0">
+        <div class="instant-conference-right">
+            <div class="recoarding-manage-bottom p-0">
+                <div *ngIf="itemList.length>0">
+                    <div *ngFor="let item of sv.data;let i=index;" class="row m-0 bg-newBlue rounded-3 p-5 meeting-info-div mb-2">
+                        <div class="dadiv">
+                            <a *ngIf="item.meetingType==0" class="dAH" style="color:#dc3545 !important">{{cf.translate("Instant meeting")}}</a>
+                            <a *ngIf="item.meetingType==1" class="dAH" style="color:#dc3545 !important">{{cf.translate("Schedule meeting")}}</a>
+                        </div>  
+                        <div class="dadiv">
+                            <a *ngIf="item.is_host" class="dAH">{{cf.translate("To be hosted")}}</a>
+                            <a *ngIf="!item.is_host" class="dAH">{{cf.translate("To be invited")}}</a>
+                        </div>  
+                        <!-- <div class="dadiv">
+                            <a class="dAH cursor" style="color: red !important;" (click)="modal_src=item" data-bs-toggle="modal" data-bs-target="#reasonModal">{{cf.translate('Cancelled')}}</a>
+                        </div>   -->
+                        <div class="row m-0">
+                            <div class="col-md-3">
+                                <h4>{{cf.translate('Meeting Time')}}</h4>
+                                <p>{{displayTimeOnly(item.start_time)}}</p>
+                                <p><i class="fa fa-arrows-v"></i></p>
+                                <p>{{displayTimeOnly(item.ended_at)}}</p>
+                            </div>
+                            <div class="col-md-9">
+                                <h5>{{item.email}}'s Meeting</h5>
+                                <p>
+                                    <span class="text-primary">{{cf.translate("Subject")}} : </span>
+                                    <span>{{item.title}}</span>
+                                </p>
+                                <p>
+                                    <span>{{cf.translate("Start Time")}} : </span>
+                                    <span>{{displayTime(item.start_time)}}</span>
+                                </p>
+                                <p>
+                                    <span>{{cf.translate("Over Time")}} : </span>
+                                    <span>{{displayTime(item.ended_at)}}</span>
+                                </p>
+                                <p>
+                                    <span>{{cf.translate("Duration")}} : </span>
+                                    <span>{{item.duration}}{{cf.translate('min')}}</span>
+                                </p>
+                                <p>
+                                    <span>{{cf.translate("Organizer")}} : </span>
+                                    <span>{{item.email}}</span>
+                                </p>
+                                <p>
+                                    <span>{{cf.translate("Meeting ID")}} : </span>
+                                    <span>{{item.meetingId}}</span>
+                                </p>
+                                <p class="hideP">
+                                    <span>{{cf.translate("Meeting URL")}} : </span>
+                                    <span style="word-break: break-all;"><a>{{item.meetingURL}}</a></span>
+                                </p> 
+                            </div>
+                        </div>
+                        <div class="row ml-0 mr-0 mt-3 display-block text-right">
+                            <div class="form-group position-relative form-btns width-auto">
+                                <a class="seemore_btn search-bar-btn text-white commonA" [matMenuTriggerFor]="settingsMenu">{{cf.translate("Restart Meeting")}}</a>
+                                <mat-menu #settingsMenu class="lngdropdown">
+                                    <menu mat-menu-item class="m-0"><a class="dropdown-item cursor" (click)="resume(item)">{{cf.translate('Resume meeting')}}</a></menu>
+                                    <menu mat-menu-item class="m-0"><a class="dropdown-item cursor" (click)="createAgain(item)">{{cf.translate('Create again')}}</a></menu>
+                                </mat-menu>
+                                <a class="seemore_btn search-bar-btn text-white commonA" (click)="playback(item)">{{cf.translate("Playback")}}</a>
+                                <a *ngIf="item.meetingType==0" class="seemore_btn search-bar-btn text-white commonA" (click)="formSet(item)" data-bs-toggle="modal" data-bs-target="#detailForInstant">{{cf.translate('Detail')}}</a>
+                                <a *ngIf="item.meetingType==1" class="seemore_btn search-bar-btn text-white commonA" (click)="SformSet(item)" data-bs-toggle="modal" data-bs-target="#detailForSchedule">{{cf.translate('Detail')}}</a>
+                                <!-- <a class="seemore_btn search-bar-btn text-white commonA" (click)="modal_src=item" data-bs-toggle="modal" data-bs-target="#deleteModal">{{cf.translate('Cancel')}}</a> -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+      </div>
+      <sv-bootstrap-paginator [rowsOnPageSet]="[5, 10, 25]"></sv-bootstrap-paginator>
+    </table>
+</div>      
+<!-- edit modal for instant meeting-->
+<div class="modal fade recording-form-modal publish_modal" id="detailForInstant" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body" *ngIf="modal_src">
+                <div class="share-recording-modal p-md-4 p-3">
+                    <h3>{{cf.translate("Meeting info")}}</h3>
+                    <form #ngForm="ngForm" class="recording-modal row" [formGroup]="formGroup" (submit)="edit()">
+                        <div class="col-md-12 custom_form_2 mb-2">
+                            <label for="phonenumber" class="text-primary fs-14 pb-1">{{cf.translate('Subject')}}*</label>
+                            <input type="text" formControlName="title" [class]="ngForm.submitted&&formGroup.controls['title'].errors?'form-error':''" readonly>
+                        </div>
+
+                        <div class="row m-0">
+                            <div *ngIf="!modal_src.started_at"  class="col-md-12 pl-0">
+                                <div class="col-6 custom_form_2 mb-md-3 mb-2">
+                                    <label for="phonenumber" class="text-primary fs-md-15 fs-14 pb-2">{{cf.translate('Duration')}}</label>
+                                    <div class="row">
+                                        <div class="col-md-6 col-12 position-relative mb-md-0 mb-md-3 mb-2">
+                                            <div class="form-group position-relative">
+                                                <input type="text" formControlName="hour" readonly>
+                                                <label for="phonenumber" class="text-primary fs-md-15 fs-14 pb-2" 
+                                                style="position: absolute; right: 8px;top: 11px;">{{cf.translate('Hour')}}</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 col-12 position-relative mb-md-0 mb-md-3 mb-2">
+                                            <div class="form-group position-relative">
+                                                <input type="text" formControlName="min" readonly>
+                                                <label for="phonenumber" class="text-primary fs-md-15 fs-14 pb-2" 
+                                                style="position: absolute; right: 8px;top: 11px;">{{cf.translate('min')}}</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12 custom_form_2 mb-md-3 mb-2">
+                            <label for="phonenumber" class="text-primary fs-md-15 fs-14 pb-2">{{cf.translate('Invitees')}}</label>
+                            <textarea name="" readonly>{{selected_text}}</textarea>
+                        </div>
+                        <div class="col-12 custom_form_2 mb-md-3 mb-2">
+                            <label class="text-primary fs-md-15 fs-14 pb-2">{{cf.translate('Agenda')}}</label>
+                            <textarea spellcheck="false" formControlName="agenda" readonly></textarea>
+                        </div>
+                        <div class="col-12 custom_form_2 mb-md-3 mb-2">
+                            <label class="text-primary fs-md-15 fs-14 pb-2">{{cf.translate('Joint Browsing URL')}}</label>
+                            <input type="text" placeholder="" formControlName="default_joint_browsing_page" [class]="ngForm.submitted&&formGroup.controls['default_joint_browsing_page'].errors?'form-error':''" readonly>
+                        </div>
+                        <div class="col-12 row custom_form_2 mb-md-3 mb-2 mt-2">
+                            <div class="col-md-6 col-12 custom_radio_2 mb-md-0 mb-2">
+                                <input type="checkbox" id="yes2" formControlName="auto_recording">
+                                <label class="text-black" for="yes2">{{cf.translate("Auto Recording")}}</label>
+                            </div>
+                            <div class="col-md-6 col-12 custom_radio_2 mb-md-0 mb-2">
+                                <input type="checkbox" id="yes3" formControlName="auto_extension">
+                                <label class="text-black" for="yes3">{{cf.translate("Auto extention")}}</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6 d-md-block d-none"></div>
+                        <div class="col-md-6 modal_btns d-flex justidy-content-end mt-md-5 mt-3" style="justify-content: flex-end;">
+                            <!-- <button type="submit" class="bg-primary btn2 no-border">{{cf.translate('Confirm')}}</button> -->
+                            <a class="bg-secondary ms-2 text-white commonA" data-bs-dismiss="modal">{{cf.translate('Cancel')}}</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>       <!-- Vendor JS Files -->
+<!-- edit modal for schedule meeting-->
+<div class="modal fade recording-form-modal publish_modal" id="detailForSchedule" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" style="max-width: 1000px;">
+        <div class="modal-content">
+            <div class="modal-body" *ngIf="modal_src">
+                <form #ngForm="ngForm" [formGroup]="SformGroup" (submit)="create()">
+                    <div class="row mx-0 schedule calender_part_main justify-content-center position-relative overflow-hidden">
+                        <!-- <img class="bg-curve" src="assets/theme/img/bg-img.png" alt=""> -->
+                        <div>
+                            <div class="row schedule_inner bg-white rounded-10 shadow" style="padding:60px 0px">
+                                <div class="col-12">
+                                    <h3>{{cf.translate('Meeting info')}}</h3>
+                                </div>
+                                <div class="col-12">
+                                    <div class="row celender_form">
+                                        <div class="col-12 custom_form_2 mb-md-3 mb-2">
+                                            <label class="text-primary fs-md-15 fs-14 pb-2">{{cf.translate('Meeting Title')}}*</label>
+                                            <input type="text" formControlName="title" [placeholder]="cf.translate('Meeting Title')" readonly>
+                                        </div>
+                                        <div class="col-12 custom_form_2 mb-md-3 mb-2">
+                                            <label for="phonenumber" class="text-primary fs-md-15 fs-14 pb-2">{{cf.translate('Resume Meeting')}}</label>
+                                            <div class="row">
+                                                <div class="col-auto col-auto custom_radio_2 mb-md-0 mb-2">
+                                                    <input type="radio" id="yes" [value]="1" formControlName="resume">
+                                                    <label class="text-black" for="yes">{{cf.translate('Yes')}}</label>
+                                                </div>
+                                                <div class="col-auto col-auto custom_radio_2 mb-md-0 mb-2">
+                                                    <input type="radio" id="no" [value]="0" formControlName="resume">
+                                                    <label class="text-black" for="no">{{cf.translate('No')}}</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- <div *ngIf="formGroup.value['resume']==1" class="col-12 celender_form_top_btns mt-md-4 mt-0 mb-md-3 mb-2 d-flex flex-wrap justify-content-between">
+                                            <a class="me-md-2 no-border cursor" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#recordingModal" style="width: auto;height: fit-content !important;">{{cf.translate("Select Recording")}}</a>
+                                            <div *ngIf="recordingInfo" class="ms-md-2 infoDiv">
+                                                <div>{{recordingInfo.fileName}}</div>
+                                                <div>{{recordingInfo.fileSize}}</div>
+                                            </div>
+                                        </div> -->
+                                        <div class="row m-0">
+                                            <div class="col-md-9 custom_form_2 m-0 pl-0">
+                                                <label for="phonenumber" class="text-primary fs-md-15 fs-14 pb-2">{{cf.translate('Start Time')}}</label>
+                                                <div class="row">
+                                                    <div class="col-md-4 col-12 position-relative mb-md-0 mb-md-3 mb-2">
+                                                        <input id="dates1" type="text" data-input="" class="datepicker form-control fs-13 py-0 ps-2 pe-2 flatpickr-input" placeholder="mm-dd-yyyy" formControlName="startTime" readonly="readonly">
+                                                        <label for="dates1" class="position-absolute top-0 right-25px bottom-0 my-auto d-grid align-items-center">
+                                                            <img src="assets/theme/img/calender.png" alt="" class="h-20px">
+                                                        </label>
+                                                    </div>
+                                                    <div class="col-md-4 col-12 position-relative mb-md-0 mb-md-3 mb-2">
+                                                        <div class="form-group position-relative">
+                                                            <input formControlName="hour" type="text" readonly>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4 col-12 position-relative mb-md-0 mb-0">
+                                                        <div class="form-group position-relative">
+                                                            <input formControlName="min" type="text" readonly>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3 custom_form_2 m-0 p-0">
+                                                <label for="phonenumber" class="text-primary fs-md-15 fs-14 pb-2">{{cf.translate('Duration')}}</label>
+                                                <div class="form-group position-relative">
+                                                    <input formControlName="duration" type="text" readonly>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-12 custom_form_2 mb-md-3 mb-2 mt-2">
+                                            <div class="row">
+                                                <div class="col-md-4">
+                                                    <div class="row">
+                                                        <label for="phonenumber" class="text-primary col-12 fs-15 pb-2">{{cf.translate('Recording')}}</label>
+                                                        <div class="col-auto col-auto custom_radio_2 mb-md-0 mb-2">
+                                                            <input type="radio" id="yes5" [value]="1" formControlName="auto_recording">
+                                                            <label class="text-black" for="yes5">{{cf.translate('Yes')}}</label>
+                                                        </div>
+                                                        <div class="col-auto col-auto custom_radio_2 mb-md-0 mb-2">
+                                                            <input type="radio" id="no5" [value]="0"  formControlName="auto_recording">
+                                                            <label class="text-black" for="no5">{{cf.translate('No')}}</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="row">
+                                                        <label for="phonenumber" class="text-primary col-12 fs-15 pb-2">{{cf.translate("Forum Mode")}}</label>
+                                                        <div class="col-auto col-auto custom_radio_2 mb-md-0 mb-2">
+                                                            <input type="radio" id="yes6" [value]="1" formControlName="all_questioner">
+                                                            <label class="text-black" for="yes6">{{cf.translate('Yes')}}</label>
+                                                        </div>
+                                                        <div class="col-auto col-auto custom_radio_2 mb-md-0 mb-2">
+                                                            <input type="radio" id="no6" [value]="0" formControlName="all_questioner">
+                                                            <label class="text-black" for="no6">{{cf.translate('No')}}</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="row">
+                                                        <label for="phonenumber" class="text-primary col-12 fs-15 pb-2">{{cf.translate("Auto extention")}}</label>
+                                                        <div class="col-auto col-auto custom_radio_2 mb-md-0 mb-2">
+                                                            <input type="radio" id="yes7" [value]="1" formControlName="auto_extension">
+                                                            <label class="text-black" for="yes7">{{cf.translate('Yes')}}</label>
+                                                        </div>
+                                                        <div class="col-auto col-auto custom_radio_2 mb-md-0 mb-2">
+                                                            <input type="radio" id="no7" [value]="0" formControlName="auto_extension">
+                                                            <label class="text-black" for="no7">{{cf.translate('No')}}</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-12 custom_form_2 mb-md-3 mb-2">
+                                            <label class="text-primary fs-md-15 fs-14 pb-2">{{cf.translate('Joint Browsing URL')}}</label>
+                                            <input type="text" placeholder="" formControlName="default_joint_browsing_page" [class]="ngForm.submitted&&formGroup.controls['default_joint_browsing_page'].errors?'form-error':''">
+                                        </div>
+                                        <!-- <div class="col-12 custom_form_2 mb-md-3 mb-2">
+                                            <label  class="text-primary fs-md-15 fs-14 pb-2">{{cf.translate('Host')}}</label>
+                                            <input type="text" placeholder="" formControlName="mcuIp" [class]="ngForm.submitted&&formGroup.controls['mcuIp'].errors?'form-error':''">
+                                        </div> -->
+                                        <div class="col-12 custom_form_2 mb-md-3 mb-2">
+                                            <label class="text-primary fs-md-15 fs-14 pb-2">{{cf.translate('Agenda')}}</label>
+                                            <textarea spellcheck="false" formControlName="agenda"></textarea>
+                                        </div>
+                                        <!-- <div class="col-12 custom_form_2 mb-md-3 mb-2">
+                                            <label for="phonenumber" class="text-primary fs-md-15 fs-14 pb-2">{{cf.translate('Host')}}</label>
+                                            <div class="row">
+                                                <div class="col-md-12 col-12 position-relative">
+                                                    <div class="form-group position-relative">
+                                                        <ng-multiselect-dropdown class="st"
+                                                            [ngModelOptions]="{standalone: true}"
+                                                            [placeholder]="cf.translate('select invitees')"
+                                                            [settings]="dropdownSettingsOfUser"
+                                                            [data]="addressBook"
+                                                            [(ngModel)]="selectedUsers"
+                                                            (onSelect)="onItemSelect($event)"
+                                                            (onSelectAll)="onSelectAll($event)"
+                                                            (onDeSelect)="onItemDeselect($event)"
+                                                            >
+                                                        </ng-multiselect-dropdown>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div> -->
+                                        <div class="col-12 custom_form_2 mb-md-3 mb-2">
+                                            <label class="text-primary fs-md-15 fs-14 pb-2">{{cf.translate('Invite list')}}</label>
+                                            <textarea spellcheck="false" readonly>{{selected_text}}</textarea>
+                                        </div>
+                                        <div class="col-12 custom_form_2 mb-md-3 mb-2">
+                                            <label for="phonenumber" class="text-primary fs-md-15 fs-14 pb-2">{{cf.translate('Repeat')}}</label>
+                                            <div class="row">
+                                                <div class="col-md-6 col-12 position-relative mb-md-0 mb-md-3 mb-2 row">
+                                                    <div class="col-auto col-auto custom_radio_2 mb-md-0 mb-2">
+                                                        <input type="radio" id="yes8" [value]="1" formControlName="repeat" (change)="setDateDiv()">
+                                                        <label class="text-black" for="yes8">{{cf.translate('Yes')}}</label>
+                                                    </div>
+                                                    <div class="col-auto col-auto custom_radio_2 mb-md-0 mb-2">
+                                                        <input type="radio" id="no8" [value]="0" formControlName="repeat">
+                                                        <label class="text-black" for="no8">{{cf.translate('No')}}</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div *ngIf="SformGroup.value.repeat==1" class="col-12 custom_form_2 mb-md-3 mb-2">
+                                            <div class="row recurDiv">
+                                                <div class="col-md-4 col-12 position-relative mb-md-0 mb-md-3 mb-2 row  contentItems-right">
+                                                    <label for="phonenumber" class="col-auto text-primary fs-md-15 fs-14 pb-2">{{cf.translate('Recurring')}}</label>
+                                                    <div class="col-auto">
+                                                        <div class="custom_radio_2 mb-md-0 mb-2">
+                                                            <input type="radio" id="re1" [value]="0" formControlName="recure_mode">
+                                                            <label class="text-black" for="re1">{{cf.translate('Day')}}</label>
+                                                        </div>
+                                                        <div class="custom_radio_2 mb-md-0 mb-2">
+                                                            <input type="radio" id="re2" [value]="1" formControlName="recure_mode">
+                                                            <label class="text-black" for="re2">{{cf.translate('Week')}}</label>
+                                                        </div>
+                                                        <div class="custom_radio_2 mb-md-0 mb-2">
+                                                            <input type="radio" id="re3" [value]="2" formControlName="recure_mode">
+                                                            <label class="text-black" for="re3">{{cf.translate('Month')}}</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div *ngIf="SformGroup.value.recure_mode==0" class="col-md-8 col-12 position-relative mb-md-0 mb-md-3 mb-2 row  chDiv1">
+                                                    <div class="col-auto">
+                                                        <div class="custom_radio_2 mb-md-0 mb-2">
+                                                            <input type="radio" id="dm1" [value]="0" formControlName="day_mode">
+                                                            <label class="text-black" for="dm1">{{cf.translate('Every Day')}}</label>
+                                                        </div>
+                                                        <div class="flexDiv">
+                                                            <div class="custom_radio_2 mb-md-0 mb-2">
+                                                                <input type="radio" id="dm2" [value]="1" formControlName="day_mode">
+                                                                <label class="text-black" for="dm2">{{cf.translate('Every')}}</label>
+                                                            </div>
+                                                            <div class="flexDiv">
+                                                                <input class="smform1" type="number" min="1" formControlName="day_dur">
+                                                                <label class="text-black" for="number">{{cf.translate('Days')}}</label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div *ngIf="SformGroup.value.recure_mode==1" class="col-md-8 col-12 position-relative mb-md-0 mb-md-3 mb-2 row  chDiv1">
+                                                    <div class="col-auto">
+                                                        <div class="flexDiv">
+                                                            <label class="text-black" for="number">{{cf.translate('Every')}}</label>
+                                                            <input class="smform1" type="number" min="1" formControlName="week_dur">
+                                                            <label class="text-black" for="number">{{cf.translate('Week(s)on')}}:</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-auto">
+                                                        <div class="flexDiv">
+                                                            <div class="custom_radio_2 mb-md-0 mb-2 mr-2">
+                                                                <input type="checkbox" id="sun" [ngModelOptions]="{standalone: true}" [(ngModel)]="days.sun">
+                                                                <label class="text-black" for="sun">Sun</label>
+                                                            </div>
+                                                            <div class="custom_radio_2 mb-md-0 mb-2 mr-2">
+                                                                <input type="checkbox" id="mon" [ngModelOptions]="{standalone: true}" [(ngModel)]="days.mon">
+                                                                <label class="text-black" for="mon">Mon</label>
+                                                            </div>
+                                                            <div class="custom_radio_2 mb-md-0 mb-2 mr-2">
+                                                                <input type="checkbox" id="tue" [ngModelOptions]="{standalone: true}" [(ngModel)]="days.tue">
+                                                                <label class="text-black" for="tue">Tue</label>
+                                                            </div>
+                                                            <div class="custom_radio_2 mb-md-0 mb-2 mr-2">
+                                                                <input type="checkbox" id="wed" [ngModelOptions]="{standalone: true}" [(ngModel)]="days.wed">
+                                                                <label class="text-black" for="wed">Wed</label>
+                                                            </div>
+                                                            <div class="custom_radio_2 mb-md-0 mb-2 mr-2">
+                                                                <input type="checkbox" id="thu" [ngModelOptions]="{standalone: true}" [(ngModel)]="days.thu">
+                                                                <label class="text-black" for="thu">Thu</label>
+                                                            </div>
+                                                            <div class="custom_radio_2 mb-md-0 mb-2 mr-2">
+                                                                <input type="checkbox" id="fri" [ngModelOptions]="{standalone: true}" [(ngModel)]="days.fri">
+                                                                <label class="text-black" for="fri">Fri</label>
+                                                            </div>
+                                                            <div class="custom_radio_2 mb-md-0 mb-2">
+                                                                <input type="checkbox" id="sat" [ngModelOptions]="{standalone: true}" [(ngModel)]="days.sat">
+                                                                <label class="text-black" for="sat">Sat</label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div *ngIf="SformGroup.value.recure_mode==2" class="col-md-8 col-12 position-relative mb-md-0 mb-md-3 mb-2 row  chDiv1">
+                                                    <div class="flexDiv">
+                                                        <div class="custom_radio_2 mb-md-0 mb-2">
+                                                            <input type="radio" id="month_method1" [value]="0" formControlName="month_method">
+                                                            <label class="text-black" for="month_method1"></label>
+                                                        </div>
+                                                        <div class="flexDiv" style="padding-top: 14px;">
+                                                            <label class="text-black" for="number">{{cf.translate('Day')}}</label>
+                                                            <input class="smform1" type="number" min="1" formControlName="m_date">
+                                                            <label class="text-black" for="number">{{cf.translate('of every')}}</label>
+                                                            <input class="smform1" type="number" min="1" formControlName="m_month">
+                                                            <label class="text-black" for="number">{{cf.translate('Months')}}</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="flexDiv">
+                                                        <div class="custom_radio_2 mb-md-0 mb-2">
+                                                            <input type="radio" id="month_method2" [value]="1" formControlName="month_method">
+                                                            <label class="text-black" for="month_method2"></label>
+                                                        </div>
+                                                        <div class="flexDiv" style="padding-top: 14px;">
+                                                            <select class="smform1" formControlName="m_week" style="width: 95px;">
+                                                                <option [value]="0">{{cf.translate('first')}}</option>
+                                                                <option [value]="1">{{cf.translate('second')}}</option>
+                                                                <option [value]="2">{{cf.translate('third')}}</option>
+                                                                <option [value]="3">{{cf.translate('fourth')}}</option>
+                                                                <option [value]="4">{{cf.translate('last')}}</option>
+                                                            </select>
+                                                            <select class="smform1" formControlName="m_day" style="width: 70px;">
+                                                                <option [value]="0">{{cf.translate('Sun')}}</option>
+                                                                <option [value]="1">{{cf.translate('Mon')}}</option>
+                                                                <option [value]="2">{{cf.translate('Tue')}}</option>
+                                                                <option [value]="3">{{cf.translate('Wed')}}</option>
+                                                                <option [value]="4">{{cf.translate('Thu')}}</option>
+                                                                <option [value]="5">{{cf.translate('Fri')}}</option>
+                                                                <option [value]="6">{{cf.translate('Sat')}}</option>
+                                                            </select>
+                                                            <label class="text-black" for="number">{{cf.translate('of every')}}</label>
+                                                            <input class="smform1" type="number" min="1" formControlName="m_week_month">
+                                                            <label class="text-black" for="number">{{cf.translate('Months')}}</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row recurDiv">
+                                                <div class="col-auto mb-md-0 mb-md-3 mb-2 row  contentItems-right">
+                                                    <label for="phonenumber" class="col-auto text-primary fs-md-15 fs-14 pb-2">{{cf.translate('Recurring range')}}:</label>
+                                                </div>
+                                                <div class="col-md-8 col-12 mb-md-0 mb-md-3 mb-2 row">
+                                                    <div class="flexDiv">
+                                                        <label for="phonenumber" class="col-auto text-primary fs-md-15 fs-14 pb-2" style="margin-right: 27px; margin-top:4px">{{cf.translate('Start by')}}</label>
+                                                        <div class="position-relative mb-md-0 mb-md-3 mb-2 datepicker"  style="margin-left: 23px;">
+                                                            <input id="date2" data-input="" class="datepicker form-control fs-13 py-0 ps-2 pe-2 flatpickr-input" placeholder="mm-dd-yyyy" formControlName="start_recur" style="height: 30px;" readonly="readonly">
+                                                            <label for="date2" class="position-absolute top-0 right-25px bottom-0 my-auto d-grid align-items-center">
+                                                                <img src="assets/theme/img/calender.png" alt="" class="h-15px">
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="flexDiv">
+                                                        <label for="phonenumber" class="col-auto text-primary fs-md-15 fs-14 pb-2" style="margin-right: 16px; margin-top: 16px;">{{cf.translate('End by')}}</label>
+                                                        <div class="row m-0">
+                                                            <div class="flexDiv">
+                                                                <div class="custom_radio_2 mb-md-0 mb-2">
+                                                                    <input type="radio" id="end_method1" [value]="0" formControlName="end_method">
+                                                                    <label class="text-black" for="end_method1"></label>
+                                                                </div>
+                                                                <div class="position-relative mb-md-0 mb-md-3 mb-2 datepicker" style="margin-bottom: 0px !important;margin-top: 12px;">
+                                                                    <input id="date3" data-input="" class="datepicker form-control fs-13 py-0 ps-2 pe-2 flatpickr-input" placeholder="mm-dd-yyyy" formControlName="end_recur" style="height: 30px;" readonly="readonly">
+                                                                    <label for="date3" class="position-absolute top-0 right-25px bottom-0 my-auto d-grid align-items-center">
+                                                                        <img src="assets/theme/img/calender.png" alt="" class="h-15px">
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+                                                            <div class="flexDiv">
+                                                                <div class="custom_radio_2 mb-md-0 mb-2">
+                                                                    <input type="radio" id="end_method2" [value]="1" formControlName="end_method">
+                                                                    <label class="text-black" for="end_method2"></label>
+                                                                </div>
+                                                                <div class="flexDiv" style="margin-bottom: 0px !important;margin-top: 14px; align-items: center;">
+                                                                    <label class="text-black" for="number">{{cf.translate('after')}}</label>
+                                                                    <input class="smform1" type="number" formControlName="end_round">
+                                                                    <label class="text-black" for="number">{{cf.translate('meetings')}}</label>
+                                                                </div>
+                                                            </div>
+                                                            <div class="flexDiv" style="align-items: center;">
+                                                                <div class="custom_radio_2 mb-md-0 mb-2">
+                                                                    <input type="radio" id="end_method3" [value]="2" formControlName="end_method">
+                                                                    <label class="text-black" for="end_method3">{{cf.translate('no end')}}</label>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 d-md-block d-none"></div>
+                                        <div class="col-md-6 modal_btns d-flex justidy-content-end mt-md-5 mt-3" style="justify-content: flex-end;">
+                                            <!-- <button class="bg-primary btn2 no-border">{{cf.translate('Schedule')}}</button> -->
+                                            <a class="bg-secondary ms-2 text-white commonA" data-bs-dismiss="modal">{{cf.translate('Cancel')}}</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>  
+            </div>
+        </div>
+    </div>
+</div>       <!-- Vendor JS Files -->
+
+<!-- share modal -->
+<div class="modal fade recording-form-modal publish_modal" id="share_meeting" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content" *ngIf="modal_src">
+            <div class="modal-body">
+                <p class="text-right">
+                    <a data-bs-dismiss="modal" class="cursor" style="background-color: #ffffff00 !important;
+                    color: #353b41 !important;"><i class="fa fa-remove"></i></a>
+                </p>
+                <div class="share-recording-modal p-md-4 p-3">
+                    <h3 class="text-center">{{cf.translate("Share Meeting")}}</h3>
+                    <div class="recording-modal row">
+                      
+                        <div class="col-md-12">
+                            <p>
+                                <span class="text-primary">{{cf.translate("Subject")}} : </span>
+                                <span>{{modal_src.title}}</span>
+                            </p>
+                            <p>
+                                <span class="text-primary">{{cf.translate("Start Time")}} : </span>
+                                <span>{{displayTime(modal_src.start_time)}}</span>
+                            </p>
+                            <p>
+                                <span class="text-primary">{{cf.translate("Duration")}} : </span>
+                                <span>{{modal_src.duration}}{{cf.translate('min')}}</span>
+                            </p>
+                            <p>
+                                <span class="text-primary">{{cf.translate("Organizer")}} : </span>
+                                <span>{{modal_src.email}}</span>
+                            </p>
+                            <p>
+                                <span class="text-primary">{{cf.translate("Meeting ID")}} : </span>
+                                <span>{{modal_src.meetingId}}</span>
+                            </p>
+                            <p class="hideP">
+                                <span class="text-primary">{{cf.translate("Meeting URL")}} : </span>
+                                <span style="word-break: break-all;">{{modal_src.meetingURL}}</span>
+                                <!-- <i class="fa fa-copy cursor" (click)="copyToClipboard(modal_src.meetingURL)"></i> -->
+                            </p>
+                        </div>
+
+
+                        <div class="col-md-12 modal_btns d-flex justidy-content-end mt-md-5 mt-3">
+                            <a class="bg-primary me-2" href="javascript:;" (click)="copyToClipboard(modal_src.meetingURL)"><i class="fa fa-copy mr-3"></i> {{cf.translate("Copy Meeting Info")}}</a>
+                            <a class="bg-secondary ms-2" href="javascript:;" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#download_share_img"><i class="fa fa-download mr-3"></i> Download Sharing Picture</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade recording-form-modal publish_modal" id="download_share_img" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-md" style="width: 1000px; max-width: 1000px;">
+        <div class="modal-content qr-down-modal-back" #shareDiv id="shareDiv">
+            <div class="modal-body" *ngIf="modal_src">
+                <div class="share-recording-modal p-md-4 p-3">
+                    <p class="text-right">
+                        <i class="fa fa-download cursor" (click)="downloadPicture()"></i>&nbsp;
+                        <a data-bs-dismiss="modal" class="cursor" style="background-color: #ffffff00 !important;
+                        color: #353b41 !important;"><i class="fa fa-remove"></i></a>
+                    </p>
+
+                    <div class="recording-modal row" style="padding: 3rem 3rem 5rem 3rem">
+                        <div class="col-md-6">
+                            <div class="row ml-0 mr-0 mt-5">
+                                <img id="qr-down-logo" src="assets/theme/img/ico.png">
+                                <p>
+                                    <span class="text-primary">{{cf.translate("Subject")}} : </span>
+                                    <span>{{modal_src.title}}</span>
+                                </p>
+                                <p>
+                                    <span class="text-primary">{{cf.translate("Start Time")}} : </span>
+                                    <span>{{displayTime(modal_src.start_time)}}</span>
+                                </p>
+                                <p>
+                                    <span class="text-primary">{{cf.translate("Duration")}} : </span>
+                                    <span>{{modal_src.duration}}{{cf.translate('min')}}</span>
+                                </p>
+                                <p>
+                                    <span class="text-primary">{{cf.translate("Organizer")}} : </span>
+                                    <span>{{modal_src.email}}</span>
+                                </p>
+                                <p>
+                                    <span class="text-primary">{{cf.translate("Meeting ID")}} : </span>
+                                    <span>{{modal_src.meetingId}}</span>
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 text-center">
+                            <qrcode [qrdata]="modal_src.meetingURL" [width]="350" [errorCorrectionLevel]="'M'" [elementType]="'svg'"></qrcode>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- cancel modal -->
+<div class="modal fade recording-form-modal publish_modal" id="cancelModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="share-recording-modal p-md-4 p-3">
+                    <div class="recording-modal row mt-3">
+                        <h3 class="pt-3 pb-3">{{cf.translate('Are you sure to cancel this meeting?')}}</h3>
+                        <div class="col-md-6 d-md-block d-none"></div>
+                        <div>
+                            <textarea class="textarea11" [(ngModel)]="reason" placeholder="Please input here why you cancel."></textarea>
+                        </div>
+                        <div class="col-md-6 modal_btns d-flex justidy-content-end mt-md-5 mt-3">
+                            <a class="bg-primary me-2 commonA text-white" (click)="cancel()" data-bs-dismiss="modal">{{cf.translate('Confirm')}}</a>
+                            <a class="bg-secondary ms-2" href="javascript:;" data-bs-dismiss="modal">{{cf.translate('Cancel')}}</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- delete modal -->
+<div class="modal fade recording-form-modal publish_modal" id="deleteModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="share-recording-modal p-md-4 p-3">
+                    <div class="recording-modal row mt-3">
+                        <h3 class="pt-3 pb-3">{{cf.translate('Are you sure to delete this?')}}</h3>
+
+                        <div class="col-md-6 d-md-block d-none"></div>
+                        <div class="col-md-6 modal_btns d-flex justidy-content-end mt-md-5 mt-3">
+                            <a class="bg-primary me-2 commonA text-white" (click)="del()" data-bs-dismiss="modal">{{cf.translate('Confirm')}}</a>
+                            <a class="bg-secondary ms-2" href="javascript:;" data-bs-dismiss="modal">{{cf.translate('Cancel')}}</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- reason modal -->
+<div class="modal fade recording-form-modal publish_modal" id="reasonModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body" *ngIf="modal_src">
+                <div class="share-recording-modal p-md-4 p-3">
+                    <div class="recording-modal row mt-3">
+                        <h3 class="pt-3 pb-3">{{cf.translate('Reason of cancelling this meeting')}}</h3>
+                        <div class="col-md-6 d-md-block d-none"></div>
+                        <div>
+                            <textarea class="textarea11" [value]="modal_src.end_reason?modal_src.end_reason:''" placeholder="The organizer didn't remain any reason." readonly></textarea>
+                        </div>
+                        <div class="col-md-6 modal_btns d-flex justidy-content-end mt-md-5 mt-3">
+                            <a class="bg-secondary ms-2" href="javascript:;" data-bs-dismiss="modal">{{cf.translate('Cancel')}}</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

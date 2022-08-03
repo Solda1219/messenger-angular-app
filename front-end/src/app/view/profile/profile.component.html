@@ -1,0 +1,84 @@
+<div class="share-recording-modal p-md-4 p-3" style="padding-left: 0px !important;">
+    <div class="row mx-0">
+        <div class="col-12">
+            <div class="row">
+                <div class="col-auto avtar-side">
+                    <div class="row rounded-10 justify-content-center">
+                        <div class="col-8 pt-md-5 pt-4 pb-md-4 pb-3">
+                            <img #preview_avatar [src]="formGroup.value['avatar']"  (error)="onImgError($event)" class="w-100" alt="" style="cursor: pointer; max-width:277px" (click)="openFileInput()">
+                            <input type="file" #fileinput  (change)="setFile($event)" style="display: none;">
+                        </div>
+                        <div class="col-12 fs-lg-28 fs-md-20 fs-20 text-center text-white pb-md-4 pb-3 mb-1">{{cf.translate('Avatar')}}</div>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-8">
+                    <form #ngForm="ngForm" [formGroup]="formGroup" (submit)="edit()">
+                        <div class="row bg-white shadow ms-md-3 me-md-0 rounded-10">
+                            <div class="col-12">
+                                <div class="row">
+                                    <div class="col-12 text-primary fs-lg-26 fs-md-22 fs-22 text-center py-lg-4 py-md-3 py-2 my-2">{{cf.translate('Edit my profile')}}</div>
+                                </div>
+                                <div class="row justify-content-center mb-2 pb-1">
+                                    <div class="col-xxl-6 col-xl-6 col-lg-8 col-md-10 col-10 custom_form_2">
+                                        <label for="username" class="text-primary fs-14 pb-1">{{cf.translate('User Name')}}*</label>
+                                        <input type="text" formControlName="nativeName" [class]="ngForm.submitted&&formGroup.controls['nativeName'].errors?'form-error':''">
+                                    </div>
+                                </div>
+                                <div class="row justify-content-center mb-2 pb-1">
+                                    <div class="col-xxl-6 col-xl-6 col-lg-8 col-md-10 col-10 custom_form_2">
+                                        <label for="phonenumber" class="text-primary fs-14 pb-1">{{cf.translate('Phone Number')}}</label>
+                                        <input type="text" formControlName="phone" [class]="ngForm.submitted&&formGroup.controls['phone'].errors?'form-error':''" readonly>
+                                    </div>
+                                </div>
+                                <div class="row justify-content-center mb-2 pb-1">
+                                    <div class="col-xxl-6 col-xl-6 col-lg-8 col-md-10 col-10 custom_form_2">
+                                        <label for="email" class="text-primary fs-14 pb-1">{{cf.translate('E-mail')}}</label>
+                                        <input type="email" formControlName="email" [class]="ngForm.submitted&&formGroup.controls['email'].errors?'form-error':''" readonly>
+                                    </div>
+                                </div>
+                                <div class="row justify-content-center mb-2 pb-1">
+                                    <div class="col-xxl-6 col-xl-6 col-lg-8 col-md-10 col-10 custom_form_2">
+                                        <label class="text-primary fs-14 pb-1">{{cf.translate('Password')}}*</label>
+                                        <input type="password" formControlName="password" [class]="ngForm.submitted&&formGroup.controls['password'].errors?'form-error':''">
+                                    </div>
+                                </div>
+                                <div class="row justify-content-center mb-2 pb-1">
+                                    <div class="col-xxl-6 col-xl-6 col-lg-8 col-md-10 col-10 custom_form_2">
+                                        <label class="text-primary fs-14 pb-1">{{cf.translate('Confirm password')}}*</label>
+                                        <input type="password" formControlName="re_pass" [class]="ngForm.submitted&&(formGroup.controls['re_pass'].errors||formGroup.value['re_pass']!=formGroup.value['password'])?'form-error':''">
+                                    </div>
+                                </div>
+                                <div class="row justify-content-center mb-2 pb-1">
+                                    <div class="col-xxl-6 col-xl-6 col-lg-8 col-md-10 col-10 custom_form_2">
+                                        <label for="Department" class="text-primary fs-14 pb-1 d-flex">{{cf.translate('Department')}}</label>
+                                        <input type="text" formControlName="dept_name" [class]="ngForm.submitted&&formGroup.controls['dept_name'].errors?'form-error':''" readonly>
+                                    </div>
+                                </div>
+                                <div class="row justify-content-center mb-2 pb-1">
+                                    <div class="col-xxl-6 col-xl-6 col-lg-8 col-md-10 col-10 custom_form_2">
+                                        <label for="Department" class="text-primary fs-14 pb-1 d-flex">{{cf.translate('Allow users add me to their addressbook.')}}</label>
+                                        <div class="row">
+                                            <div class="col-md-6 custom_radio_2">
+                                                <input type="radio" id="yes" [value]="1" formControlName="allow_share">
+                                                <label for="yes">{{cf.translate('Yes')}}</label>
+                                            </div>
+                                            <div class="col-md-6 custom_radio_2" >
+                                                <input type="radio" id="no" [value]="0" formControlName="allow_share">
+                                                <label for="no">{{cf.translate('No')}}</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row justify-content-center mb-2 pb-1 mt-lg-5 mt-md-4 mt-3 py-lg-5 py-md-4 py-3">
+                                    <div class="col-12 text-end px-5 mb-lg-5 mb-md-4 mb-3">
+                                        <button class="customBtn2 no-border" type="submit">{{cf.translate('Save')}}</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

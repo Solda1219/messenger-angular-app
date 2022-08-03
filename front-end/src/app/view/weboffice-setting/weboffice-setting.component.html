@@ -1,0 +1,142 @@
+<div class="row mx-0">
+    <div class="col-12">
+        <div class="row">
+            <!-- <div class="col-auto avtar-side">
+            </div> -->
+            <div>
+                <!-- <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb mb-0 py-lg-4 py-md-3 py-2">
+                        <li class="breadcrumb-item"><a href="./weboffice-setting.html#">My Profile</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">WebOffice Setting</li>
+                    </ol>
+                </nav> -->
+                <div class="row bg-white shadow ms-md-0 me-md-0 rounded-10">
+                    <div class="col-12">
+                        <div class="row">
+                            <div class="col-12 text-primary fs-lg-20 fs-md-18 fs-18 text-center py-lg-4 py-md-3 py-2 my-2">{{cf.translate('WebOffice Setting')}}</div>
+                        </div>
+                        <form #ngForm="ngForm" [formGroup]="formGroup" (submit)="edit()">
+                            <div class="row">
+                                <div class="col-md-6 col-sm-12">
+                                    <div class="d-flex justify-content-center mb-4 mx-md-3 mx-0 bg-newGray py-4 rounded-10">
+                                        <div class="col-xxl-7 col-xl-7 col-lg-8 col-md-10 col-10 py-2 custom_form_2 position-relative">
+                                            <label class="text-primary fs-14 pb-1">{{cf.translate('Search name and email address')}}</label>
+                                            <div class="row mt-1">
+                                                <div class="col-auto position-relative formChecklable d-flex align-items-center mb-mb-2 mb-3">
+                                                    <input type="radio" id="nameEmail" class="d-none" [value]="0" formControlName="emailPrivacy">
+                                                    <label for="nameEmail" class="fs-md-14 fs-12">{{cf.translate('All')}}</label>
+                                                </div>
+                                                <div class="col-auto position-relative formChecklable d-flex align-items-center mb-mb-2 mb-3">
+                                                    <input type="radio" id="onlymy" class="d-none" [value]="1" formControlName="emailPrivacy">
+                                                    <label for="onlymy" class="fs-md-14 fs-12">{{cf.translate('Only to my contects')}}</label>
+                                                </div>
+                                                <div class="col-auto position-relative formChecklable d-flex align-items-center mb-mb-2 mb-3">
+                                                    <input type="radio" id="prohibit" class="d-none" [value]="2" formControlName="emailPrivacy">
+                                                    <label for="prohibit" class="fs-md-14 fs-12">{{cf.translate('Prohibit')}}</label>
+                                                </div>
+                                            </div>
+                                            <label class="text-primary fs-14 pb-1">{{cf.translate('Allow outside users leave message to me.')}}</label>
+                                            <div class="row mt-1">
+                                                <div class="col-auto position-relative formChecklable d-flex align-items-center mb-mb-2 mb-3">
+                                                    <input type="radio" id="yes6" class="d-none" [value]="1" formControlName="leaveMessageOutside">
+                                                    <label for="yes6" class="fs-md-14 fs-12">{{cf.translate('Yes')}}</label>
+                                                </div>
+                                                <div class="col-auto position-relative formChecklable d-flex align-items-center mb-mb-2 mb-3">
+                                                    <input type="radio" id="no6" class="d-none" [value]="0" formControlName="leaveMessageOutside">
+                                                    <label for="no6" class="fs-md-14 fs-12">{{cf.translate('No')}}</label>
+                                                </div>
+                                            </div>
+                                            <label class="text-primary mt-3 fs-14 pb-1">{{cf.translate('Leaving a message.')}}</label>
+                                            <div class="row mt-1">
+                                                <div class="col-auto position-relative formChecklable d-flex align-items-center mb-mb-2 mb-3">
+                                                    <input type="radio" id="nameEmail1" class="d-none" [value]="0" formControlName="leaveMessagePrivacy">
+                                                    <label for="nameEmail1" class="fs-md-14 fs-12">{{cf.translate('All')}}</label>
+                                                </div>
+                                                <div class="col-auto position-relative formChecklable d-flex align-items-center mb-mb-2 mb-3">
+                                                    <input type="radio" id="onlymy1" class="d-none" [value]="1" formControlName="leaveMessagePrivacy">
+                                                    <label for="onlymy1" class="fs-md-14 fs-12">{{cf.translate('Only to my contects')}}</label>
+                                                </div>
+                                                <div class="col-auto position-relative formChecklable d-flex align-items-center mb-mb-2 mb-3">
+                                                    <input type="radio" id="prohibit1" class="d-none" [value]="2" formControlName="leaveMessagePrivacy">
+                                                    <label for="prohibit1" class="fs-md-14 fs-12">{{cf.translate('Prohibit')}}</label>
+                                                </div>
+                                            </div>
+                                            <label class="text-primary mt-3 fs-14 pb-1">{{cf.translate('Query Online Status.')}}</label>
+                                            <div class="row mt-1">
+                                                <div class="col-auto position-relative formChecklable d-flex align-items-center mb-mb-2 mb-3">
+                                                    <input type="radio" id="nameEmail2" class="d-none" [value]="0" formControlName="onlinePrivacy">
+                                                    <label for="nameEmail2" class="fs-md-14 fs-12">{{cf.translate('All')}}</label>
+                                                </div>
+                                                <div class="col-auto position-relative formChecklable d-flex align-items-center mb-mb-2 mb-3">
+                                                    <input type="radio" id="onlymy2" class="d-none" [value]="1" formControlName="onlinePrivacy">
+                                                    <label for="onlymy2" class="fs-md-14 fs-12">{{cf.translate('Only to my contects')}}</label>
+                                                </div>
+                                                <div class="col-auto position-relative formChecklable d-flex align-items-center mb-mb-2 mb-3">
+                                                    <input type="radio" id="prohibit2" class="d-none" [value]="2" formControlName="onlinePrivacy">
+                                                    <label for="prohibit2" class="fs-md-14 fs-12">{{cf.translate('Prohibit')}}</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 text-primary fs-lg-26 fs-md-22 fs-22 my-2">
+                                                <div class="custom_form_2 position-relative">
+                                                    <label for="username" class="text-primary fs-14 pb-1">{{cf.translate('Message Time Limit')}}</label>
+                                                    <span class="text-primary fs-14 pb-1  position-absolute right-10px bottom-3px">{{cf.translate('Mins')}}</span>
+                                                    <input type="text" formControlName="messageLimit" [class]="ngForm.submitted&&formGroup.controls['messageLimit'].errors?'form-error':''" [placeholder]="cf.translate('0 means Unlimited')">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-sm-12">
+                                    <div class="d-flex justify-content-center mx-md-3 mx-0 mb-4 bg-newGray py-4 rounded-10" style="height: 392px;">
+                                        <div class="col-xxl-7 col-xl-7 col-lg-8 col-md-10 col-10 py-2 custom_form_2">
+                                            <div class="w-100 position-relative">
+                                                <label for="username" class="text-primary fs-14 pb-1">{{cf.translate('Visit Links')}}</label>
+                                                <input type="text" placeholder="" [value]="visiturl" readonly>
+                                            </div>
+                                            <div class="w-100 position-relative mt-3">
+                                                <label for="username" class="text-primary fs-14 pb-1">{{cf.translate('Message Links')}}</label>
+                                                <input type="text" [value]="msgurl"  placeholder="" readonly>
+                                            </div>
+                                            <div class="row mt-3">
+                                                <div class="col position-relative">
+                                                    <label for="max_connections" class="text-primary fs-14 pb-1" >{{cf.translate('Max connections')}}*</label>
+                                                    <input type="text" formControlName="maxGuest"  [class]="ngForm.submitted&&formGroup.controls['maxGuest'].errors?'form-error':''" readonly>
+                                                </div>
+                                                <div class="col position-relative">
+                                                    <label for="max_cloud_disk_space" class="text-primary fs-14 pb-1">{{cf.translate('Max cloud disk space')}}*</label>
+                                                    <input type="text" formControlName="diskQuota" [class]="ngForm.submitted&&formGroup.controls['diskQuota'].errors?'form-error':''" readonly>
+                                                </div>
+                                            </div>
+        
+                                            <!-- <div class="row justify-content-center mb-2 pb-1 mt-3">
+                                                <div class="col position-relative formChecklable d-flex align-items-center">
+                                                    <input type="checkbox" name="name" id="allow" class="d-none">
+                                                    <label for="allow" class="fs-13">{{cf.translate('Allow Anonymous visits')}}</label>
+                                                </div>
+                                                <div class="col-md-auto col-12 ml-autod-flex align-items-center px-0 mt-md-0 mt-4 text-md-end  text-center">
+                                                    <div class="col-12 text-md-end  text-center px-3">
+                                                        <a class="customBtn2 px-4 py-2">{{cf.translate('Setting')}}</a>
+                                                    </div>
+                                                </div>
+                                            </div> -->
+                                            <div class="row justify-content-center mb-2 pb-1 mt-lg-3 mt-md-3 mt-3 py-lg-3 py-md-3 py-3">
+                                                <div class="col ml-auto text-md-end  text-center">
+                                                    <button class="customBtn2 no-border" type="submit">{{cf.translate('Save')}}</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                           
+
+                            
+                        </form>    
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

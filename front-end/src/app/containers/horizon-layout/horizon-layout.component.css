@@ -1,0 +1,22 @@
+.app-header{
+    background-color: #20a8d8
+}
+.app-header .navbar-nav .nav-link{
+    color: white;
+}
+.app-header .navbar-nav .nav-link i{
+    padding: 5px;
+    vertical-align: text-bottom;
+    font-size: 20px;
+}
+a{
+    cursor: pointer;
+}
+.img-language{
+    height: 25px !important; 
+    width: 25px !important;
+    vertical-align: bottom;
+}
+.active-imgnav{
+    background-color: #183bb9;
+}

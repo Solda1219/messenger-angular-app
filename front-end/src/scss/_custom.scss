@@ -1,0 +1,157 @@
+//preloading
+.loadingImageLogoDiv{
+    height: 101vh;
+    background-color: black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.loadingImageLogoDiv img{
+    width: 200px;
+    height: 200px;
+}
+//form
+.LabelGroup{
+    display: flex;
+}
+.LabelFlex{
+    height: min-content;
+    padding-right: 7px;
+}
+.LabelIcon{
+    position: absolute;
+    margin-top: 11px;
+    margin-left: 7px;
+}
+.fixWidthLabel{
+    width: 140px;
+    padding-top: 6px;
+    padding-right: 6px;
+    text-align: right;
+}
+.fixInputDiv{
+    width: calc(100% - 140px);
+}
+.fixWidthLabel-sm{
+    width: 50px;
+    padding-top: 6px;
+    padding-right: 6px;
+    text-align: right;
+}
+.invalid-feedback{
+    margin-top: 0px;
+}
+.fixInputDiv-sm{
+    width: calc(100% - 50px);
+}
+.dropzone-one{
+    height: 200px;
+    border: 2px dashed #ced4da;
+    background: #fff;
+    border-radius: 6px;
+}
+.dropzone-one img{
+    max-height: 200px;
+}
+.dropzone-imagediv{
+    margin: auto;
+    width: fit-content;
+}
+.form-error{
+    border-color: red !important;
+}
+//newly
+.commonA{
+    cursor: pointer;
+    text-decoration: none;
+}
+.btn2{
+    width: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    border-radius: 9px;
+    text-decoration: none;
+    height: 45px;
+    font-size: 14px;
+    transition: 0.5s;
+    cursor: pointer;
+}
+.select_style_1 {
+    border: 2.8px solid #b1b1b1;
+    border-radius: 7px;
+    height: 38px;
+    width: 100%;
+    box-shadow: 0px 1px 6px #0c0c0c3b;
+    padding-left: 10px;
+    padding-right: 10px;
+    font-size: 14px;
+ }
+ .select_style_2{
+    border: 2.8px solid #066afe;
+    border-radius: 7px;
+    height: 45px;
+    width: 100%;
+    box-shadow: 0px 1px 6px #0c0c0c3b;
+    padding-left: 10px;
+    padding-right: 10px;
+    font-size: 14px;
+ }
+ //button
+ .btn-pill-icon-sm{
+    border-radius: 34px;
+    width: 30px;
+    height: 30px;
+    padding: 0px;
+ }
+ .btn-pill-icon-sm-img{
+  border-radius: 34px;
+  width: 30px;
+  height: 30px;
+  padding: 0px;
+  border-width: 0px;
+  background-color: #f0f8ff00;
+ }
+ .cursor{
+     cursor: pointer;
+ }
+ .no-border{
+    border-width: 0px  !important;
+ }
+ .header-center .mat-sort-header-container{
+    justify-content: center;
+ }
+ .lngdropdown .dropdown-item{
+     font-size: 14px;
+ }
+ .lngdropdown .mat-menu-item{
+     padding: 0px;
+ }
+ //table
+ .warning-td{
+     background-color: red;
+ }
+//dropdown
+.st .multiselect-dropdown .dropdown-btn{
+    border: 2px solid #116af0 !important;
+    margin-top: 3px;
+    height: 38px;
+    display: flex;
+    align-items: center;
+}
+//nabvar
+.badgeSpan{
+    position: absolute;
+    right: 38px;
+}
+.disBackDrop{
+    pointer-events: none !important;
+}
+
+.disBackDrop .modal-dialog{
+    pointer-events: all !important;
+ }
+.modal-open [left-part].sidebar {
+    z-index: 0 !important;
+}

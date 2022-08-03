@@ -1,0 +1,29 @@
+<mat-drawer-container class="side-nav-container" autosize>
+    <mat-drawer #drawer class="side-nav-sidenav" mode="side" [opened]="true">
+      <div class="nav-tile-text-bold text-center">{{cf.translate('Group')}}</div>
+      <span class="toggle-tree-btn">
+        <button type="button" class="btn btn-block btn-outline" (click)="drawer.toggle(); _opened = !_opened">
+          <i class="cil-arrow-thick-from-right" aria-hidden="true"></i>
+        </button>
+      </span>
+       <!--Left tabs -->
+       <div style="padding: 1rem;">
+        <app-group-content (selectedItems)="selected_group = $event" [userContentChanged]="userContentChanged"></app-group-content>
+      </div>
+    </mat-drawer>
+    <div *ngIf="!_opened" class="hambergerDIV">
+        <span class="toggle-tree-btn-right">
+            <button type="button" class="btn btn-block btn-outline"
+              (click)="drawer.toggle(); _opened = !_opened">
+              <i class="cil-arrow-thick-from-left" aria-hidden="true"></i>
+            </button>
+        </span>
+    </div>
+    <div class="side-nav-content">
+        <div class="nav-tile-text" *ngIf="selected_group">{{cf.translate('Users Of')}}&nbsp;{{selected_group.name}}</div>
+        <div class="nav-tile-text" *ngIf="!selected_group">{{cf.translate('No group selected')}}</div>
+        <div class="content">
+          <app-user-content [group]="selected_group" (componentChange)="userContentChanged=$event"></app-user-content>
+        </div>
+    </div>
+  </mat-drawer-container>

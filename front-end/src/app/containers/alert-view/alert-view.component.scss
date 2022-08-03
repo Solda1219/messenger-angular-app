@@ -1,0 +1,42 @@
+.alertDiv{
+    padding: 10px;
+    background-color: black;
+    border-radius: 5px;
+    margin-bottom: 5px;
+}
+.alertContent{
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+}
+.alertOffice-title{
+    padding: 8px 10px;
+    color: white;
+}
+.alertOffice-button .accept{
+    border-width: 0px;
+    padding: 5px;
+    color: white;
+    font-size: 13px;
+    border-radius: 5px;
+    background-color: #086afd;
+    cursor: pointer;
+    margin-left: 10px;
+    width:60px;
+}
+.alertOffice-button .reject{
+    border-width: 0px;
+    padding: 5px;
+    color: white;
+    font-size: 13px;
+    border-radius: 5px;
+    background-color: red;
+    cursor: pointer;
+    margin-left: 10px;
+    width: 60px;
+}
+.alertOffice-button{
+    display: flex;
+    justify-content: flex-end;
+    padding: 5px 10px;
+}

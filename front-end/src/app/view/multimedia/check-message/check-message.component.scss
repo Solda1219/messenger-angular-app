@@ -1,0 +1,34 @@
+.infoDiv{
+    border: solid 1px #ddd;
+    padding: 10px 20px;
+    background-color: aliceblue;
+}
+.justMiddle{
+    display: flex;
+    align-items: baseline;
+}
+.Lav1{
+    width: 100px;
+    text-align: right;
+    padding-right: 10px;
+}
+.Bt1{
+    width: 100px;
+    height: 36px;
+    color: white;
+    margin-top: 5px;
+}
+.justidy-content-end{
+    justify-content: flex-end;
+}
+.Btn7{
+    width: 32px;
+    height: 32px;
+    padding: 4px;
+    font-size: 22px;
+    border-radius: 5px;
+}
+.bgCoral{
+    background-color: coral;
+    color: white;
+}

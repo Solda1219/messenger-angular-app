@@ -1,0 +1,248 @@
+<!-- <nav aria-label="breadcrumb">
+    <ol class="breadcrumb mb-0 py-lg-4 py-md-3 py-2">
+        <li class="breadcrumb-item"><a href="./recordingManage.html#">Cloud Storage</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Recording Manage</li>
+    </ol>
+</nav> -->
+<div class="recoarding-share dept-create rounded-10 mt-4">
+    <div class="recoarding-share-top bg-white shadow">
+        <h3>{{cf.translate('Cloud Disk')}}</h3>
+        <form  class="recoarding-share-form dept-create-inner mb-0" [formGroup]="formGroup" (submit)="search()">
+            <div class="form-group date-pickeer position-relative mr-2">
+                <span class="">{{cf.translate('From')}}1</span>
+                <input type="text" id="dateFrom" data-input="" class="datepicker form-control fs-14 py-0 ps-3 pe-3 h-md-45px h-40px flatpickr-input" placeholder="03/10/2014" formControlName="from" readonly="readonly">
+                <label for="dateFrom" class="position-absolute top-0 right-10px bottom-0 my-auto d-grid align-items-center">
+                    <img src="assets/theme/img/calender.png" alt="" class="h-22px">
+                </label>
+            </div>
+            <div class="form-group date-pickeer position-relative mr-2">
+                <span class="">{{cf.translate('To')}}</span>
+                <input type="text" id="dateTo" data-input="" class="datepicker form-control fs-14 py-0 ps-3 pe-3 h-md-45px h-40px flatpickr-input" placeholder="03/10/2014" formControlName="to" readonly="readonly">
+                <label for="dateTo" class="position-absolute top-0 right-10px bottom-0 my-auto d-grid align-items-center">
+                    <img src="assets/theme/img/calender.png" alt="" class="h-22px">
+                </label>
+            </div>
+            <div class="form-group position-relative search_bar" style="width: 49%;">
+                <i class="fal fa-search"></i>
+                <input type="search" [placeholder]="cf.translate('Please input search key words.')" formControlName="title">
+                <input class="button" [value]="cf.translate('Search')" type="submit" readonly>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="row mx-0 justify-content-center mt-4">
+    <div class="col-md-12">
+        <div class="row depth-tabel bg-white shadow">
+            <div class="col-12 depth-tabel-top row mx-0 mb-4 align-items-center">
+                <div class="col-md-auto col-12"><h4>{{cf.translate('Total')}}: {{item.length}}</h4></div>
+                <div class="col text-md-end text-start dept-icons">
+                    <a class="commonA"  data-bs-toggle="modal" data-bs-target="#upload" (click)="uploadFormSet()"><img src="assets/theme/img/add.png" alt="">
+                        <span>{{cf.translate('Upload')}}</span>
+                    </a>
+                    <a class="commonA" (click)="showDeleteModal(selection.selected)">
+                        <img src="assets/theme/img/exit.png" alt="">
+                        <span>{{cf.translate('Remove')}}</span>
+                    </a>
+                </div>
+            </div>
+            <div class="col-12 depth-tabel-main mt-md-4">
+                <div class="table-responsive header-center">
+                    <table mat-table [dataSource]="tableList" class="table" matSort>
+                        <!-- Checkbox Column -->
+                        <ng-container matColumnDef="select" sticky>
+                        <th mat-header-cell *matHeaderCellDef class="checkTh">
+                            <mat-checkbox (change)="$event ? masterToggle() : null;"
+                            [checked]="selection.hasValue() && isAllSelected()"
+                            [indeterminate]="selection.hasValue() && !isAllSelected()" [aria-label]="checkboxLabel()">
+                            </mat-checkbox>
+                        </th>
+                        <td mat-cell *matCellDef="let row" class="checkTh">
+                            <mat-checkbox (click)="$event.stopPropagation()"
+                            (change)="$event ? selection.toggle(row) : null;" [checked]="selection.isSelected(row)"
+                            [aria-label]="checkboxLabel(row)">
+                            </mat-checkbox>
+                        </td>
+                        </ng-container>
+                        <ng-container [matColumnDef]="'No'">
+                        <th class="NoTh" mat-header-cell *matHeaderCellDef mat-sort-header> {{cf.translate('No')}} </th>
+                        <td class="NoTd" mat-cell *matCellDef="let row; let i = index">
+                            {{ (paginator.pageIndex * paginator.pageSize) + (i + 1)}}
+                        </td>
+                        </ng-container>
+                        <ng-container *ngFor="let rows of tbCol; let i = index">
+                        <ng-container *ngIf="specialCol.indexOf(rows)==-1" [matColumnDef]="rows">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> {{cf.translate(tbHeader[i])}} </th>
+                            <td mat-cell *matCellDef="let row" class="text-center"> {{row[rows]}} </td>
+                        </ng-container>
+                        </ng-container>
+                        <!-- action -->
+                        <ng-container matColumnDef="Action" stickyEnd>
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header class="stickyOperationHeader-sm">
+                            {{cf.translate('Action')}} </th>
+                        <td mat-cell *matCellDef="let row" class="stickyOperationCell-sm" style="width: 360px;">
+                            <div class="oprations-icons d-flex justify-content-center">
+                                <a class="commonA cursor" data-bs-toggle="modal" data-bs-target="#upload" (click)="uploadFormSet(row)">
+                                    <img src="assets/theme/img/ico-3.png" alt="">
+                                    <span>{{cf.translate('Edit')}}</span>
+                                </a>
+                                <a class="commonA cursor" [href]="'/#/doc-preview/'+row.id" target="_blank">
+                                    <img src="assets/theme/img/search.png" alt="">
+                                    <span>{{cf.translate('Preview')}}</span>
+                                </a>
+                                <a class="commonA cursor" [href]="'/'+row.path" download>
+                                    <img src="assets/theme/img/ico-4.png" alt="">
+                                    <span>{{cf.translate('Download')}}</span>
+                                </a>
+                                <a class="commonA cursor" (click)="showDeleteModal([row])">
+                                    <img src="assets/theme/img/delete.png" alt="">
+                                    <span>{{cf.translate('Delete')}}</span>
+                                </a>
+                                <a class="commonA cursor" (click)="showShareModal(row)">
+                                    <img src="assets/theme/img/ico-1.png" alt="">
+                                    <span>{{cf.translate('Share')}}</span>
+                                </a>
+                            </div>
+                        </td>
+                        </ng-container>
+                        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                        <!-- Row shown when there is no matching data. -->
+                        <tr class="mat-row" *matNoDataRow>
+                        <td class="mat-cell" colspan="4">No Item</td>
+                        </tr>
+                    </table>
+                </div>  
+            </div>
+            <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+        </div>
+    </div>
+</div>
+<ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '3px' }"></ngx-loading>
+<!-- send message modal -->
+<!-- upload modal -->
+<div class="modal fade recording-form-modal publish_modal" id="upload" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="share-recording-modal p-md-4 p-3">
+                    <h3 *ngIf="uploadForm.value['id']">{{cf.translate("Edit File")}}</h3>
+                    <h3 *ngIf="!uploadForm.value['id']">{{cf.translate("Upload File")}}</h3>
+                    <form #ngForm="ngForm" class="recording-modal row" [formGroup]="uploadForm" (submit)="uploadForm.value['id']?edit():upload()">
+                        <div class="col-12">
+                            <div class="row">
+                                <div class="col-12">
+                                    <label for="phonenumber" class="fs-14 pb-1">{{cf.translate("Select File")}}</label>
+                                </div>
+                                <div class="col custom_form_2 mb-2">
+                                    <input type="text" formControlName="file_path" readonly>
+                                </div>
+                                <div class="col-auto ps-0">
+                                    <input type="file" #fileinput  (change)="setFile($event)"  style="display: none;">
+                                    <input class="select-file" type="text" value="Select File" (click)="openFileInput()" readonly>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 custom_form_2 mb-2" style="width: 100%;">
+                            <label class="fs-14 pb-1">{{cf.translate("File Title")}}*</label>
+                            <input type="text" placeholder="" formControlName="title" [class]="ngForm.submitted&&uploadForm.controls['title'].errors?'form-error':''">
+                        </div>
+                        <div class="col-md-12 custom_form_2 mb-2" style="width: 100%;">
+                            <label class="fs-14 pb-1">{{cf.translate("Keywords")}}*</label>
+                            <input type="text" [placeholder]="cf.translate('Keywords by comma.')" formControlName="key" [class]="ngForm.submitted&&uploadForm.controls['key'].errors?'form-error':''">
+                        </div>
+                        <div class="col-md-6 d-md-block d-none"></div>
+                        <div class="col-md-6 modal_btns d-flex justidy-content-end mt-md-5 mt-3">
+                            <button class="bg-primary me-2 text-white commonA btn2 no-border" type="submit">{{uploadForm.value['id']?cf.translate("Save"):cf.translate("Upload")}}</button>
+                            <a class="bg-secondary ms-2 text-white commonA cursor" data-bs-dismiss="modal">{{cf.translate("Cancel")}}</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>          <!-- Vendor JS Files -->
+<!-- share modal -->
+<div class="modal fade recording-form-modal" id="sharemodal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="share-recording-modal p-md-4 p-3">
+                    <h3>{{cf.translate('Share Files')}}</h3>
+                    <form class="recording-modal row" [formGroup]="shareForm" (submit)="share()">
+                        <div class="col-12 custom_form_2 mb-2 mt-md-3 mt-2">
+                            <label for="phonenumber" class="fs-14 pb-1 text-primary">{{cf.translate("Share To")}}</label>
+                            <div class="row mt-2 align-items-center">
+                                <div class="col-md-8">
+                                    <div class="row">
+                                        <div class="col-auto col-auto custom_radio_2 mb-md-0 mb-2">
+                                            <input type="radio" id="users" formControlName="shareTo" [value]="0">
+                                            <label class="text-black" for="users">{{cf.translate("All Users")}}</label>
+                                        </div>
+                                        <div class="col-auto col-auto custom_radio_2 mb-md-0 mb-2" >
+                                            <input type="radio" id="users1" me="shareTo" [value]="1" formControlName="shareTo" >
+                                            <label class="text-black" for="users1">{{cf.translate("All Contacts")}}</label>
+                                        </div>
+                                        <div class="col-auto col-auto custom_radio_2 mb-md-0 mb-2 mt-0" >
+                                            <input type="radio" id="users2" me="shareTo" [value]="2" formControlName="shareTo" >
+                                            <label class="text-black" for="users2">{{cf.translate("Permittee Only")}}</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <ng-multiselect-dropdown *ngIf="shareForm.value['shareTo'] == 2"
+                                    [ngModelOptions]="{standalone: true}"
+                                    [placeholder]="'Please select user to share'"
+                                    [settings]="dropdownSettingsOfUser"
+                                    [data]="userList"
+                                    [(ngModel)]="selectedUsers"
+                                    >
+                                </ng-multiselect-dropdown>
+                                <!-- <div *ngIf="shareForm.value['shareTo'] == 2" class="col-md-4">
+                                    <div class="form-group position-relative custom_form_2 mt-md-0 mt-2">
+                                        <select class="select_style_1" formControlName="users">
+                                            <option [value]="-1" style="display: none;">{{cf.translate('All User List')}}</option>
+                                            <option *ngFor="let item of userList" [value]="item.memberId">{{item.nativeName}}</option>
+                                        </select>
+                                    </div>
+                                </div> -->
+                            </div>
+                        </div>
+                        <!-- <div class="col-md-6 custom_form_2 mb-2">
+                            <label for="phonenumber" class="fs-14 pb-1 text-primary">{{cf.translate('Playback Password')}}</label>
+                            <input type="text" formControlName="password">
+                        </div>
+                        <div class="col-md-6 custom_form_2 mb-2">
+                            <label for="phonenumber" class="fs-14 pb-1 text-primary">{{cf.translate('Expiration Days')}}</label>
+                            <input type="number" formControlName="expireDays">
+                        </div> -->
+                        <div class="col-6 d-md-block d-none">
+                        </div>
+                        <div class="col-md-6 modal_btns d-flex justidy-content-center mt-md-5 mt-3">
+                            <button class="bg-primary me-2 text-white commonA btn2 no-border" type="submit">{{cf.translate("Share")}}</button>
+                            <a class="bg-secondary ms-2 text-white commonA cursor" data-bs-dismiss="modal">{{cf.translate("Cancel")}}</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- delete modal -->
+<div class="modal fade recording-form-modal publish_modal" id="deleteModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="share-recording-modal p-md-4 p-3">
+                    <div class="recording-modal row mt-3">
+                        <h3 class="pt-3 pb-3">{{cf.translate('Are you sure to delete this?')}}</h3>
+
+                        <div class="col-md-6 d-md-block d-none"></div>
+                        <div class="col-md-6 modal_btns d-flex justidy-content-end mt-md-5 mt-3">
+                            <a class="bg-primary me-2 commonA text-white" (click)="del()" data-bs-dismiss="modal">{{cf.translate('Confirm')}}</a>
+                            <a class="bg-secondary ms-2" href="javascript:;" data-bs-dismiss="modal">{{cf.translate('Cancel')}}</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
